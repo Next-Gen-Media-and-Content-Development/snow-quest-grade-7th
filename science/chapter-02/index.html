@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>exploring substance acidic, basic and neutral — Science Grade 7</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { background:var(--bg); color:var(--text); font-family:var(--font); min-height:100vh; margin:0; }
+  .hero { background:var(--gradient); padding:3rem 2rem 2rem; text-align:center; position:relative; }
+  .hero h1 { font-size:2.2rem; color:#fff; margin:0 0 .5rem; }
+  .hero .meta { color:rgba(255,255,255,.85); font-size:1rem; }
+  .grade-badge { display:inline-block; background:rgba(255,255,255,.2); color:#fff; padding:.3rem .9rem; border-radius:20px; font-size:.85rem; margin-bottom:.8rem; }
+  .overall-wrap { display:flex; justify-content:center; margin:1.2rem 0; }
+  .overall-circle { width:96px; height:96px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.15); }
+  .overall-inner { display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-weight:700; }
+  .overall-inner .big { font-size:1.6rem; }
+  .overall-inner .lbl { font-size:.65rem; opacity:.85; }
+  .journey { display:flex; justify-content:center; gap:.5rem; flex-wrap:wrap; padding:1rem 2rem; }
+  .journey-pill { padding:.4rem 1rem; border-radius:20px; font-size:.8rem; font-weight:700; color:#fff; cursor:default; }
+  .jp-learn { background:#6c63ff; } .jp-practice { background:#00b894; }
+  .jp-test { background:#e17055; } .jp-master { background:#d63031; }
+  .toolbar { display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; padding:.5rem 2rem 1rem; }
+  .tool-btn { padding:.7rem 1.3rem; border-radius:25px; border:none; font-weight:700; cursor:pointer; font-size:.9rem; transition:.2s; }
+  .tool-exam { background:#ff6b6b; color:#fff; } .tool-teacher { background:#6c63ff; color:#fff; }
+  .tool-btn:hover { opacity:.85; transform:translateY(-1px); }
+  .next-cta { max-width:1100px; margin:1rem auto 0; padding:0 2rem; }
+  .next-cta a { display:block; background:var(--accent-light); border:1px solid var(--accent); border-radius:14px; padding:1rem 1.4rem; text-decoration:none; color:var(--text); font-weight:600; font-size:.95rem; }
+  .revision-banner { max-width:1100px; margin:.8rem auto 0; padding:0 2rem; }
+  .revision-banner a { display:block; background:linear-gradient(135deg,#ff6b6b22,#ffd93d22); border:1px solid #ffd93d; border-radius:14px; padding:1rem 1.4rem; text-decoration:none; color:var(--text); font-weight:600; }
+  #teacher-panel { display:none; max-width:1100px; margin:1rem auto; padding:1.4rem 2rem; background:var(--card); border:1px solid var(--border); border-radius:14px; }
+  #teacher-panel h3 { margin:0 0 1rem; color:var(--accent); }
+  #teacher-panel ul { margin:.5rem 0 1rem 1.2rem; line-height:1.8; }
+  .badges-section { max-width:1100px; margin:1rem auto 0; padding:0 2rem; }
+  .badges-section h4 { font-size:.9rem; color:var(--muted); margin:0 0 .6rem; }
+  .badge-row { display:flex; gap:.6rem; flex-wrap:wrap; }
+  .badge { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:.5rem .9rem; font-size:.85rem; display:flex; align-items:center; gap:.4rem; }
+  .modules-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.2rem; max-width:1100px; margin:1.5rem auto; padding:0 2rem 3rem; }
+  .module-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1.4rem; text-decoration:none; color:var(--text); display:flex; flex-direction:column; gap:.8rem; transition:.2s; }
+  .module-card:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,0,0,.12); border-color:var(--accent); }
+  .module-icon { font-size:2.2rem; }
+  .module-info h3 { margin:0 0 .3rem; font-size:1.1rem; }
+  .module-info p { margin:0; color:var(--muted); font-size:.85rem; }
+  .study-time { font-size:.75rem; color:var(--accent); font-weight:600; }
+  .module-progress { display:flex; align-items:center; gap:.6rem; }
+  .progress-bar { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--gradient); border-radius:3px; transition:.4s; width:0%; }
+  .prog-pct { font-size:.75rem; color:var(--muted); font-weight:600; min-width:28px; }
+  /* Exam modal */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:1000; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:var(--card); border-radius:20px; padding:2rem; max-width:480px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+  .modal-box h2 { margin:0 0 .5rem; }
+  .modal-box ul { margin:.8rem 0 1.2rem 1.2rem; line-height:1.9; }
+  .modal-close { background:var(--gradient); color:#fff; border:none; padding:.7rem 1.5rem; border-radius:25px; font-weight:700; cursor:pointer; float:right; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="grade-badge">Grade 7 &middot; Science</div>
+  <h1>exploring substance acidic, basic and neutral</h1>
+  <p class="meta">Your complete interactive study kit</p>
+  <div class="overall-wrap">
+    <div class="overall-circle">
+      <div class="overall-inner">
+        <span class="big" id="overall-pct">0%</span>
+        <span class="lbl">COMPLETE</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="journey">
+  <span class="journey-pill jp-learn">&#128218; Learn</span>
+  <span class="journey-pill jp-practice">&#9989; Practice</span>
+  <span class="journey-pill jp-test">&#127919; Test</span>
+  <span class="journey-pill jp-master">&#127941; Master</span>
+</div>
+
+<div class="toolbar">
+  <button class="tool-btn tool-exam" onclick="openExam()">&#9889; Exam in 20 Min</button>
+  <button class="tool-btn tool-teacher" onclick="toggleTeacher()">&#128105;&#8205;&#127979; Teacher Mode</button>
+</div>
+
+<div id="teacher-panel">
+  <h3>&#128105;&#8205;&#127979; Teacher Mode — exploring substance acidic, basic and neutral</h3>
+  <p><strong>Learning Objectives:</strong></p>
+  <ul>
+    <li>Understand the key concepts of exploring substance acidic, basic and neutral</li>
+    <li>Apply knowledge through practice questions and activities</li>
+    <li>Analyse and evaluate concepts at higher Bloom's levels</li>
+  </ul>
+  <p><strong>Bloom's Taxonomy Level:</strong> Remember &#8594; Understand &#8594; Apply &#8594; Analyse</p>
+  <p><strong>Common Errors Students Make:</strong></p>
+  <ul>
+    <li>Confusing similar-sounding terms and concepts</li>
+    <li>Not reading question carefully (especially assertion-reason types)</li>
+    <li>Missing units or diagram labels in answers</li>
+  </ul>
+  <p><strong>Viva Questions to Ask:</strong></p>
+  <ul>
+    <li>Can you explain exploring substance acidic, basic and neutral in your own words?</li>
+    <li>What would happen if...? (apply a concept differently)</li>
+    <li>How does this connect to what we studied previously?</li>
+  </ul>
+</div>
+
+<div class="badges-section" id="badges-section" style="display:none">
+  <h4>&#127942; Achievements Earned</h4>
+  <div class="badge-row" id="badge-row"></div>
+</div>
+
+<div class="next-cta" id="next-cta" style="display:none">
+  <a href="#" id="next-link">&#9654; Continue where you left off &rarr;</a>
+</div>
+
+<div class="revision-banner" id="revision-banner" style="display:none">
+  <a href="mcq.html#revision">&#128204; You have wrong answers saved &mdash; click to revise weak topics &rarr;</a>
+</div>
+
+<div class="modules-grid">
+        <a class="module-card" href="theory.html" data-module="theory.html">
+          <div class="module-icon">📘</div>
+          <div class="module-info">
+            <h3>Theory</h3>
+            <p>Concept explanations with real-life examples</p>
+            <span class="study-time">&#9203; 15 min</span>
+          </div>
+          <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" id="fill-theory.html"></div></div>
+            <span class="prog-pct" id="pct-theory.html">0%</span>
+          </div>
+        </a>
+        <a class="module-card" href="notes.html" data-module="notes.html">
+          <div class="module-icon">📖</div>
+          <div class="module-info">
+            <h3>Notes</h3>
+            <p>Flipbook-style chapter notes</p>
+            <span class="study-time">&#9203; 18 min</span>
+          </div>
+          <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" id="fill-notes.html"></div></div>
+            <span class="prog-pct" id="pct-notes.html">0%</span>
+          </div>
+        </a>
+        <a class="module-card" href="mcq.html" data-module="mcq.html">
+          <div class="module-icon">✅</div>
+          <div class="module-info">
+            <h3>MCQs</h3>
+            <p>Practice multiple choice questions</p>
+            <span class="study-time">&#9203; 10 min</span>
+          </div>
+          <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" id="fill-mcq.html"></div></div>
+            <span class="prog-pct" id="pct-mcq.html">0%</span>
+          </div>
+        </a>
+        <a class="module-card" href="adaptive_test.html" data-module="adaptive_test.html">
+          <div class="module-icon">🎯</div>
+          <div class="module-info">
+            <h3>Adaptive Test</h3>
+            <p>Smart quiz that adapts to you</p>
+            <span class="study-time">&#9203; 12 min</span>
+          </div>
+          <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" id="fill-adaptive_test.html"></div></div>
+            <span class="prog-pct" id="pct-adaptive_test.html">0%</span>
+          </div>
+        </a>
+        <a class="module-card" href="ncert_questions.html" data-module="ncert_questions.html">
+          <div class="module-icon">📚</div>
+          <div class="module-info">
+            <h3>NCERT Q&A</h3>
+            <p>Textbook questions with solutions</p>
+            <span class="study-time">&#9203; 8 min</span>
+          </div>
+          <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" id="fill-ncert_questions.html"></div></div>
+            <span class="prog-pct" id="pct-ncert_questions.html">0%</span>
+          </div>
+        </a>
+        <a class="module-card" href="game.html" data-module="game.html">
+          <div class="module-icon">🎮</div>
+          <div class="module-info">
+            <h3>Concept Game</h3>
+            <p>Learn while you play</p>
+            <span class="study-time">&#9203; 8 min</span>
+          </div>
+          <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" id="fill-game.html"></div></div>
+            <span class="prog-pct" id="pct-game.html">0%</span>
+          </div>
+        </a>
+</div>
+
+<!-- Exam Modal -->
+<div class="modal-overlay" id="exam-modal">
+  <div class="modal-box">
+    <h2>&#9889; 20-Minute Exam Revision</h2>
+    <p style="color:var(--muted)">Quick revision points for <strong>exploring substance acidic, basic and neutral</strong>:</p>
+    <ul id="exam-points">
+      <li>Loading key points...</li>
+    </ul>
+    <button class="modal-close" onclick="closeExam()">Got it, let's go!</button>
+  </div>
+</div>
+
+<script>
+const SLUG = 'exploring_substance_';
+const MODULE_FILES = ["theory.html", "notes.html", "mcq.html", "adaptive_test.html", "ncert_questions.html", "game.html"];
+const MODULE_NAMES = {"theory.html": "Theory", "notes.html": "Notes", "mcq.html": "MCQs", "adaptive_test.html": "Adaptive Test", "ncert_questions.html": "NCERT Q&A", "game.html": "Concept Game"};
+
+// Quick revision points from key terms
+const KEY_TERMS = ["Group", "Table", "Chapter", "Activity", "What", "Take", "They", "Substances"];
+const CHAPTER_TITLE = "exploring substance acidic, basic and neutral";
+
+function loadProgress() {
+  let total = 0, count = 0;
+  MODULE_FILES.forEach(f => {
+    const v = parseInt(localStorage.getItem('ngmc_prog_' + f) || '0');
+    const fill = document.getElementById('fill-' + f);
+    const pct = document.getElementById('pct-' + f);
+    if (fill) { fill.style.width = v + '%'; }
+    if (pct) { pct.textContent = v + '%'; }
+    total += v; count++;
+  });
+  const avg = count ? Math.round(total / count) : 0;
+  document.getElementById('overall-pct').textContent = avg + '%';
+
+  // What's next
+  const nextModule = MODULE_FILES.find(f => parseInt(localStorage.getItem('ngmc_prog_' + f) || '0') < 10);
+  if (nextModule) {
+    const el = document.getElementById('next-cta');
+    const link = document.getElementById('next-link');
+    el.style.display = 'block';
+    link.href = nextModule;
+    link.textContent = '▶ Start with ' + MODULE_NAMES[nextModule] + ' →';
+  }
+
+  // Revision banner
+  const wrong = JSON.parse(localStorage.getItem('ngmc_wrong_' + SLUG) || '[]');
+  if (wrong.length > 0) {
+    document.getElementById('revision-banner').style.display = 'block';
+  }
+
+  // Achievements
+  try {
+    const ach = JSON.parse(localStorage.getItem('ngmc_achievements') || '[]');
+    if (ach.length > 0) {
+      document.getElementById('badges-section').style.display = 'block';
+      const row = document.getElementById('badge-row');
+      row.innerHTML = '';
+      ach.forEach(a => {
+        const div = document.createElement('div');
+        div.className = 'badge';
+        div.innerHTML = (a.badge || '🏅') + ' ' + (a.name || a);
+        row.appendChild(div);
+      });
+    }
+  } catch(e) {}
+}
+
+function openExam() {
+  const pts = document.getElementById('exam-points');
+  const points = KEY_TERMS.length > 0
+    ? KEY_TERMS.slice(0,6).map(t => '<li>Revise: <strong>' + t + '</strong> and related concepts</li>').join('')
+    : '<li>Review all sections in the Notes flipbook</li><li>Attempt MCQs for each topic</li><li>Check NCERT Q&A for important questions</li>';
+  pts.innerHTML = points;
+  document.getElementById('exam-modal').classList.add('open');
+}
+
+function closeExam() { document.getElementById('exam-modal').classList.remove('open'); }
+document.getElementById('exam-modal').addEventListener('click', e => {
+  if (e.target.id === 'exam-modal') closeExam();
+});
+
+function toggleTeacher() {
+  const p = document.getElementById('teacher-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+loadProgress();
+</script>
+</body>
+</html>
