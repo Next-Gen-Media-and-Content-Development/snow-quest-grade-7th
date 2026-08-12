@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Snow Quest – Class 7 NCERT</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sidebar-w: 280px;
+    --bg-dark: #06111e;
+    --bg-sidebar: #08121f;
+    --bg-card: #0e1e30;
+    --bg-card-hover: #111f2e;
+    --accent-cyan: #00d4ff;
+    --accent-cyan-dim: #00d4ff22;
+    --border-dim: #1a2d42;
+    --text-primary: #e8f4ff;
+    --text-muted: #4a7a9b;
+    --text-dim: #2a4a6a;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg-dark);
+    display: flex;
+    height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-dim);
+    height: 100vh;
+    z-index: 10;
+    position: relative;
+  }
+
+  .sidebar-top {
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid var(--border-dim);
+    flex-shrink: 0;
+  }
+
+  .expedition-btn {
+    background: transparent;
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+  }
+  .expedition-btn:hover { background: #00d4ff15; }
+  .expedition-btn::before { content: '+'; font-size: 13px; }
+
+  .logo { font-family: 'Orbitron', monospace; font-size: 19px; font-weight: 900; color: var(--accent-cyan); letter-spacing: 3px; }
+  .logo-sub { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; margin-top: 2px; text-transform: uppercase; }
+
+  /* ── SUBJECTS ── */
+  .subjects-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .subjects-scroll::-webkit-scrollbar { width: 3px; }
+  .subjects-scroll::-webkit-scrollbar-track { background: transparent; }
+  .subjects-scroll::-webkit-scrollbar-thumb { background: var(--border-dim); border-radius: 2px; }
+
+  .subject-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-dim);
+    border-radius: 14px;
+    padding: 12px 13px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    flex-shrink: 0;
+  }
+  .subject-card:hover { background: var(--bg-card-hover); border-color: #2a4a6a; }
+  .subject-card.active {
+    border-color: var(--accent-cyan);
+    background: #0a1e30;
+    box-shadow: 0 0 0 2px #00d4ff22, inset 0 0 20px #00d4ff08;
+  }
+
+  .subj-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .subj-info { flex: 1; min-width: 0; }
+  .subj-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px; font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .subj-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; text-transform: uppercase; }
+  .subj-badge {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN AREA ── */
+  .main {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Snow scene background */
+  .scene {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      #0a2a3d 0%,
+      #0d3352 15%,
+      #0e3a5e 30%,
+      #122d52 50%,
+      #101d38 65%,
+      #0a1220 80%,
+      #060e18 90%
+    );
+    overflow: hidden;
+  }
+
+  /* Snow hills */
+  .snow-hill {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  .snow-hill svg { display: block; width: 100%; }
+
+  /* Moon */
+  .moon {
+    position: absolute;
+    top: 6%; right: 10%;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #b8f0ff, #5dd4f5 40%, #1aacdd);
+    box-shadow: 0 0 30px #5dd4f566, 0 0 60px #5dd4f533;
+  }
+
+  /* Stars */
+  .stars-layer { position: absolute; inset: 0; pointer-events: none; }
+
+  /* Wave layers */
+  .wave { position: absolute; width: 120%; left: -10%; }
+
+  /* Chapter panel overlay */
+  .chapter-overlay {
+    position: absolute; inset: 0;
+    background: rgba(6, 17, 30, 0.92);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 5;
+  }
+  .chapter-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .chapter-header {
+    padding: 20px 28px 14px;
+    border-bottom: 1px solid #1a2d42;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .chapter-header-left { display: flex; align-items: center; gap: 14px; }
+  .chapter-subject-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .chapter-subject-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 18px; font-weight: 900;
+    color: var(--text-primary);
+  }
+  .chapter-subject-sub { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; margin-top: 2px; text-transform: uppercase; }
+  .chapter-count-badge {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    background: #00d4ff10;
+  }
+
+  .close-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    color: var(--text-muted);
+    font-size: 20px;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .close-btn:hover { border-color: #ff4a4a; color: #ff4a4a; }
+
+  .chapter-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px 28px 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    align-content: start;
+  }
+  .chapter-grid::-webkit-scrollbar { width: 4px; }
+  .chapter-grid::-webkit-scrollbar-track { background: transparent; }
+  .chapter-grid::-webkit-scrollbar-thumb { background: var(--border-dim); border-radius: 2px; }
+
+  .chapter-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    border-radius: 11px;
+    padding: 13px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .chapter-item:hover {
+    background: var(--bg-card-hover);
+    border-color: #2a4a6a;
+    transform: translateY(-1px);
+  }
+  .chapter-item:active { transform: translateY(0); }
+
+  .ch-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px; font-weight: 700;
+    color: var(--text-muted);
+    min-width: 30px;
+    flex-shrink: 0;
+  }
+  .ch-title {
+    font-size: 13px; font-weight: 500;
+    color: #b8d0e8;
+    flex: 1;
+    line-height: 1.3;
+  }
+  .ch-arrow { font-size: 16px; color: var(--text-dim); flex-shrink: 0; transition: color 0.15s; }
+  .chapter-item:hover .ch-arrow { color: var(--accent-cyan); }
+
+  .chapter-item--live { border-color: #2dcea0; box-shadow: 0 0 0 1px rgba(45,206,160,0.25) inset; }
+  .chapter-item--live .ch-arrow { color: #2dcea0; }
+  .chapter-item--live:hover { border-color: #2dcea0; background: rgba(45,206,160,0.08); }
+
+  /* Welcome screen (no subject selected) */
+  .welcome-screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 2; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .welcome-screen.hidden { opacity: 0; }
+
+  .welcome-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 36px; font-weight: 900;
+    color: var(--accent-cyan);
+    letter-spacing: 6px;
+    text-shadow: 0 0 40px #00d4ff55;
+    margin-bottom: 8px;
+  }
+  .welcome-sub {
+    font-size: 14px; color: var(--text-muted);
+    letter-spacing: 3px; text-transform: uppercase;
+  }
+  .welcome-hint {
+    margin-top: 32px;
+    font-size: 12px; color: var(--text-dim);
+    letter-spacing: 2px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* Wind-swept snow animation */
+  @keyframes snowfall {
+    0%   { transform: translate(0, -10px) rotate(0deg);   opacity: 0; }
+    8%   { opacity: 1; }
+    85%  { opacity: 0.7; }
+    100% { transform: translate(120px, 100vh) rotate(360deg); opacity: 0; }
+  }
+  @keyframes snowfall-fast {
+    0%   { transform: translate(0, -10px);   opacity: 0; }
+    8%   { opacity: 0.9; }
+    100% { transform: translate(180px, 100vh); opacity: 0; }
+  }
+  .snowflake {
+    position: absolute;
+    top: -5px;
+    background: white;
+    border-radius: 50%;
+    animation: snowfall linear infinite;
+    pointer-events: none;
+  }
+  .snowflake.fast {
+    animation-name: snowfall-fast;
+    border-radius: 40%;
+  }
+
+  /* Wind streak lines */
+  @keyframes windstreak {
+    0%   { transform: translateX(-100%); opacity: 0; }
+    15%  { opacity: 0.18; }
+    85%  { opacity: 0.12; }
+    100% { transform: translateX(120vw);  opacity: 0; }
+  }
+  .wind-streak {
+    position: absolute;
+    left: -10%;
+    height: 1px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, transparent, #a8d8f0, #c8ecff, transparent);
+    animation: windstreak linear infinite;
+    pointer-events: none;
+  }
+
+  /* ── VILLAGE LAYER ── */
+  .village-layer {
+    position: absolute;
+    bottom: 80px;
+    left: 0; right: 0;
+    height: 260px;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  /* Houses */
+  .house {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .house-roof {
+    width: 0; height: 0;
+    border-left: solid transparent;
+    border-right: solid transparent;
+    border-bottom: solid #0d2140;
+    position: relative;
+  }
+  .house-roof::after {
+    content: '';
+    position: absolute;
+    top: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: solid transparent;
+    border-right: solid transparent;
+    border-bottom: 10px solid #d8eef8;
+  }
+  .house-body {
+    background: #0d2140;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .house-window {
+    background: #f5c842;
+    border-radius: 2px;
+    box-shadow: 0 0 8px #f5c84288;
+  }
+  .house-antenna {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    background: #1a3a5c;
+  }
+  .house-antenna::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 6px var(--accent-cyan);
+  }
+
+  /* Pine trees */
+  .tree {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .tree-tier {
+    width: 0; height: 0;
+    border-left: solid transparent;
+    border-right: solid transparent;
+    border-bottom: solid #1a5c30;
+    margin-top: -4px;
+    position: relative;
+  }
+  .tree-tier::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 50%;
+    transform: translateX(-50%);
+    width: 60%; height: 3px;
+    background: #d8eef888;
+    border-radius: 1px;
+  }
+  .tree-trunk {
+    width: 5px;
+    background: #3a2010;
+    border-radius: 1px;
+  }
+
+  /* Penguin */
+  .penguin {
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    pointer-events: all;
+  }
+  .penguin svg { display: block; }
+
+  /* Waddle walk */
+  @keyframes waddle-right {
+    0%   { transform: translateX(0)   rotate(0deg);   }
+    20%  { transform: translateX(12%) rotate(6deg);  }
+    40%  { transform: translateX(24%) rotate(-4deg); }
+    60%  { transform: translateX(36%) rotate(5deg);  }
+    80%  { transform: translateX(48%) rotate(-3deg); }
+    100% { transform: translateX(60%) rotate(0deg);  }
+  }
+  @keyframes waddle-left {
+    0%   { transform: translateX(0)    rotate(0deg)  scaleX(-1); }
+    20%  { transform: translateX(-12%) rotate(-6deg) scaleX(-1); }
+    40%  { transform: translateX(-24%) rotate(4deg)  scaleX(-1); }
+    60%  { transform: translateX(-36%) rotate(-5deg) scaleX(-1); }
+    80%  { transform: translateX(-48%) rotate(3deg)  scaleX(-1); }
+    100% { transform: translateX(-60%) rotate(0deg)  scaleX(-1); }
+  }
+  @keyframes bob {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-3px); }
+  }
+  .penguin-inner { transform-origin: bottom center; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <button class="expedition-btn">EXPEDITION HQ</button>
+    <div class="logo">SNOW QUEST</div>
+    <div class="logo-sub">Class 7 &nbsp;·&nbsp; NCERT 2024 &nbsp;·&nbsp; Omni-Grid</div>
+  </div>
+  <div class="subjects-scroll" id="subjectList"></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- Snow scene -->
+  <div class="scene" id="scene">
+    <div class="moon"></div>
+    <div class="stars-layer" id="stars"></div>
+
+    <!-- Wave layers -->
+    <svg class="wave" style="bottom:38%;height:120px;opacity:0.35;" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C360,110 1080,10 1440,60 L1440,120 L0,120 Z" fill="#0a4a7a"/>
+    </svg>
+    <svg class="wave" style="bottom:26%;height:130px;opacity:0.5;" viewBox="0 0 1440 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,70 C400,20 1000,100 1440,50 L1440,130 L0,130 Z" fill="#0a2a50"/>
+    </svg>
+    <svg class="wave" style="bottom:15%;height:130px;opacity:0.6;" viewBox="0 0 1440 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 C300,30 1100,120 1440,60 L1440,130 L0,130 Z" fill="#071830"/>
+    </svg>
+
+    <!-- Village layer: houses, trees, penguins -->
+    <div class="village-layer" id="village"></div>
+
+    <!-- Snow ground -->
+    <svg style="position:absolute;bottom:0;width:100%;height:120px;" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C200,20 400,80 600,40 C800,0 1000,70 1200,35 C1350,10 1420,55 1440,45 L1440,120 L0,120 Z" fill="#c8e8f8"/>
+    </svg>
+    <svg style="position:absolute;bottom:0;width:100%;height:50px;" viewBox="0 0 1440 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C200,10 400,40 600,20 C800,0 1000,35 1200,18 C1350,5 1420,28 1440,20 L1440,50 L0,50 Z" fill="#e8f4ff"/>
+    </svg>
+  </div>
+
+  <!-- Welcome -->
+  <div class="welcome-screen" id="welcome">
+    <div class="welcome-title">SNOW QUEST</div>
+    <div class="welcome-sub">Class 7 · NCERT 2024</div>
+    <div class="welcome-hint">← Select a subject to begin</div>
+  </div>
+
+  <!-- Chapter overlay -->
+  <div class="chapter-overlay" id="chapterOverlay">
+    <div class="chapter-header">
+      <div class="chapter-header-left">
+        <div class="chapter-subject-icon" id="ovIcon"></div>
+        <div>
+          <div class="chapter-subject-name" id="ovName"></div>
+          <div class="chapter-subject-sub" id="ovSub"></div>
+        </div>
+        <div class="chapter-count-badge" id="ovCount"></div>
+      </div>
+      <button class="close-btn" id="closeBtn" title="Close">✕</button>
+    </div>
+    <div class="chapter-grid" id="chapterGrid"></div>
+  </div>
+</main>
+
+<script>
+const subjects = [
+  {
+    id: 'science', name: 'Science', sub: 'CURIOSITY', icon: '⚛️',
+    iconBg: '#162035', badgeBg: '#0e2a45', badgeColor: '#5bc8f5', count: 12,
+    links: { 2: 'science/chapter-02/index.html' },
+    chapters: [
+      'The Ever-Evolving World of Science',
+      'Exploring Substances: Acidic, Basic and Neutral',
+      'Electricity: Circuits and their Components',
+      'The World of Metals and Non-metals',
+      'Changes Around Us: Physical and Chemical',
+      'Adolescence: A Stage of Growth and Change',
+      'Heat Transfer in Nature',
+      'Measurement of Time and Motion',
+      'Life Processes in Animals',
+      'Life Processes in Plants',
+      'Light: Shadows and Reflections',
+      'Earth, Moon and the Sun'
+    ]
+  },
+  {
+    id: 'math', name: 'Mathematics', sub: 'GANITA PRAKASH', icon: '√',
+    iconBg: '#1e1e10', badgeBg: '#2e2810', badgeColor: '#f5c842', count: 15,
+    isText: true, iconColor: '#f5c842',
+    chapters: [
+      'Large Numbers Around Us','Arithmetic Expressions','A Peek Beyond the Point',
+      'Expressions using Letter-Numbers','Parallel and Intersecting Lines',
+      'Number Play','A Tale of Three Intersecting Lines','Working with Fractions',
+      'Geometric Twins','Operations with Integers','Finding Common Ground',
+      'Another Peek Beyond the Point','Connecting the Dots…',
+      'Constructions and Tilings','Finding the Unknown'
+    ]
+  },
+  {
+    id: 'english', name: 'English', sub: 'POORVI', icon: '✏️',
+    iconBg: '#2a1520', badgeBg: '#3a1530', badgeColor: '#f585b0', count: 15,
+    chapters: [
+      'The Day the River Spoke','Try Again','Three Days to See',
+      'Animals, Birds, and Dr. Dolittle','A Funny Man','Say the Right Thing',
+      "My Brother's Great Invention",'Paper Boats','North, South, East, West',
+      'The Tunnel','Travel','Conquering the Summit',
+      'A Homage to Our Brave Soldiers','My Dear Soldiers','Rani Abbakka'
+    ]
+  },
+  {
+    id: 'hindi', name: 'Hindi', sub: 'मल्हार', icon: '📕',
+    iconBg: '#1e1200', badgeBg: '#2a1c00', badgeColor: '#f5a030', count: 10,
+    chapters: [
+      'माँ, कह एक कहानी','तीन बुद्धिमान','फूल और काँटे',
+      'पानी रे पानी','नहीं होना बीमार','गिरीधर कविराय की कुंडलिया',
+      'वर्षा-बहार','बीरबल महाराज से साक्षात्कार','चिड़िया','मीराँ के पद'
+    ]
+  },
+  {
+    id: 'sst', name: 'Social Science', sub: 'EXPLORING SOCIETY: INDIA & BEYOND', icon: '🌍',
+    iconBg: '#0d1f1a', badgeBg: '#0d2820', badgeColor: '#2dcea0', count: 12,
+    chapters: [
+      'Geographical Diversity of India','Understanding the Weather','Climates of India',
+      'New Beginnings: Cities and States','The Rise of Empires','The Age of Reorganisation',
+      'The Gupta Era: An Age of Tireless Creativity','How the Land Becomes Sacred',
+      'From the Rulers to the Ruled: Types of Governments',
+      'The Constitution of India – An Introduction',
+      'From Barter to Money','Understanding Markets'
+    ]
+  },
+  {
+    id: 'sanskrit', name: 'Sanskrit', sub: 'दीपकम्', icon: '▶',
+    iconBg: '#1a1030', badgeBg: '#251545', badgeColor: '#c0a0f5', count: 12,
+    chapters: [
+      'वन्दे भारतमातरम्','नित्यं पिबामः सुभाषितरसम्','मित्राय नमः',
+      'न लभ्यते चेत् आम्लं द्राक्षाफलम्','सेवा हि परमो धर्मः',
+      'क्रीडामः वयं श्लोकान्त्याक्षरीम्','ईशावास्यम् इदं सर्वम्',
+      'हितं मनोहारि च दुर्लभं वचः','अन्नाद् भवन्ति भूतानि','दशमः कः?',
+      "द्वीपेषु रम्यः द्वीपोऽण्डमानः",'वीराङ्गना पन्नाधाया'
+    ]
+  }
+];
+
+let activeId = null;
+
+// Build subject list
+const subjectList = document.getElementById('subjectList');
+subjects.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'subject-card';
+  card.id = 'card-' + s.id;
+
+  const iconStyle = s.isText
+    ? `background:${s.iconBg}; color:${s.iconColor}; font-family:monospace; font-size:22px; font-weight:700;`
+    : `background:${s.iconBg}; font-size:20px;`;
+
+  card.innerHTML = `
+    <div class="subj-icon" style="${iconStyle}">${s.icon}</div>
+    <div class="subj-info">
+      <div class="subj-name">${s.name}</div>
+      <div class="subj-sub">${s.sub}</div>
+    </div>
+    <div class="subj-badge" style="background:${s.badgeBg}; color:${s.badgeColor};">${s.count}</div>
+  `;
+
+  card.addEventListener('click', () => openSubject(s));
+  subjectList.appendChild(card);
+});
+
+// Stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const star = document.createElement('div');
+  const size = Math.random() < 0.15 ? 3 : Math.random() < 0.4 ? 2 : 1;
+  const opacity = 0.3 + Math.random() * 0.7;
+  star.style.cssText = `
+    position:absolute;
+    left:${Math.random()*100}%;
+    top:${Math.random()*75}%;
+    width:${size}px; height:${size}px;
+    background:white; border-radius:50%;
+    opacity:${opacity};
+  `;
+  starsEl.appendChild(star);
+}
+
+// Wind-swept snowflakes
+const scene = document.getElementById('scene');
+for (let i = 0; i < 80; i++) {
+  const flake = document.createElement('div');
+  const isFast = Math.random() < 0.25;
+  flake.className = 'snowflake' + (isFast ? ' fast' : '');
+  const size = isFast ? (1 + Math.random() * 1.5) : (1.5 + Math.random() * 3.5);
+  flake.style.cssText = `
+    left:${Math.random()*100}%;
+    width:${size}px; height:${isFast ? size*0.5 : size}px;
+    opacity:${0.3 + Math.random()*0.65};
+    animation-duration:${isFast ? (2+Math.random()*3) : (6+Math.random()*9)}s;
+    animation-delay:${-Math.random()*18}s;
+  `;
+  scene.appendChild(flake);
+}
+
+// Wind streak lines
+for (let i = 0; i < 18; i++) {
+  const streak = document.createElement('div');
+  streak.className = 'wind-streak';
+  const w = 60 + Math.random() * 180;
+  const top = 5 + Math.random() * 85;
+  const dur = 3 + Math.random() * 5;
+  streak.style.cssText = `
+    top:${top}%;
+    width:${w}px;
+    animation-duration:${dur}s;
+    animation-delay:${-Math.random()*dur}s;
+    opacity:0;
+  `;
+  scene.appendChild(streak);
+}
+
+// ── VILLAGE BUILDER ──
+
+// Creates a fully-rigged penguin as an SVG with named animatable parts
+function makePenguinEl(size, hasHat, glowColor) {
+  const gc = glowColor || '#f5c842';
+  const W = size * 0.78, H = size;
+
+  // Key proportional anchors
+  const cx   = W * 0.5;
+  const bodyY = H * 0.58, bodyRX = W * 0.38, bodyRY = H * 0.32;
+  const headY = H * 0.26, headR  = W * 0.30;
+  const legTopY = H * 0.86;
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns,'svg');
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('overflow','visible');
+  svg.style.overflow = 'visible';
+
+  function el(tag, attrs) {
+    const e = document.createElementNS(ns, tag);
+    for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+    return e;
+  }
+  function g(attrs={}) { return el('g', attrs); }
+
+  // ── HAT ──
+  if (hasHat) {
+    const hatG = g();
+    // cone
+    hatG.appendChild(el('polygon',{
+      points:`${cx},${H*0.01} ${cx-W*0.22},${H*0.15} ${cx+W*0.22},${H*0.15}`,
+      fill:'#1a3a20'
+    }));
+    // brim
+    hatG.appendChild(el('rect',{
+      x:cx-W*0.25, y:H*0.14, width:W*0.5, height:H*0.03, rx:2, fill:gc, opacity:0.95
+    }));
+    // tip glow
+    const tipCirc = el('circle',{ cx, cy:H*0.01, r:H*0.032, fill:gc });
+    tipCirc.style.filter = `drop-shadow(0 0 6px ${gc})`;
+    hatG.appendChild(tipCirc);
+    // zigzag on hat
+    for(let i=0;i<3;i++){
+      hatG.appendChild(el('circle',{
+        cx: cx - W*0.06 + i*W*0.06,
+        cy: H*0.09 + (i%2)*H*0.02,
+        r: H*0.014,
+        fill: i===1 ? '#ff88aa' : '#ffffff',
+        opacity:0.7
+      }));
+    }
+    svg.appendChild(hatG);
+  }
+
+  // ── LEFT WING (behind body) ──
+  const lwPivotX = cx - bodyRX*0.72, lwPivotY = bodyY - bodyRY*0.1;
+  const lwG = g({ id:'lw' });
+  lwG.setAttribute('transform-origin', `${lwPivotX} ${lwPivotY}`);
+  lwG.appendChild(el('ellipse',{
+    cx: lwPivotX - W*0.08,
+    cy: lwPivotY + H*0.14,
+    rx: W*0.115, ry: H*0.22,
+    fill:'#0a0a1c',
+    transform:`rotate(-15,${lwPivotX},${lwPivotY})`
+  }));
+  svg.appendChild(lwG);
+
+  // ── BODY ──
+  const bodyG = g({ id:'body' });
+  // main body oval
+  bodyG.appendChild(el('ellipse',{
+    cx, cy:bodyY, rx:bodyRX, ry:bodyRY, fill:'#12122e'
+  }));
+  // belly white
+  bodyG.appendChild(el('ellipse',{
+    cx, cy:bodyY+H*0.03, rx:bodyRX*0.6, ry:bodyRY*0.72, fill:'#dce9ff'
+  }));
+  // belly shadow gradient simulation (darker at top of belly)
+  bodyG.appendChild(el('ellipse',{
+    cx, cy:bodyY-H*0.04, rx:bodyRX*0.55, ry:bodyRY*0.28,
+    fill:'#b8ccee', opacity:'0.45'
+  }));
+  svg.appendChild(bodyG);
+
+  // ── RIGHT WING (front) ──
+  const rwPivotX = cx + bodyRX*0.72, rwPivotY = bodyY - bodyRY*0.1;
+  const rwG = g({ id:'rw' });
+  rwG.setAttribute('transform-origin', `${rwPivotX} ${rwPivotY}`);
+  rwG.appendChild(el('ellipse',{
+    cx: rwPivotX + W*0.08,
+    cy: rwPivotY + H*0.14,
+    rx: W*0.115, ry: H*0.22,
+    fill:'#0f0f22',
+    transform:`rotate(15,${rwPivotX},${rwPivotY})`
+  }));
+  svg.appendChild(rwG);
+
+  // ── HEAD ──
+  const headG = g();
+  // head base
+  headG.appendChild(el('circle',{ cx, cy:headY, r:headR, fill:'#12122e' }));
+  // face white patch
+  headG.appendChild(el('ellipse',{
+    cx, cy:headY+H*0.02, rx:headR*0.68, ry:headR*0.56, fill:'#dce9ff'
+  }));
+  // cheek blush
+  headG.appendChild(el('ellipse',{
+    cx:cx-headR*0.42, cy:headY+H*0.04, rx:headR*0.22, ry:headR*0.14,
+    fill:'#ff9999', opacity:'0.28'
+  }));
+  headG.appendChild(el('ellipse',{
+    cx:cx+headR*0.42, cy:headY+H*0.04, rx:headR*0.22, ry:headR*0.14,
+    fill:'#ff9999', opacity:'0.28'
+  }));
+  // left eye
+  headG.appendChild(el('circle',{ cx:cx-headR*0.36, cy:headY-H*0.025, r:headR*0.18, fill:'white' }));
+  headG.appendChild(el('circle',{ cx:cx-headR*0.33, cy:headY-H*0.025, r:headR*0.11, fill:'#111' }));
+  headG.appendChild(el('circle',{ cx:cx-headR*0.37, cy:headY-H*0.042, r:headR*0.04, fill:'white' }));
+  // right eye
+  headG.appendChild(el('circle',{ cx:cx+headR*0.36, cy:headY-H*0.025, r:headR*0.18, fill:'white' }));
+  headG.appendChild(el('circle',{ cx:cx+headR*0.33, cy:headY-H*0.025, r:headR*0.11, fill:'#111' }));
+  headG.appendChild(el('circle',{ cx:cx+headR*0.37, cy:headY-H*0.042, r:headR*0.04, fill:'white' }));
+  // beak
+  const beakG = g();
+  beakG.appendChild(el('ellipse',{
+    cx, cy:headY+H*0.055, rx:headR*0.28, ry:headR*0.16, fill:'#f5a030'
+  }));
+  beakG.appendChild(el('line',{
+    x1:cx-headR*0.25, y1:headY+H*0.055,
+    x2:cx+headR*0.25, y2:headY+H*0.055,
+    stroke:'#c47010', 'stroke-width':'1.2', opacity:'0.6'
+  }));
+  headG.appendChild(beakG);
+  // cyan collar
+  headG.appendChild(el('path',{
+    d:`M${cx-bodyRX*0.5},${headY+headR*0.6} Q${cx-bodyRX*0.65},${headY+headR*0.85} ${cx-bodyRX*0.35},${headY+headR}`,
+    stroke:'#00ccee','stroke-width':'2.5',fill:'none',opacity:'0.6','stroke-linecap':'round'
+  }));
+  headG.appendChild(el('path',{
+    d:`M${cx+bodyRX*0.5},${headY+headR*0.6} Q${cx+bodyRX*0.65},${headY+headR*0.85} ${cx+bodyRX*0.35},${headY+headR}`,
+    stroke:'#00ccee','stroke-width':'2.5',fill:'none',opacity:'0.6','stroke-linecap':'round'
+  }));
+  svg.appendChild(headG);
+
+  // ── LEFT LEG+FOOT ──
+  const lLegG = g({ id:'ll' });
+  lLegG.setAttribute('transform-origin', `${cx - W*0.16} ${legTopY}`);
+  // upper leg
+  lLegG.appendChild(el('rect',{
+    x: cx-W*0.22, y: legTopY,
+    width: W*0.13, height: H*0.1,
+    rx:3, fill:'#e09020'
+  }));
+  // foot
+  lLegG.appendChild(el('ellipse',{
+    cx: cx-W*0.155, cy: legTopY+H*0.1,
+    rx: W*0.165, ry: H*0.04,
+    fill:'#f5a830'
+  }));
+  // toe lines
+  for(let t=-1;t<=1;t++){
+    lLegG.appendChild(el('line',{
+      x1:cx-W*0.155, y1:legTopY+H*0.1,
+      x2:cx-W*0.155+t*W*0.1, y2:legTopY+H*0.135,
+      stroke:'#c47010','stroke-width':'1.5','stroke-linecap':'round'
+    }));
+  }
+  svg.appendChild(lLegG);
+
+  // ── RIGHT LEG+FOOT ──
+  const rLegG = g({ id:'rl' });
+  rLegG.setAttribute('transform-origin', `${cx + W*0.16} ${legTopY}`);
+  rLegG.appendChild(el('rect',{
+    x: cx+W*0.09, y: legTopY,
+    width: W*0.13, height: H*0.1,
+    rx:3, fill:'#e09020'
+  }));
+  rLegG.appendChild(el('ellipse',{
+    cx: cx+W*0.155, cy: legTopY+H*0.1,
+    rx: W*0.165, ry: H*0.04,
+    fill:'#f5a830'
+  }));
+  for(let t=-1;t<=1;t++){
+    rLegG.appendChild(el('line',{
+      x1:cx+W*0.155, y1:legTopY+H*0.1,
+      x2:cx+W*0.155+t*W*0.1, y2:legTopY+H*0.135,
+      stroke:'#c47010','stroke-width':'1.5','stroke-linecap':'round'
+    }));
+  }
+  svg.appendChild(rLegG);
+
+  return { svg, lLeg: lLegG, rLeg: rLegG, lWing: lwG, rWing: rwG,
+           legTopY, cx, W, H };
+}
+
+function makePenguinSVG(size, hasHat, glowColor) {
+  return makePenguinEl(size, hasHat, glowColor).svg.outerHTML;
+}
+
+function makeHouse(w, h, windowW, windowH, antennaH) {
+  const el = document.createElement('div');
+  el.className = 'house';
+  const roofH = h * 0.44;
+  const bodyH = h * 0.62;
+  el.innerHTML = `
+    <div style="position:relative;width:${w}px;">
+      <div style="position:absolute;top:${-antennaH}px;left:50%;transform:translateX(-50%);width:3px;height:${antennaH}px;background:#1a3a5c;">
+        <div style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#00d4ff;box-shadow:0 0 8px #00d4ff,0 0 16px #00d4ff88;"></div>
+      </div>
+      <div style="width:${w}px;height:${roofH}px;background:#0d2140;clip-path:polygon(50% 0%,100% 100%,0% 100%);position:relative;">
+        <div style="position:absolute;bottom:0;left:0;right:0;height:10px;background:#d8eef8;border-radius:2px 2px 0 0;"></div>
+      </div>
+      <div style="width:${w}px;height:${bodyH}px;background:#0d2140;display:flex;align-items:center;justify-content:center;border-radius:0 0 4px 4px;">
+        <div style="width:${windowW}px;height:${windowH}px;background:#f5c842;border-radius:2px;box-shadow:0 0 12px #f5c84299;"></div>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+function makeTree(size) {
+  const el = document.createElement('div');
+  el.className = 'tree';
+  const s = size;
+  el.innerHTML = `
+    <div class="tree-tier" style="border-left-width:${s*0.75}px;border-right-width:${s*0.75}px;border-bottom-width:${s*0.85}px;"></div>
+    <div class="tree-tier" style="border-left-width:${s}px;border-right-width:${s}px;border-bottom-width:${s*1.1}px;margin-top:-${s*0.32}px;"></div>
+    <div class="tree-tier" style="border-left-width:${s*1.25}px;border-right-width:${s*1.25}px;border-bottom-width:${s*1.3}px;margin-top:-${s*0.38}px;"></div>
+    <div class="tree-trunk" style="height:${s*0.45}px;width:6px;"></div>
+  `;
+  return el;
+}
+
+function buildVillage() {
+  const village = document.getElementById('village');
+  village.innerHTML = '';
+  const W = village.offsetWidth || window.innerWidth - 280;
+
+  const layout = [
+    { type:'tree',    x: W*0.01, size:32 },
+    { type:'house',   x: W*0.05, w:90,  h:115, ww:32, wh:24, ant:44 },
+    { type:'tree',    x: W*0.14, size:28 },
+    { type:'penguin', x: W*0.19, size:90, hat:false, dir:'right' },
+    { type:'tree',    x: W*0.26, size:36 },
+    { type:'tree',    x: W*0.31, size:26 },
+    { type:'house',   x: W*0.35, w:76,  h:96,  ww:28, wh:20, ant:36 },
+    { type:'penguin', x: W*0.44, size:100, hat:true,  glow:'#f5c842', dir:'left' },
+    { type:'tree',    x: W*0.52, size:30 },
+    { type:'penguin', x: W*0.57, size:82, hat:false, dir:'right' },
+    { type:'tree',    x: W*0.63, size:38 },
+    { type:'house',   x: W*0.67, w:96,  h:120, ww:34, wh:26, ant:48 },
+    { type:'tree',    x: W*0.76, size:28 },
+    { type:'tree',    x: W*0.80, size:34 },
+    { type:'penguin', x: W*0.84, size:92, hat:true,  glow:'#2dcea0', dir:'left' },
+    { type:'house',   x: W*0.89, w:82,  h:105, ww:30, wh:22, ant:40 },
+    { type:'tree',    x: W*0.97, size:26 },
+  ];
+
+  layout.forEach(item => {
+    let domEl;
+    if (item.type === 'tree') {
+      domEl = makeTree(item.size);
+      domEl.style.left = item.x + 'px';
+      village.appendChild(domEl);
+    } else if (item.type === 'house') {
+      domEl = makeHouse(item.w, item.h, item.ww, item.wh, item.ant);
+      domEl.style.left = item.x + 'px';
+      village.appendChild(domEl);
+    } else if (item.type === 'penguin') {
+      const wrap = document.createElement('div');
+      wrap.className = 'penguin';
+      wrap.style.left = item.x + 'px';
+
+      const rig = makePenguinEl(item.size, item.hat, item.glow);
+      wrap.appendChild(rig.svg);
+      village.appendChild(wrap);
+      animatePenguin(wrap, rig, item.x, W, item.dir);
+    }
+  });
+}
+
+function animatePenguin(wrap, rig, startX, maxW, initDir) {
+  let x = startX;
+  let dir = initDir === 'left' ? -1 : 1;
+  const speed = 0.65 + Math.random() * 0.55;
+  let phase = Math.random() * Math.PI * 2; // walk cycle phase
+  let paused = false;
+  let pauseTimer = 0;
+  let frame = 0;
+
+  // Walk cycle: drives leg swing, body bob, wing counter-swing
+  // Phase advances each frame; full cycle = 2*PI
+  const STEP = 0.07; // radians per frame — controls walk speed cadence
+
+  function tick() {
+    frame++;
+
+    if (paused) {
+      pauseTimer--;
+      if (pauseTimer <= 0) { paused = false; }
+      // idle: gentle sway
+      const sway = Math.sin(frame * 0.04) * 2;
+      rig.svg.style.transform = `scaleX(${dir}) rotate(${sway}deg)`;
+      rig.svg.style.transformOrigin = 'center bottom';
+      requestAnimationFrame(tick);
+      return;
+    }
+
+    // Advance walk phase
+    phase += STEP;
+
+    // Body position: horizontal movement + vertical bob (2x per step cycle)
+    x += dir * speed;
+    const bob = Math.abs(Math.sin(phase)) * -3.5; // dips twice per full stride
+
+    // Body side-tilt: gentle rock left-right
+    const bodyTilt = Math.sin(phase) * 4.5;
+
+    // Leg swings: opposite phase (alternating)
+    const lLegAngle = Math.sin(phase) * 28;       // left leg
+    const rLegAngle = Math.sin(phase + Math.PI) * 28; // right leg (offset by π)
+
+    // Foot contact squish: when leg is forward (near 0 cross), foot slightly splays
+    const lFootScale = 1 + Math.max(0, Math.cos(phase)) * 0.15;
+    const rFootScale = 1 + Math.max(0, Math.cos(phase + Math.PI)) * 0.15;
+
+    // Wing counter-swing (opposite to same-side leg, smaller amplitude)
+    const lwAngle = Math.sin(phase) * -14;
+    const rwAngle = Math.sin(phase + Math.PI) * -14;
+
+    // Boundaries
+    if (x < 10)        { x = 10;        dir = 1;  phase = 0; }
+    if (x > maxW - 80) { x = maxW - 80; dir = -1; phase = 0; }
+
+    // Random pause
+    if (Math.random() < 0.0025) {
+      paused = true;
+      pauseTimer = 60 + Math.floor(Math.random() * 100);
+    }
+
+    // Apply transforms — flip the whole SVG for direction, then animate parts
+    // scaleX flip for direction
+    rig.svg.style.transformOrigin = 'center bottom';
+    rig.svg.style.transform = `scaleX(${dir}) translateY(${bob}px) rotate(${bodyTilt}deg)`;
+
+    // Legs — rotate around their pivot at top of leg
+    const llt = `${rig.cx - rig.W*0.16} ${rig.legTopY}`;
+    const rlt = `${rig.cx + rig.W*0.16} ${rig.legTopY}`;
+    rig.lLeg.setAttribute('transform', `rotate(${lLegAngle}, ${llt}) scale(${lFootScale} 1)`);
+    rig.rLeg.setAttribute('transform', `rotate(${rLegAngle}, ${rlt}) scale(${rFootScale} 1)`);
+
+    // Wings
+    const lwp = `${rig.cx - rig.W*0.38*0.72} ${rig.H*0.58 - rig.H*0.32*0.1}`;
+    const rwp = `${rig.cx + rig.W*0.38*0.72} ${rig.H*0.58 - rig.H*0.32*0.1}`;
+    rig.lWing.setAttribute('transform', `rotate(${lwAngle}, ${lwp})`);
+    rig.rWing.setAttribute('transform', `rotate(${rwAngle}, ${rwp})`);
+
+    // Position the wrapper
+    wrap.style.left = x + 'px';
+
+    requestAnimationFrame(tick);
+  }
+
+  setTimeout(tick, Math.random() * 1200);
+}
+
+// Build village after layout
+setTimeout(buildVillage, 100);
+window.addEventListener('resize', buildVillage);
+
+// ── END VILLAGE ──
+
+// Open subject
+function openSubject(s) {
+  // Update active card
+  document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('card-' + s.id).classList.add('active');
+  activeId = s.id;
+
+  // Hide welcome
+  document.getElementById('welcome').classList.add('hidden');
+
+  // Fill chapter overlay
+  const iconStyle = s.isText
+    ? `background:${s.iconBg}; color:${s.iconColor}; font-family:monospace; font-size:22px; font-weight:700;`
+    : `background:${s.iconBg}; font-size:22px;`;
+
+  document.getElementById('ovIcon').style.cssText = iconStyle;
+  document.getElementById('ovIcon').textContent = s.icon;
+  document.getElementById('ovName').textContent = s.name;
+  document.getElementById('ovSub').textContent = s.sub;
+  document.getElementById('ovCount').textContent = s.chapters.length + ' Chapters';
+
+  const grid = document.getElementById('chapterGrid');
+  grid.innerHTML = '';
+  s.chapters.forEach((ch, i) => {
+    const item = document.createElement('div');
+    const href = s.links && s.links[i + 1];
+    item.className = 'chapter-item' + (href ? ' chapter-item--live' : '');
+    item.innerHTML = `
+      <span class="ch-num">CH${String(i+1).padStart(2,'0')}</span>
+      <span class="ch-title">${ch}</span>
+      <span class="ch-arrow">${href ? '▶' : '›'}</span>
+    `;
+    if (href) {
+      item.style.cursor = 'pointer';
+      item.title = `Open: ${s.name} – Chapter ${i+1}`;
+      item.addEventListener('click', () => window.open(href, '_blank'));
+    } else {
+      item.title = `Start quiz: ${s.name} – Chapter ${i+1}`;
+    }
+    grid.appendChild(item);
+  });
+
+  document.getElementById('chapterOverlay').classList.add('visible');
+}
+
+// Close overlay
+document.getElementById('closeBtn').addEventListener('click', () => {
+  document.getElementById('chapterOverlay').classList.remove('visible');
+  document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('welcome').classList.remove('hidden');
+  activeId = null;
+});
+</script>
+</body>
+</html>
