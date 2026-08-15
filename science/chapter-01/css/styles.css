@@ -1,0 +1,29 @@
+/*
+  Shared theme for the Snow Quest chapter study-kit pages
+  (Notes / MCQs / Adaptive Test / NCERT Q&A / Concept Game).
+  Referenced as css/styles.css by the pages inside this chapter folder.
+*/
+
+:root {
+  --bg: #f6f7fb;
+  --text: #1e2130;
+  --muted: #6b7280;
+  --font: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+
+  --accent: #6c63ff;
+  --accent-light: #eeecff;
+  --gradient: linear-gradient(135deg, #6c63ff 0%, #4834d4 100%);
+
+  --card: #ffffff;
+  --border: #e5e7f0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+}
+
+a { color: var(--accent); }
