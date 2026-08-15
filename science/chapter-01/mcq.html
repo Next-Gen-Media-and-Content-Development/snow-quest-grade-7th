@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQs — 1 Ever-Evolving World of Science</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --fh:'Kalam','Caveat',cursive; --fb:'Nunito',sans-serif; }
+
+  /* ── Pastel background ───────────────────────────────────────────────── */
+  body {
+    background: linear-gradient(135deg,#eef0ff 0%,#eaf7ff 35%,#fff3e0 65%,#f3eaff 100%);
+    background-attachment:fixed;
+    color:#2d2d2d; font-family:var(--fb); min-height:100vh; margin:0;
+    position:relative; overflow-x:hidden;
+  }
+
+  /* ── Doodle watermark — magnifying glass, lightbulb, star, paper plane, book, moon ── */
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Ccircle cx='55' cy='55' r='22' fill='none' stroke='%236c63ff' stroke-width='3'/%3E%3Cline x1='71' y1='71' x2='90' y2='90' stroke='%236c63ff' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M160 20 L172 45 L198 48 L179 65 L184 91 L160 78 L136 91 L141 65 L122 48 L148 45 Z' fill='none' stroke='%23f9a825' stroke-width='2'/%3E%3Cpath d='M250 40 Q265 40 265 58 Q265 72 255 76 L255 82 L245 82 L245 76 Q235 72 235 58 Q235 40 250 40 Z' fill='none' stroke='%23ff8a3d' stroke-width='2'/%3E%3Cline x1='245' y1='88' x2='255' y2='88' stroke='%23ff8a3d' stroke-width='2'/%3E%3Ctext x='60' y='170' font-size='30' fill='%2348c6ef'%3E%3F%3C/text%3E%3Cpath d='M30 220 L60 205 L60 230 L30 245 Z' fill='none' stroke='%23ff6b6b' stroke-width='2'/%3E%3Cpath d='M90 210 L96 216 L92 200 L104 190 L88 188 L82 174 L76 188 L60 190 L72 200 L68 216 Z' fill='none' stroke='%23ff6b6b' stroke-width='1.6' transform='translate(0,20) scale(0.6)'/%3E%3Ccircle cx='230' cy='190' r='18' fill='none' stroke='%236c63ff' stroke-width='2'/%3E%3Cpath d='M224 180 a14 14 0 1 0 4 20 a11 11 0 1 1 -4 -20' fill='%236c63ff' opacity='.4'/%3E%3Cpath d='M150 260 L150 280 L138 296 L166 296 L154 280 L154 260 Z' fill='none' stroke='%2348c6ef' stroke-width='2'/%3E%3Ctext x='250' y='280' font-size='18' fill='%23f9a825'%3E%E2%9C%A6%3C/text%3E%3Ctext x='40' y='300' font-size='14' fill='%236c63ff'%3E%E2%9C%A7%3C/text%3E%3C/svg%3E");
+    background-size:320px 320px;
+  }
+
+  /* ── Top bar ─────────────────────────────────────────────────────────── */
+  .top-bar {
+    background:linear-gradient(120deg,#6c63ff 0%,#48c6ef 55%,#f9a825 100%);
+    padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+    position:relative; z-index:10; box-shadow:0 4px 20px rgba(108,99,255,.35);
+  }
+  .top-bar h1 { color:#fff; margin:0; font-size:1.3rem; font-family:var(--fh); text-shadow:0 1px 4px rgba(0,0,0,.25); }
+  .back-btn { color:#fff; text-decoration:none; font-size:.9rem; opacity:.85; }
+
+  .content { max-width:900px; margin:2rem auto; padding:0 1.5rem 4rem; position:relative; z-index:2; }
+
+  /* ── Filter bar ──────────────────────────────────────────────────────── */
+  .filter-bar { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.5rem; align-items:center; }
+  .filter-label { font-size:.85rem; color:#666; font-weight:700; }
+  .topic-btn {
+    padding:.4rem .9rem; border-radius:20px;
+    border:1.5px solid #c7d4f7; background:rgba(255,255,255,.75);
+    color:#4a52c9; cursor:pointer; font-size:.82rem; font-weight:700;
+    transition:.2s; font-family:var(--fb); backdrop-filter:blur(4px);
+  }
+  .topic-btn:hover,.topic-btn.active { background:linear-gradient(120deg,#6c63ff,#48c6ef); color:#fff; border-color:transparent; box-shadow:0 3px 12px rgba(108,99,255,.3); }
+  .topic-btn.revise-mode { background:rgba(255,107,107,.12); border-color:#ff6b6b; color:#e55; }
+  .topic-btn.revise-mode.active { background:linear-gradient(120deg,#ff6b6b,#ff8a65); color:#fff; border-color:transparent; }
+
+  /* ── Type legend chips ───────────────────────────────────────────────── */
+  .legend { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .leg-chip { font-size:.72rem; padding:.2rem .7rem; border-radius:12px; font-weight:700; font-family:var(--fb); }
+  .leg-scq { background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; }
+  .leg-inc { background:#fff3e0; color:#e65100; border:1px solid #ffcc80; }
+  .leg-cor { background:#e3f2fd; color:#1565c0; border:1px solid #90caf9; }
+  .leg-mat { background:#f3e5f5; color:#6a1b9a; border:1px solid #ce93d8; }
+  .leg-img { background:#fce4ec; color:#880e4f; border:1px solid #f48fb1; }
+  .leg-cas { background:#fff9c4; color:#f57f17; border:1px solid #fff176; }
+
+  /* ── Q-card ──────────────────────────────────────────────────────────── */
+  .q-card {
+    background:rgba(255,255,255,.82);
+    border:1.5px solid rgba(108,99,255,.18);
+    border-radius:18px; padding:1.5rem; margin-bottom:1.4rem;
+    backdrop-filter:blur(6px); transition:.2s;
+    box-shadow:0 2px 14px rgba(108,99,255,.08);
+    position:relative; overflow:hidden;
+  }
+  .q-card.hidden { display:none; }
+  .q-card:hover { box-shadow:0 6px 28px rgba(108,99,255,.18); transform:translateY(-1px); }
+
+  /* type stripe on left */
+  .q-card[data-type="incorrect"] { border-left:5px solid #ff9800; }
+  .q-card[data-type="correct"]   { border-left:5px solid #2196f3; }
+  .q-card[data-type="matrix"]    { border-left:5px solid #9c27b0; }
+  .q-card[data-type="image"]     { border-left:5px solid #e91e63; }
+  .q-card[data-type="case"]      { border-left:5px solid #ff8f00; }
+  .q-card[data-type="mcq"]       { border-left:5px solid #4caf50; }
+
+  /* ── Card header row ─────────────────────────────────────────────────── */
+  .card-top { display:flex; align-items:flex-start; gap:.8rem; margin-bottom:.9rem; }
+  .q-num {
+    background:linear-gradient(135deg,#6c63ff,#48c6ef);
+    color:#fff; border-radius:50%; width:34px; height:34px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.8rem; font-weight:800; flex-shrink:0;
+    font-family:var(--fb); box-shadow:0 2px 8px rgba(108,99,255,.4);
+  }
+  .card-meta { flex:1; }
+  .type-chip { display:inline-block; font-size:.68rem; padding:.15rem .55rem; border-radius:10px; font-weight:700; font-family:var(--fb); margin-bottom:.3rem; }
+  .diff-badge { font-size:.68rem; padding:.15rem .55rem; border-radius:10px; font-weight:700; font-family:var(--fb); margin-left:.4rem; }
+  .easy   { background:#e8f5e9; color:#2e7d32; }
+  .medium { background:#fff3e0; color:#e65100; }
+  .hard   { background:#fce4ec; color:#c62828; }
+
+  /* ── Question text ───────────────────────────────────────────────────── */
+  .q-text { font-family:var(--fh); font-size:1.1rem; font-weight:700; line-height:1.6; color:#2a2060; margin:.3rem 0 1rem; }
+
+  /* ── Passage block (case-based) ──────────────────────────────────────── */
+  .passage {
+    background:rgba(255,248,196,.7); border:1.5px solid #fdd835;
+    border-radius:12px; padding:.9rem 1.1rem; margin-bottom:1rem;
+    font-family:var(--fh); font-size:1rem; line-height:1.75; color:#3d2800;
+  }
+  .passage::before { content:'📖 Read the passage:'; display:block; font-size:.75rem; font-weight:800; color:#f57f17; margin-bottom:.4rem; font-family:var(--fb); }
+
+  /* ── Options ─────────────────────────────────────────────────────────── */
+  .options { display:flex; flex-direction:column; gap:.5rem; }
+  .opt-btn {
+    text-align:left; background:rgba(248,246,255,.8);
+    border:1.5px solid #c7d4f7; border-radius:12px;
+    padding:.7rem 1rem; cursor:pointer; font-size:.95rem;
+    color:#2d2d2d; transition:.2s; font-family:var(--fh);
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .opt-btn .opt-label { background:#ede9ff; color:#6c63ff; border-radius:6px; padding:.1rem .45rem; font-size:.75rem; font-weight:800; font-family:var(--fb); flex-shrink:0; }
+  .opt-btn:hover:not(.locked) { background:rgba(108,99,255,.1); border-color:#6c63ff; }
+  .opt-btn.selected:not(.locked) { background:rgba(108,99,255,.12); border-color:#6c63ff; }
+  .opt-btn.correct { background:#e8f5e9; border-color:#4caf50; color:#1b5e20; font-weight:700; }
+  .opt-btn.correct .opt-label { background:#4caf50; color:#fff; }
+  .opt-btn.wrong   { background:#fce4ec; border-color:#e91e63; color:#880e4f; }
+  .opt-btn.wrong   .opt-label { background:#e91e63; color:#fff; }
+
+  /* ── Matrix table ────────────────────────────────────────────────────── */
+  .matrix-wrap { display:flex; gap:1rem; margin:.4rem 0 1rem; flex-wrap:wrap; }
+  .matrix-col { flex:1; min-width:140px; }
+  .matrix-col h4 { font-size:.78rem; font-weight:800; font-family:var(--fb); color:#6a1b9a; margin:0 0 .4rem; text-transform:uppercase; letter-spacing:.05em; }
+  .matrix-row { background:rgba(243,229,245,.6); border:1px solid #ce93d8; border-radius:8px; padding:.45rem .7rem; margin-bottom:.35rem; font-family:var(--fh); font-size:.95rem; }
+
+  /* ── SVG diagram area ────────────────────────────────────────────────── */
+  .diagram-wrap { background:rgba(255,255,255,.9); border:1.5px dashed #c7d4f7; border-radius:14px; padding:.8rem; margin:.4rem 0 .9rem; display:flex; justify-content:center; overflow-x:auto; }
+  .diagram-wrap svg { max-width:100%; height:auto; }
+
+  /* ── Explanation ─────────────────────────────────────────────────────── */
+  .explanation {
+    display:none; margin-top:.9rem;
+    background:rgba(108,99,255,.07); border-left:4px solid #6c63ff;
+    border-radius:0 12px 12px 0; padding:.8rem 1rem;
+    font-size:.95rem; line-height:1.7; font-family:var(--fh); color:#1a1060;
+  }
+  .explanation::before { content:'💡 Explanation: '; font-weight:800; font-family:var(--fb); color:#5a52e0; }
+
+  /* ── Score panel ─────────────────────────────────────────────────────── */
+  #score-panel {
+    display:none; background:rgba(255,255,255,.9);
+    border:2px solid rgba(108,99,255,.25); border-radius:22px;
+    padding:2rem; margin-bottom:2rem;
+    backdrop-filter:blur(8px); box-shadow:0 8px 32px rgba(108,99,255,.15);
+  }
+  #score-panel h2 { margin:0 0 .5rem; font-family:var(--fh); font-size:1.6rem; color:#3a2e6e; }
+  .stats-row { display:flex; gap:1rem; flex-wrap:wrap; margin:.8rem 0 1.5rem; }
+  .stat-box { flex:1; min-width:80px; background:rgba(108,99,255,.06); border-radius:14px; padding:.9rem; text-align:center; }
+  .stat-box .num { font-size:1.8rem; font-weight:800; font-family:var(--fb); }
+  .stat-box .lbl { font-size:.72rem; color:#888; font-family:var(--fb); }
+  .topic-row { display:flex; align-items:center; gap:.8rem; padding:.5rem 0; border-bottom:1px solid rgba(108,99,255,.1); }
+  .topic-name { flex:1; font-size:.9rem; font-family:var(--fh); }
+  .topic-stars { color:#f9a825; font-size:1rem; letter-spacing:.1em; }
+  .topic-pct  { font-size:.85rem; color:#888; min-width:42px; text-align:right; font-family:var(--fb); }
+  .revise-link { font-size:.8rem; color:#6c63ff; text-decoration:none; font-weight:700; font-family:var(--fb); }
+  .mode-btns { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1.2rem; }
+  .mode-btn { padding:.65rem 1.3rem; border-radius:20px; border:none; font-weight:700; cursor:pointer; font-size:.9rem; font-family:var(--fb); }
+  .btn-retry  { background:linear-gradient(120deg,#6c63ff,#48c6ef); color:#fff; box-shadow:0 3px 10px rgba(108,99,255,.3); }
+  .btn-revise { background:linear-gradient(120deg,#ff6b6b,#ff8a65); color:#fff; }
+
+  /* ── Submit button ───────────────────────────────────────────────────── */
+  .btn-submit {
+    background:linear-gradient(120deg,#6c63ff 0%,#48c6ef 55%,#f9a825 100%);
+    color:#fff; border:none; padding:1rem 2rem;
+    border-radius:28px; font-size:1.05rem; font-weight:800;
+    cursor:pointer; display:block; width:100%; margin-top:1.8rem;
+    font-family:var(--fb); box-shadow:0 4px 20px rgba(108,99,255,.35);
+    letter-spacing:.03em; transition:.2s;
+  }
+  .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(108,99,255,.45); }
+
+  @media (max-width:600px) {
+    .content { padding:0 .8rem 4rem; }
+    .top-bar { padding:.8rem 1rem; }
+    .matrix-wrap { flex-direction:column; }
+  }
+  @media print { .top-bar,.filter-bar,.btn-submit { display:none; } .explanation { display:block !important; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1>🔍 1 Ever-Evolving World of Science — MCQs</h1>
+</div>
+
+<div class="content">
+  <div id="score-panel"></div>
+
+  <div class="legend">
+    <span class="leg-chip leg-scq">✅ Single Correct</span>
+    <span class="leg-chip leg-inc">⚠️ Incorrect Statement</span>
+    <span class="leg-chip leg-cor">🔵 Correct Statement</span>
+    <span class="leg-chip leg-mat">🟣 Matrix Match</span>
+    <span class="leg-chip leg-img">🖼️ Image Based</span>
+    <span class="leg-chip leg-cas">📖 Case Based</span>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="topic-btn active" onclick="filterTopic('all',this)">All (16)</button>
+    <button class="topic-btn" onclick="filterTopic('curiosity',this)">🔍 Curiosity &amp; Questions</button>
+    <button class="topic-btn" onclick="filterTopic('materials-changes',this)">🧪 Materials &amp; Changes</button>
+    <button class="topic-btn" onclick="filterTopic('time-space',this)">🌍 Time, Light &amp; Space</button>
+    <button class="topic-btn revise-mode" id="btn-revision" onclick="filterTopic('revision',this)">📌 Revise Wrong</button>
+  </div>
+
+  <div id="q-container"></div>
+  <button class="btn-submit" onclick="submitAll()" id="submit-btn">🚀 Submit All Answers</button>
+</div>
+
+<script>
+// ── Question bank ─────────────────────────────────────────────────────────
+const QS = [
+
+  // ── 1. Single correct ─────────────────────────────────────────────────
+  {
+    type:'mcq', topic:'curiosity', difficulty:'easy',
+    question:'According to the chapter, science in Grade 7 should mainly be seen as a ______, not just a collection of facts.',
+    options:['A way of thinking that welcomes curiosity','A final exam to be cleared','A list of inventions to memorise','A set of laws that never change'],
+    answer:0,
+    explanation:'The chapter says science is a process — a way of thinking that welcomes curiosity and asks questions, not merely a collection of facts.'
+  },
+
+  // ── 2. Single correct ─────────────────────────────────────────────────
+  {
+    type:'mcq', topic:'curiosity', difficulty:'easy',
+    question:'Which pair of deeper questions does the chapter say Grade 7 explorers should start asking?',
+    options:['Who invented it and when was it patented?','How do things work, and why do events happen the way they do?','What is the exact spelling and definition?','Which topic will be tested first?'],
+    answer:1,
+    explanation:'The chapter explicitly lists asking how things work and why events happen, and what we can learn from patterns in nature.'
+  },
+
+  // ── 3. Correct statement ──────────────────────────────────────────────
+  {
+    type:'correct', topic:'curiosity', difficulty:'medium',
+    question:'🔵 Which of the following is a CORRECT statement about the design of this textbook?',
+    options:[
+      'The page numbers follow the playful flight of a butterfly and a paper plane, symbolising that learning takes flight when curiosity leads the way',
+      'Page numbers in this book have no special meaning at all',
+      'The book actively discourages students from asking questions',
+      'The book covers only one branch of science, kept separate from all others'
+    ],
+    answer:0,
+    explanation:'The chapter explains that the page numbers follow a butterfly and a paper plane, reflecting the idea that learning takes flight when curiosity leads the way.'
+  },
+
+  // ── 4. Incorrect statement ────────────────────────────────────────────
+  {
+    type:'incorrect', topic:'curiosity', difficulty:'medium',
+    question:'⚠️ Activity 1.1, "Question the Answer", asks you to invent a question for a given answer. Identify the INCORRECT statement about this activity:',
+    options:[
+      'The activity flips the usual pattern — you are given an answer and must invent the question',
+      'One of the example answers given is "Don’t panic, I have my towel."',
+      'The chapter says there is exactly one correct question for every answer, and all other questions are wrong',
+      'The activity is inspired by the Grade 6 saying, "To be a wise person, you must be a whys person"'
+    ],
+    answer:2,
+    explanation:'The chapter says the opposite — "there are never any wrong questions, so let your imagination run wild!" Many different questions can lead to the same answer, so option C is incorrect.'
+  },
+
+  // ── 5. Single correct ─────────────────────────────────────────────────
+  {
+    type:'mcq', topic:'curiosity', difficulty:'easy',
+    question:'The chapter says that although physics, chemistry, biology and earth science look like separate chapters, they are actually:',
+    options:['Interconnected, with ideas in one area inspiring discoveries in another','Completely unrelated to one another','Only taught together in higher classes','Different names for exactly the same subject'],
+    answer:0,
+    explanation:'Scientific ideas in one area often inspire discoveries in another, or let us ask questions in another area — the fields are interconnected.'
+  },
+
+  // ── 6. Single correct ─────────────────────────────────────────────────
+  {
+    type:'mcq', topic:'materials-changes', difficulty:'easy',
+    question:'Wondering why some fruits taste sour, or why a haldi (turmeric) stain is hard to wash out, are examples the chapter gives of exploring the ______ of materials.',
+    options:['Age','Properties','Price','Shape only'],
+    answer:1,
+    explanation:'The chapter uses sour fruits and haldi stains as everyday examples of exploring the properties of materials around us.'
+  },
+
+  // ── 7. Image-based ────────────────────────────────────────────────────
+  {
+    type:'image', topic:'materials-changes', difficulty:'medium',
+    question:'In the circuit shown below, a battery is connected to a bulb through a gap where a test material is placed. In trial X, a steel spoon is placed in the gap; in trial Y, a rubber band is placed in the gap. Based on the chapter’s discussion of metals and non-metals, which trial makes the bulb glow?',
+    svg:`<svg viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" font-family="Nunito,sans-serif">
+  <!-- Trial X: metal spoon -->
+  <text x="120" y="18" font-size="13" text-anchor="middle" font-weight="800" fill="#5a52e0">Trial X</text>
+  <rect x="55" y="60" width="26" height="14" rx="2" fill="#e53935"/>
+  <text x="68" y="55" font-size="9" text-anchor="middle" fill="#e53935">battery</text>
+  <line x1="81" y1="67" x2="130" y2="67" stroke="#555" stroke-width="2"/>
+  <circle cx="150" cy="67" r="14" fill="#fff8d6" stroke="#f9a825" stroke-width="2.5"/>
+  <text x="150" y="71" font-size="10" text-anchor="middle" fill="#c68400">bulb</text>
+  <line x1="164" y1="67" x2="185" y2="67" stroke="#555" stroke-width="2"/>
+  <line x1="185" y1="67" x2="185" y2="110" stroke="#555" stroke-width="2"/>
+  <line x1="55" y1="67" x2="55" y2="110" stroke="#555" stroke-width="2"/>
+  <!-- gap with spoon -->
+  <line x1="55" y1="110" x2="90" y2="110" stroke="#555" stroke-width="2"/>
+  <ellipse cx="120" cy="112" rx="22" ry="9" fill="#cfd8dc" stroke="#607d8b" stroke-width="2"/>
+  <line x1="138" y1="108" x2="160" y2="98" stroke="#607d8b" stroke-width="4" stroke-linecap="round"/>
+  <text x="120" y="135" font-size="9" text-anchor="middle" fill="#607d8b">steel spoon</text>
+  <line x1="150" y1="110" x2="185" y2="110" stroke="#555" stroke-width="2"/>
+
+  <!-- Trial Y: rubber band -->
+  <text x="360" y="18" font-size="13" text-anchor="middle" font-weight="800" fill="#5a52e0">Trial Y</text>
+  <rect x="295" y="60" width="26" height="14" rx="2" fill="#e53935"/>
+  <text x="308" y="55" font-size="9" text-anchor="middle" fill="#e53935">battery</text>
+  <line x1="321" y1="67" x2="370" y2="67" stroke="#555" stroke-width="2"/>
+  <circle cx="390" cy="67" r="14" fill="#fff8d6" stroke="#f9a825" stroke-width="2.5"/>
+  <text x="390" y="71" font-size="10" text-anchor="middle" fill="#c68400">bulb</text>
+  <line x1="404" y1="67" x2="425" y2="67" stroke="#555" stroke-width="2"/>
+  <line x1="425" y1="67" x2="425" y2="110" stroke="#555" stroke-width="2"/>
+  <line x1="295" y1="67" x2="295" y2="110" stroke="#555" stroke-width="2"/>
+  <line x1="295" y1="110" x2="330" y2="110" stroke="#555" stroke-width="2"/>
+  <ellipse cx="360" cy="110" rx="20" ry="8" fill="none" stroke="#ff8a65" stroke-width="4"/>
+  <text x="360" y="135" font-size="9" text-anchor="middle" fill="#ff8a65">rubber band</text>
+  <line x1="390" y1="110" x2="425" y2="110" stroke="#555" stroke-width="2"/>
+</svg>`,
+    options:['Trial X only (steel spoon)','Trial Y only (rubber band)','Both trials make the bulb glow','Neither trial makes the bulb glow'],
+    answer:0,
+    explanation:'The chapter explains that this kind of circuit is used to classify materials as metals or non-metals. A steel spoon is a metal and lets electricity flow, so the bulb glows in Trial X. A rubber band is a non-metal and does not conduct electricity, so the bulb stays off in Trial Y.'
+  },
+
+  // ── 8. Incorrect statement ────────────────────────────────────────────
+  {
+    type:'incorrect', topic:'materials-changes', difficulty:'medium',
+    question:'⚠️ The chapter mentions a torch battery running out, ice melting, fruits ripening, and rocks breaking into pebbles, and asks what kind of changes these are. Identify the INCORRECT statement below:',
+    options:[
+      'A torch battery running out and never working again is one of the chapter’s examples of change',
+      'Ice melting into water can be reversed by cooling the water again',
+      'A rock breaking into pebbles is a change that can easily be reversed back into the original rock',
+      'The chapter notes that some of these changes happen, or happen faster, when things are heated'
+    ],
+    answer:2,
+    explanation:'Once a rock breaks into pebbles, it cannot easily be put back together into the original rock — this is an example of a change that is very difficult to reverse, unlike ice melting, which can be reversed by freezing it again.'
+  },
+
+  // ── 9. Single correct ─────────────────────────────────────────────────
+  {
+    type:'mcq', topic:'materials-changes', difficulty:'medium',
+    question:'Water evaporating from the seas due to the Sun’s heat, falling as rain, and trickling underground is part of the:',
+    options:['Rock cycle','Water cycle','Carbon cycle','Life cycle of a plant'],
+    answer:1,
+    explanation:'Evaporation from the seas, rainfall, and water trickling underground are all stages of the water cycle described in the chapter.'
+  },
+
+  // ── 10. Image-based ────────────────────────────────────────────────────
+  {
+    type:'image', topic:'materials-changes', difficulty:'medium',
+    question:'The diagram below shows part of the water cycle described in the chapter. Arrow P shows water rising from the sea into the clouds because of the Sun’s heat. What is this process called?',
+    svg:`<svg viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" font-family="Nunito,sans-serif">
+  <circle cx="55" cy="35" r="18" fill="#ffd54f" stroke="#f9a825" stroke-width="2"/>
+  <g stroke="#f9a825" stroke-width="2">
+    <line x1="55" y1="8" x2="55" y2="2"/><line x1="80" y1="35" x2="86" y2="35"/>
+    <line x1="72" y1="17" x2="77" y2="12"/><line x1="72" y1="53" x2="77" y2="58"/>
+  </g>
+  <ellipse cx="160" cy="45" rx="45" ry="22" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <ellipse cx="130" cy="35" rx="26" ry="16" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <rect x="20" y="110" width="440" height="45" fill="#4fc3f7" opacity=".55"/>
+  <text x="240" y="135" font-size="12" text-anchor="middle" fill="#01579b" font-weight="700">Sea</text>
+  <line x1="70" y1="108" x2="120" y2="55" stroke="#0288d1" stroke-width="2.5" marker-end="url(#arrP)"/>
+  <defs><marker id="arrP" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 z" fill="#0288d1"/></marker></defs>
+  <text x="60" y="85" font-size="14" fill="#0288d1" font-weight="800">P</text>
+  <line x1="180" y1="60" x2="200" y2="108" stroke="#01579b" stroke-width="2.5" marker-end="url(#arrQ)"/>
+  <defs><marker id="arrQ" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 z" fill="#01579b"/></marker></defs>
+  <text x="210" y="85" font-size="14" fill="#01579b" font-weight="800">Q &#8594; rain</text>
+  <line x1="330" y1="150" x2="330" y2="165" stroke="#5d4037" stroke-width="2.5" marker-end="url(#arrR)"/>
+  <defs><marker id="arrR" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 z" fill="#5d4037"/></marker></defs>
+  <rect x="300" y="150" width="70" height="18" fill="#a1887f"/>
+  <text x="345" y="167" font-size="11" fill="#4e342e" font-weight="800">R &#8594; ground</text>
+</svg>`,
+    options:['Evaporation','Condensation','Precipitation','Transpiration'],
+    answer:0,
+    explanation:'Arrow P shows water vapour rising from the sea because of the heat from the Sun — this process is called evaporation, which the chapter mentions as the start of the water cycle.'
+  },
+
+  // ── 11. Single correct ────────────────────────────────────────────────
+  {
+    type:'mcq', topic:'time-space', difficulty:'easy',
+    question:'Before electric clocks and digital watches existed, the chapter says early humans measured time by observing:',
+    options:['The position of shadows cast by the Sun','The sound of birds chirping','The colour of the sky only','The number of visible stars'],
+    answer:0,
+    explanation:'Early humans used the position of shadows cast by the Sun to tell the time, long before electric clocks and digital watches existed.'
+  },
+
+  // ── 12. Matrix match ───────────────────────────────────────────────────
+  {
+    type:'matrix', topic:'time-space', difficulty:'hard',
+    question:'🟣 Match each phenomenon in Column A with what the chapter says causes or explains it in Column B:',
+    colA:['(i) Day and night','(ii) Eclipses','(iii) The changing seasons and Earth’s yearly journey','(iv) Telling the time before clocks existed'],
+    colB:['(P) Observing the position of shadows cast by the Sun','(Q) The Earth and the Moon casting shadows on each other','(R) The Earth rotating on its own axis','(S) The Earth revolving around the Sun'],
+    options:[
+      '(i)→R, (ii)→Q, (iii)→S, (iv)→P',
+      '(i)→P, (ii)→R, (iii)→Q, (iv)→S',
+      '(i)→Q, (ii)→S, (iii)→R, (iv)→P',
+      '(i)→S, (ii)→P, (iii)→Q, (iv)→R'
+    ],
+    answer:0,
+    explanation:'Day and night happen because the Earth rotates on its own axis (R). Eclipses happen because the Earth and Moon cast shadows on each other (Q). Earth’s yearly journey around the Sun is its revolution (S). Before clocks existed, people told time from the position of shadows (P). Correct match: (i)→R, (ii)→Q, (iii)→S, (iv)→P.'
+  },
+
+  // ── 13. Image-based ────────────────────────────────────────────────────
+  {
+    type:'image', topic:'time-space', difficulty:'medium',
+    question:'The diagram below shows the Earth in space, lit on one side and dark on the other, with sunlight arriving from the left. What causes this lit half and dark half to keep changing places over 24 hours?',
+    svg:`<svg viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg" font-family="Nunito,sans-serif">
+  <rect x="0" y="0" width="480" height="160" fill="#0d1440"/>
+  <g stroke="#ffe082" stroke-width="2">
+    <line x1="40" y1="45" x2="150" y2="45"/><line x1="40" y1="65" x2="150" y2="65"/>
+    <line x1="40" y1="85" x2="150" y2="85"/><line x1="40" y1="105" x2="150" y2="105"/>
+  </g>
+  <defs>
+    <clipPath id="nightHalf"><rect x="240" y="10" width="100" height="140"/></clipPath>
+  </defs>
+  <circle cx="240" cy="80" r="60" fill="#4fc3f7"/>
+  <circle cx="240" cy="80" r="60" fill="#37474f" clip-path="url(#nightHalf)"/>
+  <circle cx="240" cy="80" r="60" fill="none" stroke="#fff" stroke-width="1.5" opacity=".5"/>
+  <line x1="240" y1="14" x2="240" y2="146" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,4" opacity=".6"/>
+  <text x="185" y="140" font-size="11" text-anchor="middle" fill="#ffe082" font-weight="700">Lit side</text>
+  <text x="300" y="140" font-size="11" text-anchor="middle" fill="#90a4ae" font-weight="700">Dark side</text>
+  <path d="M240 20 A60 60 0 0 1 240 140" fill="none" stroke="#fff176" stroke-width="2" stroke-dasharray="3,5" marker-end="url(#arrRot)"/>
+  <defs><marker id="arrRot" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#fff176"/></marker></defs>
+</svg>`,
+    options:['The Earth rotating on its own axis','The Moon blocking sunlight from reaching the Earth','The Earth revolving around the Sun once a year','Clouds blocking sunlight over half the planet'],
+    answer:0,
+    explanation:'The chapter explains that we need to know how the Earth rotates around its own axis to understand day and night — as the Earth spins, different parts face towards or away from the Sun.'
+  },
+
+  // ── 14. Correct statement ─────────────────────────────────────────────
+  {
+    type:'correct', topic:'time-space', difficulty:'medium',
+    question:'🔵 Which of the following is a CORRECT statement about science and responsibility, according to the chapter?',
+    options:[
+      'Science is only about making new discoveries, and has nothing to do with responsibility',
+      'Human activities are linked to what happens in the natural world and are connected to the society we live in',
+      'Environmental challenges have nothing to do with science',
+      'Only professional scientists are allowed to explore and ask questions about science'
+    ],
+    answer:1,
+    explanation:'The chapter says science is not just about discovery alone, but also about responsibility, since human activities are linked to the natural world and connected to society — and science can help address environmental challenges.'
+  },
+
+  // ── 15. Case-based (Q15 of pair) ────────────────────────────────────────
+  {
+    type:'case', topic:'time-space', difficulty:'medium',
+    passage:'Rohan tries out a few things he read about in his science chapter. First, he leaves a bowl of water out in the sun for two days and notices the water level has dropped, while clouds gather in the sky that evening. Second, he watches the Moon slowly disappear from view for a while one night, as if something is casting a shadow over it, before it slowly reappears.',
+    question:'What is Rohan most likely observing when the water level in the bowl drops after being left in the sun?',
+    options:['Evaporation, caused by the Sun’s heat','Precipitation, caused by cooling air','Groundwater trickling away on its own','A permanent, irreversible loss of water from the planet'],
+    answer:0,
+    explanation:'The chapter describes how, with heat from the Sun, water evaporates from open surfaces like seas (and bowls!) — this is evaporation, the same process that starts the water cycle.'
+  },
+
+  // ── 16. Case-based (Q16 of pair) ────────────────────────────────────────
+  {
+    type:'case', topic:'time-space', difficulty:'medium',
+    passage:'Rohan tries out a few things he read about in his science chapter. First, he leaves a bowl of water out in the sun for two days and notices the water level has dropped, while clouds gather in the sky that evening. Second, he watches the Moon slowly disappear from view for a while one night, as if something is casting a shadow over it, before it slowly reappears.',
+    question:'What is Rohan most likely observing when the Moon slowly disappears and then reappears?',
+    options:['A lunar eclipse, caused by the Earth’s shadow falling on the Moon','The Moon permanently running out of sunlight','A solar eclipse, caused by the Moon blocking the Sun','Thick clouds fully covering the Moon for hours'],
+    answer:0,
+    explanation:'The chapter explains that the Earth and the Moon can cast shadows on each other, leading to eclipses. The Moon gradually disappearing and reappearing as something shadows it describes a lunar eclipse.'
+  }
+
+];
+
+// ── State ─────────────────────────────────────────────────────────────────
+const SLUG = '1_ever_evolving_worl';
+let answers   = {};
+let locked    = {};
+let filterMode = 'all';
+let prevWrong = [];
+try { prevWrong = JSON.parse(localStorage.getItem('ngmc_wrong_' + SLUG) || '[]'); } catch(e) {}
+
+// ── Type meta ─────────────────────────────────────────────────────────────
+const TYPE_META = {
+  mcq:       { label:'Single Correct', cls:'leg-scq', emoji:'✅' },
+  incorrect: { label:'Incorrect Statement', cls:'leg-inc', emoji:'⚠️' },
+  correct:   { label:'Correct Statement', cls:'leg-cor', emoji:'🔵' },
+  matrix:    { label:'Matrix Match', cls:'leg-mat', emoji:'🟣' },
+  image:     { label:'Image Based', cls:'leg-img', emoji:'🖼️' },
+  case:      { label:'Case Based', cls:'leg-cas', emoji:'📖' }
+};
+
+// ── Render ────────────────────────────────────────────────────────────────
+function renderQuestions(qlist) {
+  const cont = document.getElementById('q-container');
+  cont.innerHTML = '';
+  qlist.forEach((q, localIdx) => {
+    const realIdx = QS.indexOf(q);
+    const tm = TYPE_META[q.type] || TYPE_META['mcq'];
+    const diff = q.difficulty || 'medium';
+
+    // passage block
+    const passageHtml = q.passage
+      ? `<div class="passage">${q.passage}</div>`
+      : '';
+
+    // matrix columns
+    let matrixHtml = '';
+    if (q.type === 'matrix') {
+      const colARows = (q.colA || []).map(r => `<div class="matrix-row">${r}</div>`).join('');
+      const colBRows = (q.colB || []).map(r => `<div class="matrix-row">${r}</div>`).join('');
+      matrixHtml = `<div class="matrix-wrap">
+        <div class="matrix-col"><h4>Column A</h4>${colARows}</div>
+        <div class="matrix-col"><h4>Column B</h4>${colBRows}</div>
+      </div>`;
+    }
+
+    // svg diagram
+    const diagramHtml = q.svg
+      ? `<div class="diagram-wrap">${q.svg}</div>`
+      : '';
+
+    // options
+    const optsHtml = q.options.map((o, oi) => {
+      const label = String.fromCharCode(65 + oi);
+      return `<button class="opt-btn" id="opt-${realIdx}-${oi}" onclick="pick(${realIdx},${oi})"><span class="opt-label">${label}</span>${o}</button>`;
+    }).join('');
+
+    cont.innerHTML += `
+    <div class="q-card" id="q-${realIdx}" data-type="${q.type}" data-topic="${q.topic}">
+      <div class="card-top">
+        <div class="q-num">Q${realIdx+1}</div>
+        <div class="card-meta">
+          <span class="type-chip ${tm.cls}">${tm.emoji} ${tm.label}</span>
+          <span class="diff-badge ${diff}">${diff.charAt(0).toUpperCase()+diff.slice(1)}</span>
+        </div>
+      </div>
+      ${passageHtml}
+      <div class="q-text">${q.question}</div>
+      ${matrixHtml}
+      ${diagramHtml}
+      <div class="options">${optsHtml}</div>
+      <div class="explanation" id="exp-${realIdx}">${q.explanation}</div>
+    </div>`;
+  });
+}
+
+// ── Filter ────────────────────────────────────────────────────────────────
+function filterTopic(t, el) {
+  filterMode = t;
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('score-panel').style.display = 'none';
+  document.getElementById('submit-btn').style.display = 'block';
+  answers = {}; locked = {};
+  const filtered = t === 'all'     ? QS
+                 : t === 'revision'? QS.filter((_,i) => prevWrong.includes(i))
+                 : QS.filter(q => q.topic === t);
+  renderQuestions(filtered.length ? filtered : QS);
+}
+
+// ── Pick ──────────────────────────────────────────────────────────────────
+function pick(idx, oi) {
+  if (locked[idx]) return;
+  answers[idx] = oi;
+  document.querySelectorAll(`[id^="opt-${idx}-"]`).forEach(b => {
+    b.classList.remove('selected');
+    b.style.background = '';
+  });
+  const btn = document.getElementById(`opt-${idx}-${oi}`);
+  if (btn) btn.classList.add('selected');
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────
+function submitAll() {
+  let correct = 0, total = 0;
+  const wrongNow = [];
+  const topicStats = {};
+
+  QS.forEach((q, idx) => {
+    const card = document.getElementById('q-' + idx);
+    if (!card || card.classList.contains('hidden')) return;
+    total++;
+    const chosen   = answers[idx];
+    const isCorrect = chosen === q.answer;
+    if (isCorrect) correct++;
+    else wrongNow.push(idx);
+    locked[idx] = true;
+
+    q.options.forEach((_, oi) => {
+      const btn = document.getElementById(`opt-${idx}-${oi}`);
+      if (!btn) return;
+      btn.classList.add('locked');
+      btn.classList.remove('selected');
+      btn.style.background = '';
+      if (oi === q.answer) btn.classList.add('correct');
+      else if (oi === chosen) btn.classList.add('wrong');
+    });
+    const exp = document.getElementById('exp-' + idx);
+    if (exp) exp.style.display = 'block';
+
+    const t = q.topic || 'General';
+    if (!topicStats[t]) topicStats[t] = {correct:0, total:0};
+    topicStats[t].total++;
+    if (isCorrect) topicStats[t].correct++;
+  });
+
+  try { localStorage.setItem('ngmc_wrong_' + SLUG, JSON.stringify(wrongNow)); } catch(e) {}
+  try { localStorage.setItem('ngmc_prog_mcq.html', Math.round(correct/Math.max(total,1)*100)); } catch(e) {}
+
+  const pct = total ? Math.round(correct/total*100) : 0;
+  const mood = pct >= 80 ? '🎉' : pct >= 50 ? '😊' : '😅';
+
+  let topicRows = '';
+  Object.entries(topicStats).forEach(([name, st]) => {
+    const p  = Math.round(st.correct/st.total*100);
+    const filled = Math.round(p/20);
+    const stars  = '⭐'.repeat(filled) + '☆'.repeat(5-filled);
+    const revise = p < 60 ? `<a class="revise-link" href="notes.html">Revise →</a>` : '';
+    const label = {curiosity:'🔍 Curiosity & Questions','materials-changes':'🧪 Materials & Changes','time-space':'🌍 Time, Light & Space'}[name] || name;
+    topicRows += `<div class="topic-row"><span class="topic-name">${label}</span><span class="topic-stars">${stars}</span><span class="topic-pct">${p}%</span>${revise}</div>`;
+  });
+
+  const wrongBtn = wrongNow.length
+    ? `<button class="mode-btn btn-revise" onclick="filterTopic('revision',document.getElementById('btn-revision'))">📌 Revise Wrong (${wrongNow.length})</button>` : '';
+
+  const panel = document.getElementById('score-panel');
+  panel.innerHTML = `
+    <h2>${mood} You scored ${correct} / ${total}</h2>
+    <div class="stats-row">
+      <div class="stat-box"><div class="num" style="color:#4caf50">${correct}</div><div class="lbl">Correct ✅</div></div>
+      <div class="stat-box"><div class="num" style="color:#e91e63">${total-correct}</div><div class="lbl">Wrong ❌</div></div>
+      <div class="stat-box"><div class="num">${pct}%</div><div class="lbl">Score 📊</div></div>
+    </div>
+    <h3 style="margin:.5rem 0;font-family:var(--fh)">📚 Topic Analysis</h3>
+    ${topicRows}
+    <div class="mode-btns">
+      <button class="mode-btn btn-retry" onclick="location.reload()">🔄 Retry All</button>
+      ${wrongBtn}
+    </div>`;
+  panel.style.display = 'block';
+  document.getElementById('submit-btn').style.display = 'none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+if (location.hash === '#revision' && prevWrong.length > 0) {
+  filterMode = 'revision';
+  document.getElementById('btn-revision').classList.add('active');
+  document.querySelector('.topic-btn.active')?.classList.remove('active');
+}
+renderQuestions(filterMode === 'revision' ? QS.filter((_,i) => prevWrong.includes(i)) : QS);
+</script>
+</body>
+</html>

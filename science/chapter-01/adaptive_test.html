@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adaptive Test — 1 EVER EVOLVING WORLD OF SCIENCE</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { background:var(--bg); color:var(--text); font-family:var(--font); min-height:100vh; margin:0; }
+  .top-bar { background:var(--gradient); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
+  .top-bar h1 { color:#fff; margin:0; font-size:1.3rem; }
+  .back-btn { color:#fff; text-decoration:none; font-size:.9rem; opacity:.85; }
+  .content { max-width:720px; margin:2rem auto; padding:0 1.5rem 4rem; }
+  /* Start screen */
+  #start-screen { background:var(--card); border-radius:20px; padding:2rem; text-align:center; border:1px solid var(--border); }
+  #start-screen h2 { margin:0 0 .5rem; }
+  #start-screen p { color:var(--muted); }
+  #resume-banner { background:linear-gradient(135deg,#ff6b6b22,#ffd93d22); border:1px solid #ffd93d; border-radius:12px; padding:1rem; margin:1rem 0; text-align:left; display:none; }
+  .set-select { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:1.5rem; }
+  .set-card { flex:1; min-width:220px; background:var(--bg); border:2px solid var(--border); border-radius:16px; padding:1.3rem; cursor:pointer; transition:.2s; text-align:left; }
+  .set-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .set-card h3 { margin:.2rem 0; font-size:1.05rem; }
+  .set-card .tag { font-size:.75rem; color:var(--muted); }
+  .set-card .go-btn { margin-top:.8rem; width:100%; background:var(--gradient); color:#fff; border:none; padding:.6rem; border-radius:20px; font-weight:700; cursor:pointer; }
+  .weak-btn-row { display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin-top:1rem; }
+  .mini-btn { padding:.5rem 1rem; border-radius:16px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:.8rem; cursor:pointer; font-weight:600; }
+  /* Quiz */
+  #quiz-screen { display:none; }
+  .quiz-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:.5rem; }
+  .q-counter { font-size:.9rem; color:var(--muted); font-weight:600; }
+  .timer-box { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:.4rem .9rem; font-weight:700; font-size:1rem; }
+  .timer-box.urgent { color:#ff6b6b; border-color:#ff6b6b; }
+  .overall-progress { height:6px; background:var(--border); border-radius:3px; margin-bottom:1rem; overflow:hidden; }
+  .overall-fill { height:100%; background:var(--gradient); border-radius:3px; transition:.4s; }
+  #round-badge { font-size:.8rem; color:var(--muted); text-align:center; margin-bottom:1rem; }
+  .q-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1.6rem; }
+  .type-badge { display:inline-block; background:var(--accent-light); color:var(--accent); font-size:.72rem; font-weight:700; padding:.25rem .7rem; border-radius:12px; margin-bottom:.9rem; letter-spacing:.2px; }
+  .passage-box { background:var(--bg); border:1px dashed var(--border); border-radius:10px; padding:.9rem 1rem; font-size:.87rem; font-style:italic; margin-bottom:1rem; line-height:1.6; }
+  .img-box { display:flex; justify-content:center; margin-bottom:1rem; background:var(--bg); border-radius:10px; padding:.8rem; }
+  .img-box svg { max-width:100%; height:auto; }
+  .matrix-table { width:100%; border-collapse:collapse; margin-bottom:1.1rem; font-size:.85rem; }
+  .matrix-table th, .matrix-table td { border:1px solid var(--border); padding:.5rem .6rem; text-align:left; }
+  .matrix-table th { background:var(--bg); }
+  .q-text { font-size:1.05rem; font-weight:600; margin:0 0 1.2rem; line-height:1.55; }
+  .options { display:flex; flex-direction:column; gap:.6rem; }
+  .opt-btn { text-align:left; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:.8rem 1rem; cursor:pointer; font-size:.9rem; color:var(--text); transition:.2s; }
+  .opt-btn:hover:not(.locked) { background:var(--accent-light); border-color:var(--accent); }
+  .opt-btn.correct { background:#00b89420; border-color:#00b894; color:#00b894; font-weight:700; }
+  .opt-btn.wrong { background:#ff6b6b20; border-color:#ff6b6b; color:#e55; }
+  .explanation { display:none; background:var(--accent-light); border-left:4px solid var(--accent); border-radius:0 10px 10px 0; padding:.8rem 1rem; font-size:.88rem; margin-top:.8rem; line-height:1.6; }
+  .next-btn { background:var(--gradient); color:#fff; border:none; padding:.75rem 2rem; border-radius:25px; font-weight:700; cursor:pointer; font-size:.95rem; margin-top:1.2rem; display:none; }
+  /* Results */
+  #result-screen { display:none; background:var(--card); border-radius:20px; padding:2rem; border:1px solid var(--border); }
+  #result-screen h2 { margin:0 0 .3rem; text-align:center; }
+  .elapsed-time { font-size:.8rem; color:var(--muted); text-align:center; margin-bottom:1rem; }
+  .trophy { font-size:3.6rem; display:block; text-align:center; animation:bounce 1s ease infinite; margin-bottom:.3rem; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  .tier-banner { border-radius:14px; padding:1rem; text-align:center; margin-bottom:1rem; font-weight:700; }
+  .tier-perfect { background:linear-gradient(135deg,#ffd93d33,#ff6b6b33); border:1px solid #ffd93d; }
+  .tier-good { background:#00b89422; border:1px solid #00b894; }
+  .tier-okay { background:#4a90d922; border:1px solid #4a90d9; }
+  .tier-low { background:#ff6b6b22; border:1px solid #ff6b6b; }
+  .stats-row { display:flex; gap:1rem; flex-wrap:wrap; margin:1rem 0; }
+  .stat-box { flex:1; min-width:80px; background:var(--bg); border-radius:12px; padding:.8rem; text-align:center; }
+  .stat-box .num { font-size:1.5rem; font-weight:700; }
+  .stat-box .lbl { font-size:.72rem; color:var(--muted); }
+  .weak-box { background:#ff6b6b15; border-left:4px solid #ff6b6b; border-radius:0 10px 10px 0; padding:.9rem 1rem; margin:1rem 0; font-size:.85rem; }
+  .weak-box h4 { margin:0 0 .5rem; }
+  .weak-box ul { margin:0; padding-left:1.2rem; }
+  .topic-analysis { margin:1.2rem 0; }
+  .topic-row { display:flex; align-items:center; gap:.8rem; padding:.5rem 0; border-bottom:1px solid var(--border); }
+  .topic-name { flex:1; font-size:.88rem; }
+  .topic-stars { color:#f9a825; font-size:.95rem; }
+  .topic-conf { font-size:.8rem; color:var(--muted); }
+  .result-btns { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1.2rem; }
+  .result-btn { padding:.7rem 1.4rem; border-radius:20px; border:none; font-weight:700; cursor:pointer; font-size:.88rem; }
+  .btn-again { background:var(--accent); color:#fff; }
+  .btn-weak { background:#ff6b6b; color:#fff; }
+  .btn-switch { background:var(--card); border:1px solid var(--border); color:var(--text); }
+  .btn-share { background:var(--card); border:1px solid var(--border); color:var(--text); }
+  .confetti-piece { position:fixed; top:-24px; font-size:1.5rem; animation:fall linear forwards; pointer-events:none; z-index:999; }
+  @keyframes fall { to { transform:translateY(112vh) rotate(360deg); opacity:.25; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1>&#127919; 1 EVER EVOLVING WORLD OF SCIENCE — Adaptive Test</h1>
+</div>
+
+<div class="content">
+
+  <div id="start-screen">
+    <h2>&#127919; Adaptive Test</h2>
+    <p>Two sets of 15 questions &bull; 30 seconds each &bull; mixed question types</p>
+    <div id="resume-banner">
+      <strong>&#128204; You have saved wrong answers!</strong><br>
+      <small>Use "Focus on Weak Topics" below to target your weak spots, or start a fresh set.</small>
+    </div>
+    <div class="set-select">
+      <div class="set-card" onclick="startTest('easy',false)">
+        <span class="tag">SET A</span>
+        <h3>&#127793; Easy &ndash; Moderate</h3>
+        <span class="tag">15 questions</span>
+        <button class="go-btn">&#9654; Start Set A</button>
+      </div>
+      <div class="set-card" onclick="startTest('hard',false)">
+        <span class="tag">SET B</span>
+        <h3>&#128293; Difficult</h3>
+        <span class="tag">15 questions</span>
+        <button class="go-btn">&#9654; Start Set B</button>
+      </div>
+    </div>
+    <div class="weak-btn-row" id="weak-btn-row"></div>
+  </div>
+
+  <div id="quiz-screen">
+    <div class="quiz-header">
+      <span class="q-counter" id="q-counter">Question 1 / 15</span>
+      <span class="timer-box" id="timer-box">&#9201; 30s</span>
+    </div>
+    <div class="overall-progress"><div class="overall-fill" id="overall-fill" style="width:0%"></div></div>
+    <div id="round-badge">Set A &bull; Easy &ndash; Moderate</div>
+    <div class="q-card">
+      <div id="type-badge" class="type-badge"></div>
+      <div id="passage-box" class="passage-box" style="display:none"></div>
+      <div id="img-box" class="img-box" style="display:none"></div>
+      <div id="matrix-box" style="display:none"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="options"></div>
+      <div class="explanation" id="explanation"></div>
+      <button class="next-btn" id="next-btn" onclick="nextQ()">Next &rarr;</button>
+    </div>
+  </div>
+
+  <div id="result-screen"></div>
+
+</div>
+
+<script>
+/* ---------------- Question Pools ---------------- */
+const POOL_EASY = [
+  { id:"E1", type:"single", topic:"Nature of Science", question:"According to the chapter, science is best described as:",
+    options:["A fixed set of facts to memorise", "A process — a way of thinking that welcomes curiosity and asks questions", "A subject only meant for scientists", "Only what is written in a textbook"],
+    answer:1, explanation:"The chapter says science is a process, a way of thinking that welcomes curiosity, asks questions, and stays open to the unknown." },
+
+  { id:"E2", type:"single", topic:"Branches & Interconnection", question:"Which of these fields is NOT mentioned as being covered in this science book?",
+    options:["Physics", "Chemistry", "Biology and earth sciences", "History"],
+    answer:3, explanation:"The chapter mentions physics, chemistry, biology and earth sciences — history is not part of this science book." },
+
+  { id:"E3", type:"single", topic:"Materials & Changes", question:"To make a lamp glow when it is connected to a battery with wires, the wire must be made of a material that:",
+    options:["Floats on water", "Conducts electricity", "Is soft and bendable", "Is brightly coloured"],
+    answer:1, explanation:"The chapter explores what kind of materials make a lamp glow — this is how we classify materials as good or poor conductors (metals and non-metals)." },
+
+  { id:"E4", type:"single", topic:"Time & Shadows", question:"Before electric clocks existed, how did early humans estimate the time of day?",
+    options:["By counting stars at night", "By observing the position of shadows cast by objects in the Sun", "By measuring the air temperature", "By listening for animal calls"],
+    answer:1, explanation:"The text says early humans observed the shadows of objects in the Sun and used the position of the shadow to tell the time." },
+
+  { id:"E5", type:"single", topic:"Light, Earth & Moon", question:"Day and night on Earth occur mainly because:",
+    options:["The Earth rotates around its own axis", "The Moon blocks the Sun every night", "Clouds cover the Sun at night", "The Sun switches off at night"],
+    answer:0, explanation:"To understand day and night we need to know how the Earth rotates around its axis, changing which part faces the Sun." },
+
+  { id:"E6", type:"matrix", topic:"Materials & Changes",
+    question:"Match the change in Column A with whether it can be reversed, in Column B. Choose the option with the correct matching.",
+    matrixA:["i) Ice melting into water", "ii) A mango ripening", "iii) A rock breaking into pebbles", "iv) Water freezing into ice"],
+    matrixB:["a) Yes — reversed by cooling", "b) No — cannot be undone", "c) No — cannot be undone", "d) Yes — reversed by heating"],
+    options:["i-a, ii-b, iii-c, iv-d", "i-b, ii-a, iii-d, iv-c", "i-a, ii-c, iii-b, iv-d", "i-d, ii-b, iii-c, iv-a"],
+    answer:0, explanation:"Ice melting and water freezing are reversible changes; a mango ripening and a rock breaking into pebbles are irreversible changes." },
+
+  { id:"E7", type:"matrix", topic:"Life Processes",
+    question:"Match the life process in Column A with what it needs or does, in Column B. Choose the correctly matched option.",
+    matrixA:["i) Growing", "ii) Breathing", "iii) Blood circulation", "iv) A plant making its own food"],
+    matrixB:["a) Needs sunlight, in most plants", "b) Requires eating food regularly", "c) Exchanges gases with surroundings", "d) Moves nutrients to all parts of the body"],
+    options:["i-b, ii-c, iii-d, iv-a", "i-a, ii-d, iii-b, iv-c", "i-b, ii-d, iii-c, iv-a", "i-c, ii-b, iii-a, iv-d"],
+    answer:0, explanation:"Growing needs food (b), breathing exchanges gases (c), circulation moves nutrients (d), and plants making food need sunlight (a)." },
+
+  { id:"E8", type:"image", topic:"Light, Earth & Moon",
+    image:'<svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg"><circle cx="45" cy="70" r="30" fill="#ffb300"/><text x="45" y="118" font-size="12" text-anchor="middle" fill="var(--text)">Sun</text><circle cx="205" cy="70" r="14" fill="#8e8e93"/><text x="205" y="100" font-size="12" text-anchor="middle" fill="var(--text)">Moon</text><circle cx="345" cy="70" r="22" fill="#4a90d9"/><text x="345" y="108" font-size="12" text-anchor="middle" fill="var(--text)">Earth</text><line x1="76" y1="70" x2="322" y2="70" stroke="var(--border)" stroke-width="2" stroke-dasharray="5 5"/></svg>',
+    question:"The diagram shows the Sun, Moon and Earth lined up, with the Moon between the Sun and the Earth. This alignment is most likely to cause:",
+    options:["A solar eclipse", "The Earth to stop rotating", "The Moon to melt", "Permanent night everywhere on Earth"],
+    answer:0, explanation:"When the Moon comes between the Sun and the Earth in a line, it blocks sunlight from reaching parts of Earth — this is a solar eclipse." },
+
+  { id:"E9", type:"image", topic:"Time & Shadows",
+    image:'<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg"><circle cx="55" cy="30" r="18" fill="#ffb300"/><line x1="150" y1="140" x2="150" y2="55" stroke="var(--text)" stroke-width="5"/><line x1="150" y1="140" x2="235" y2="140" stroke="var(--muted)" stroke-width="9"/><line x1="55" y1="30" x2="150" y2="55" stroke="#ffb300" stroke-width="1.5" stroke-dasharray="3 3"/><text x="190" y="155" font-size="11" text-anchor="middle" fill="var(--muted)">stick and its shadow</text></svg>',
+    question:"The diagram shows a stick standing in sunlight, casting a long shadow on the ground. Early humans used exactly this kind of observation mainly to:",
+    options:["Estimate the time of day", "Measure the weight of the stick", "Predict rainfall", "Find directions underground"],
+    answer:0, explanation:"As the Sun's position in the sky changes, the length and direction of a shadow changes too — this is how early humans estimated time." },
+
+  { id:"E10", type:"incorrect", topic:"Branches & Interconnection", question:"Which of the following statements is INCORRECT?",
+    options:["Science is a process of asking questions and exploring", "Physics, chemistry, biology and earth science are completely separate fields with no connection at all", "Some changes, like ice melting, can be reversed", "Early humans used shadows to estimate the time of day"],
+    answer:1, explanation:"The chapter clearly states that the different fields of science are interconnected, not unrelated — ideas in one area often inspire discoveries in another." },
+
+  { id:"E11", type:"incorrect", topic:"Materials & Changes", question:"Which of the following statements is INCORRECT?",
+    options:["A battery running out is a change that is hard to reverse", "Ice melting into water is an example of a reversible change", "According to the chapter, changes only ever happen when things are cooled, never when heated", "A rock breaking into pebbles is an irreversible change"],
+    answer:2, explanation:"The chapter says some changes happen, or happen faster, when things are heated (like melting) — not only when cooled." },
+
+  { id:"E12", type:"correct", topic:"Heat & Water Cycle", question:"Which of the following statements is CORRECT?",
+    options:["Water evaporates from the seas due to heat from the Sun and later falls as rain", "Plants do not need any water or heat at all", "The water cycle described in the chapter has nothing to do with the Sun", "Rain only falls without any evaporation taking place first"],
+    answer:0, explanation:"The chapter describes water evaporating from the seas because of heat from the Sun, and later falling as rain." },
+
+  { id:"E13", type:"correct", topic:"Life Processes", question:"Which of the following statements about life processes is CORRECT?",
+    options:["Only humans among all living things need to eat and breathe", "Blood circulates nutrients from food to all parts of the body", "Plants never need any food because they are not living things", "Breathing is a process that only animals carry out, never discussed for plants"],
+    answer:1, explanation:"The chapter explains that blood has to circulate nutrients from food all over the body, and raises similar questions about how plants get food and breathe." },
+
+  { id:"E14", type:"case", topic:"Materials & Changes",
+    passage:"Riya kept an ice cube in a glass on the table in the morning. By afternoon, the ice had turned into water. In the evening, she noticed a mango on the kitchen shelf had ripened and turned soft and sweet.",
+    question:"Based on this scenario, which of these two changes could be reversed by simply cooling it again?",
+    options:["The melting of the ice cube", "The ripening of the mango", "Both changes can be reversed", "Neither change can be reversed"],
+    answer:0, explanation:"Melting ice is a reversible change — freezing it again turns it back to ice. A ripened mango cannot be turned back into a raw one; that is irreversible." },
+
+  { id:"E15", type:"case", topic:"Nature of Science",
+    passage:"Arjun made a paper plane and threw it across the room. Instead of dropping straight down, it glided slowly through the air. He wondered why it stayed up for so long.",
+    question:"What idea from the chapter does this scenario connect to most closely?",
+    options:["How a simple paper plane inspired real scientific study of flight", "The process of evaporation of water", "The reversible freezing of water into ice", "The circulation of blood in living things"],
+    answer:0, explanation:"The chapter mentions that something as simple as a paper plane inspired real scientific explorations of flight, from studying bird wings to designing aircraft." }
+];
+
+const POOL_HARD = [
+  { id:"H1", type:"single", topic:"Nature of Science", question:"In the activity where students must invent a creative question for a given answer (such as the answer \"42\"), what deeper skill is this exercise mainly designed to build?",
+    options:["Memorising number facts quickly", "Formulating creative, open-ended questions instead of only searching for answers", "Solving arithmetic problems faster", "Copying questions from the textbook"],
+    answer:1, explanation:"This activity flips the usual approach — instead of answering given questions, students practise asking imaginative questions, which is at the heart of thinking like a scientist." },
+
+  { id:"H2", type:"single", topic:"Branches & Interconnection", question:"The chapter says scientific ideas from one field often \"inspire discoveries in another.\" Which of these situations best illustrates this idea?",
+    options:["A question about why plants grow well in some soils leading a student to explore soil chemistry and how water moves through it", "A chemistry teacher grading a physics test", "Two students reading the same chapter separately in silence", "A librarian arranging books alphabetically by subject"],
+    answer:0, explanation:"This shows a biology-related question (plant growth) naturally leading into chemistry and physics questions — exactly the kind of interconnection the chapter describes." },
+
+  { id:"H3", type:"single", topic:"Heat & Water Cycle", question:"A glacier melts slowly over an entire summer, while an ice cube in a glass melts within a few hours. According to the chapter, both processes are driven by the same underlying factor. What is it?",
+    options:["The flow of heat causing melting", "The colour of the ice", "The speed of the wind", "The shape of the container"],
+    answer:0, explanation:"The chapter groups the melting of an ice cube and the melting of a glacier together as examples of how heat flows and causes melting, just at very different scales and speeds." },
+
+  { id:"H4", type:"single", topic:"Life Processes", question:"The chapter asks, \"Don't plants also need food to grow? How do they get their food?\" This question is significant mainly because it challenges the assumption that:",
+    options:["Only animals need food and need to breathe; similar essential life processes apply to plants too, even if the methods differ", "Plants grow without any life process taking place at all", "Animals do not actually need to eat", "Food and breathing have nothing to do with survival"],
+    answer:0, explanation:"The chapter uses this question to point out that essential life processes like nutrition and respiration are common to all living things, not just animals, even though plants carry them out differently." },
+
+  { id:"H5", type:"single", topic:"Light, Earth & Moon", question:"To fully explain day and night AND why eclipses happen, the chapter says we need to understand more than one motion at once. Which combination of motions is necessary?",
+    options:["Earth's rotation on its own axis, the Moon's revolution around Earth, and Earth's revolution around the Sun", "Only the Earth spinning on its axis", "Only the Moon orbiting the Sun directly", "Only the Sun moving around the Earth"],
+    answer:0, explanation:"The chapter says we need to know how the Earth rotates around its axis, how the Moon goes around the Earth, and how the Earth goes around the Sun, to understand day/night, seasons and eclipses together." },
+
+  { id:"H6", type:"matrix", topic:"Materials & Changes",
+    question:"Match the everyday example in Column A with the underlying scientific idea in Column B. Choose the correctly matched option.",
+    matrixA:["i) A torch battery running out", "ii) Water evaporating from the sea and later falling as rain", "iii) A lamp glowing only when the right wire is used", "iv) A glacier melting slowly"],
+    matrixB:["a) Water cycle", "b) Irreversible change", "c) Classifying materials as conductors or insulators", "d) Heat flow causing melting"],
+    options:["i-b, ii-a, iii-c, iv-d", "i-a, ii-b, iii-d, iv-c", "i-c, ii-d, iii-a, iv-b", "i-b, ii-c, iii-a, iv-d"],
+    answer:0, explanation:"A dead battery is an irreversible change (b); evaporation and rain form the water cycle (a); a glowing lamp depends on conducting materials (c); a glacier melts due to heat flow (d)." },
+
+  { id:"H7", type:"matrix", topic:"Light, Earth & Moon",
+    question:"Match the astronomical event in Column A with its cause in Column B. Choose the correctly matched option.",
+    matrixA:["i) Day and night at a fixed place", "ii) An eclipse", "iii) A long-term, year-long cycle", "iv) The changing length of a shadow through one day"],
+    matrixB:["a) The changing angle of sunlight as Earth spins during the day", "b) The Earth rotating on its own axis", "c) The Earth revolving around the Sun", "d) The Sun, Earth and Moon lining up so one blocks light from another"],
+    options:["i-b, ii-d, iii-c, iv-a", "i-d, ii-b, iii-a, iv-c", "i-b, ii-a, iii-d, iv-c", "i-c, ii-d, iii-b, iv-a"],
+    answer:0, explanation:"Day/night comes from Earth's rotation (b), an eclipse from Sun-Earth-Moon alignment (d), a yearly cycle from Earth's revolution around the Sun (c), and a shadow's changing length from the changing angle of sunlight through the day (a)." },
+
+  { id:"H8", type:"image", topic:"Materials & Changes",
+    image:'<svg viewBox="0 0 340 170" xmlns="http://www.w3.org/2000/svg"><text x="20" y="35" font-size="14" fill="var(--text)">Ice &#8594; Water</text><text x="20" y="80" font-size="14" fill="var(--text)">Raw mango &#8594; Ripe mango</text><text x="20" y="125" font-size="14" fill="var(--text)">Full battery &#8594; Dead battery</text><text x="20" y="160" font-size="11" fill="var(--muted)">(all shown here with single-headed arrows)</text></svg>',
+    question:"The diagram shows three changes, all drawn with a single-headed arrow (&#8594;). Based on the chapter, which ONE of these should actually be drawn with a double-headed arrow (&#8596;) instead, since it can go both ways?",
+    options:["Ice &#8594; Water", "Raw mango &#8594; Ripe mango", "Full battery &#8594; Dead battery", "None of them can go both ways"],
+    answer:0, explanation:"Ice melting into water is reversible — cooling the water turns it back to ice — so it deserves a double-headed arrow, unlike the other two irreversible changes." },
+
+  { id:"H9", type:"image", topic:"Light, Earth & Moon",
+    image:'<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="150" cy="105" rx="95" ry="38" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="5 5"/><circle cx="150" cy="105" r="32" fill="#4a90d9"/><circle cx="150" cy="70" r="10" fill="var(--card)" stroke="var(--text)" stroke-width="2"/><circle cx="245" cy="105" r="11" fill="#8e8e93"/><text x="150" y="160" font-size="11" text-anchor="middle" fill="var(--muted)">small circle = Earth spinning on its axis</text><text x="150" y="178" font-size="11" text-anchor="middle" fill="var(--muted)">dashed path = the Moon orbit around Earth</text></svg>',
+    question:"The diagram represents the Earth spinning on its own axis, with the Moon following the dashed orbital path around it. If the Earth's rotation on its axis suddenly stopped completely (but it kept revolving around the Sun), which of these would directly stop happening?",
+    options:["The regular cycle of day and night at a fixed location on Earth", "The Moon's revolution around the Earth", "The water cycle everywhere on Earth", "All reversible changes, like ice melting"],
+    answer:0, explanation:"Day and night at any one place depend specifically on the Earth's rotation on its own axis; the Moon's orbit, the water cycle, and reversible changes are governed by other factors." },
+
+  { id:"H10", type:"incorrect", topic:"Branches & Interconnection", question:"Which of the following statements is INCORRECT?",
+    options:["The chapter treats physics, chemistry, biology and earth sciences as completely separate subjects with no overlap at all", "Reversible changes, like ice melting, can be undone, while irreversible ones, like a fruit ripening, generally cannot", "Heat flow plays a role in melting, from an ice cube to a glacier", "Understanding day, night and eclipses requires knowing how the Earth and Moon move"],
+    answer:0, explanation:"The chapter explicitly says the different fields of science are all interconnected, and ideas in one area often inspire questions or discoveries in another." },
+
+  { id:"H11", type:"incorrect", topic:"Nature of Science", question:"Which of the following statements about the chapter's activities and ideas is INCORRECT?",
+    options:["The \"Question the Answer\" activity asks students to invent a question for a given answer, to encourage creative thinking", "The chapter suggests there is only ever one single correct question for any given answer", "The saying \"To be a wise person, you must be a whys person\" encourages asking \"why\" questions", "The page numbers in the book are designed around the imagery of a butterfly and a paper plane"],
+    answer:1, explanation:"The chapter explicitly says there are never any wrong questions in this activity, and encourages many different, imaginative questions for the same answer — not just one correct question." },
+
+  { id:"H12", type:"correct", topic:"Branches & Interconnection", question:"Which of the following statements is CORRECT?",
+    options:["Scientific ideas in one field of science can inspire questions and discoveries in a completely different field", "According to the chapter, only humans among all living things need to eat to survive", "The chapter states that eclipses have nothing to do with the relative positions of the Sun, Earth and Moon", "Ice melting and a fruit ripening are both examples of reversible changes"],
+    answer:0, explanation:"The chapter directly states that scientific ideas in one area often inspire discoveries or questions in another — this is the theme of interconnection between fields." },
+
+  { id:"H13", type:"correct", topic:"Time & Shadows", question:"Which of the following statements is CORRECT?",
+    options:["Early humans could estimate the time of day by observing how the position and length of shadows changed as the Sun moved across the sky", "The chapter claims that batteries never run out of charge", "According to the chapter, plants carry out no process comparable to breathing at all", "The water cycle described in the chapter involves water evaporating and never returning to Earth"],
+    answer:0, explanation:"The chapter explicitly describes how, before clocks, people used the position of shadows cast by the Sun to estimate the time of day." },
+
+  { id:"H14", type:"case", topic:"Time & Shadows",
+    passage:"During a family trip, Meena noticed that the shadow of a tall tree kept changing through the day — it was long in the early morning, became very short around midday, and grew long again by evening. Her grandmother said people once used exactly this kind of observation before clocks existed.",
+    question:"What concept from the chapter does this scenario best illustrate?",
+    options:["Using the position and length of shadows cast by the Sun to estimate the time of day", "The process of evaporation and the water cycle", "Reversible and irreversible changes in materials", "The circulation of blood in living things"],
+    answer:0, explanation:"This is a direct real-life example of the chapter's idea that shadows cast by the Sun, and how they change through the day, were used by early humans to tell the time." },
+
+  { id:"H15", type:"case", topic:"Materials & Changes",
+    passage:"A student set up a simple circuit: she connected a bulb to a battery using a copper wire, and the bulb glowed brightly. When she replaced the copper wire with a rubber band instead, the bulb did not glow at all, no matter how she connected it.",
+    question:"This experiment connects most directly to which idea from the chapter?",
+    options:["Classifying materials based on properties such as their ability to conduct electricity (metals versus non-metals)", "The water cycle and evaporation from the seas", "The reversible melting of ice into water", "The rotation of the Earth causing day and night"],
+    answer:0, explanation:"The chapter describes exactly this kind of experiment — testing which materials make a lamp glow — as the starting point for classifying materials into conductors and non-conductors (metals and non-metals)." }
+];
+
+const SETS = { easy: POOL_EASY, hard: POOL_HARD };
+const SET_LABEL = { easy: "Set A &bull; Easy &ndash; Moderate", hard: "Set B &bull; Difficult" };
+const TYPE_LABEL = {
+  single:"&#9989; Single Correct", matrix:"&#128279; Match the Following", image:"&#128444;&#65039; Image Based",
+  incorrect:"&#128683; Find the Incorrect Statement", correct:"&#9989; Find the Correct Statement", case:"&#128214; Case Study"
+};
+const SLUG = "1_ever_evolving_worl";
+const TIME_PER_Q = 30;
+
+function wrongKey(setKey) { return "ngmc_wrong_" + SLUG + "_" + setKey; }
+function loadWrong(setKey) { try { return JSON.parse(localStorage.getItem(wrongKey(setKey)) || "[]"); } catch(e) { return []; } }
+function saveWrong(setKey, ids) { try { localStorage.setItem(wrongKey(setKey), JSON.stringify(ids)); } catch(e) {} }
+
+function refreshResumeBanner() {
+  const anyWrong = Object.keys(SETS).some(k => loadWrong(k).length > 0);
+  document.getElementById("resume-banner").style.display = anyWrong ? "block" : "none";
+  const row = document.getElementById("weak-btn-row");
+  row.innerHTML = "";
+  Object.keys(SETS).forEach(k => {
+    if (loadWrong(k).length > 0) {
+      const btn = document.createElement("button");
+      btn.className = "mini-btn";
+      btn.textContent = "&#128204; Focus on weak topics — " + (k === "easy" ? "Set A" : "Set B");
+      btn.innerHTML = "&#128204; Focus on weak topics — " + (k === "easy" ? "Set A" : "Set B");
+      btn.onclick = () => startTest(k, true);
+      row.appendChild(btn);
+    }
+  });
+}
+refreshResumeBanner();
+
+let currentSetKey = "easy";
+let questions = [], current = 0, timer = null, timeLeft = 0, startTime = 0, answered = false;
+let results = [], lastWrong = [], topicData = {};
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function cloneShuffled(q) {
+  const idx = shuffle(q.options.map((_, i) => i));
+  const clone = Object.assign({}, q);
+  clone.options = idx.map(i => q.options[i]);
+  clone.answer = idx.indexOf(q.answer);
+  return clone;
+}
+
+/* ---------------- Audio feedback ---------------- */
+function playTone(freq, duration, type, vol) {
+  try {
+    const ctx = window._audioCtx || (window._audioCtx = new (window.AudioContext || window.webkitAudioContext)());
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.value = freq;
+    gain.gain.value = vol || 0.15;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration / 1000);
+    osc.stop(ctx.currentTime + duration / 1000);
+  } catch (e) {}
+}
+function playCorrect() { playTone(880, 120, "sine", 0.15); setTimeout(() => playTone(1175, 160, "sine", 0.15), 120); }
+function playWrong() { playTone(220, 260, "sawtooth", 0.12); }
+function playFanfare(perfect) {
+  const notes = perfect ? [523, 659, 784, 1046, 1318] : [523, 659, 784, 659];
+  notes.forEach((n, i) => setTimeout(() => playTone(n, 220, "triangle", 0.18), i * 170));
+}
+
+function spawnConfetti() {
+  const emojis = ["&#127881;", "&#127882;", "&#11088;", "&#127775;", "&#127942;"];
+  for (let i = 0; i < 24; i++) {
+    const span = document.createElement("span");
+    span.className = "confetti-piece";
+    span.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    span.style.left = Math.random() * 100 + "vw";
+    span.style.animationDuration = (2 + Math.random() * 1.5) + "s";
+    document.body.appendChild(span);
+    setTimeout(() => span.remove(), 4000);
+  }
+}
+
+/* ---------------- Quiz flow ---------------- */
+function startTest(setKey, focusWrong) {
+  currentSetKey = setKey;
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  document.getElementById("result-screen").style.display = "none";
+  document.getElementById("round-badge").innerHTML = SET_LABEL[setKey];
+  results = []; lastWrong = []; topicData = {};
+  const pool = SETS[setKey];
+
+  let base;
+  if (focusWrong) {
+    const wrongIds = loadWrong(setKey);
+    const wrongPool = pool.filter(q => wrongIds.includes(q.id));
+    const rest = shuffle(pool.filter(q => !wrongIds.includes(q.id)));
+    base = shuffle([...wrongPool, ...rest]).slice(0, pool.length);
+  } else {
+    base = shuffle(pool);
+  }
+  questions = base.map(cloneShuffled);
+  current = 0;
+  startTime = Date.now();
+  showQ();
+}
+
+function showQ() {
+  document.getElementById("q-counter").textContent = "Question " + (current + 1) + " / " + questions.length;
+  document.getElementById("overall-fill").style.width = (current / questions.length * 100) + "%";
+  const q = questions[current];
+
+  document.getElementById("type-badge").innerHTML = TYPE_LABEL[q.type] || "";
+
+  const passageBox = document.getElementById("passage-box");
+  if (q.passage) { passageBox.style.display = "block"; passageBox.textContent = q.passage; }
+  else { passageBox.style.display = "none"; passageBox.textContent = ""; }
+
+  const imgBox = document.getElementById("img-box");
+  if (q.image) { imgBox.style.display = "flex"; imgBox.innerHTML = q.image; }
+  else { imgBox.style.display = "none"; imgBox.innerHTML = ""; }
+
+  const matrixBox = document.getElementById("matrix-box");
+  if (q.type === "matrix" && q.matrixA) {
+    let rows = "";
+    for (let i = 0; i < q.matrixA.length; i++) {
+      rows += "<tr><td>" + q.matrixA[i] + "</td><td>" + (q.matrixB[i] || "") + "</td></tr>";
+    }
+    matrixBox.innerHTML = '<table class="matrix-table"><tr><th>Column A</th><th>Column B</th></tr>' + rows + "</table>";
+    matrixBox.style.display = "block";
+  } else {
+    matrixBox.style.display = "none"; matrixBox.innerHTML = "";
+  }
+
+  document.getElementById("q-text").textContent = q.question;
+  const opts = document.getElementById("options");
+  opts.innerHTML = q.options.map((o, i) =>
+    '<button class="opt-btn" id="opt-' + i + '" onclick="pick(' + i + ')">' + o + "</button>").join("");
+  document.getElementById("explanation").style.display = "none";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("explanation").textContent = "";
+  answered = false;
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = TIME_PER_Q;
+  updateTimer();
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) { clearInterval(timer); autoFail(); }
+  }, 1000);
+}
+
+function updateTimer() {
+  const box = document.getElementById("timer-box");
+  box.textContent = "⏱ " + timeLeft + "s";
+  box.classList.toggle("urgent", timeLeft <= 10);
+}
+
+function autoFail() { pick(-1); }
+
+function pick(chosen) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timer);
+  const q = questions[current];
+  const isCorrect = chosen === q.answer;
+
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById("opt-" + i);
+    if (!btn) return;
+    btn.classList.add("locked");
+    if (i === q.answer) btn.classList.add("correct");
+    else if (i === chosen) btn.classList.add("wrong");
+  });
+
+  isCorrect ? playCorrect() : playWrong();
+
+  const exp = document.getElementById("explanation");
+  exp.textContent = (isCorrect ? "✅ Correct! " : "❌ Wrong. ") + q.explanation;
+  exp.style.display = "block";
+
+  results.push({ q, chosen, isCorrect });
+  if (!isCorrect) lastWrong.push(q.id);
+
+  const t = q.topic || "General";
+  if (!topicData[t]) topicData[t] = { correct: 0, total: 0 };
+  topicData[t].total++;
+  if (isCorrect) topicData[t].correct++;
+
+  document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function nextQ() {
+  current++;
+  if (current < questions.length) { showQ(); return; }
+  saveWrong(currentSetKey, lastWrong);
+  const correct = results.filter(r => r.isCorrect).length;
+  const total = results.length;
+  const pct = Math.round(correct / total * 100);
+  showResults(correct, total, pct);
+}
+
+function formatElapsed(ms) {
+  const s = Math.round(ms / 1000);
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  return m + "m " + (rem < 10 ? "0" : "") + rem + "s";
+}
+
+function showResults(correct, total, pct) {
+  document.getElementById("quiz-screen").style.display = "none";
+  const elapsed = formatElapsed(Date.now() - startTime);
+
+  let tierClass, tierMsg, showTrophy = false, isPerfect = correct === total;
+  if (isPerfect) { tierClass = "tier-perfect"; tierMsg = "&#127942; PERFECT SCORE! Congratulations!"; showTrophy = true; }
+  else if (correct >= 12) { tierClass = "tier-good"; tierMsg = "&#127881; Good job! Well done!"; }
+  else if (correct >= 10) { tierClass = "tier-okay"; tierMsg = "&#128578; Not bad — you can do better!"; }
+  else { tierClass = "tier-low"; tierMsg = "&#128170; Keep practising — you'll get there!"; }
+
+  let topicRows = "";
+  const weakTopics = [];
+  Object.entries(topicData).forEach(([name, st]) => {
+    const p = Math.round(st.correct / st.total * 100);
+    const filledStars = Math.round(p / 20);
+    const stars = "&#9733;".repeat(filledStars) + "&#9734;".repeat(5 - filledStars);
+    topicRows += '<div class="topic-row"><span class="topic-name">' + name + '</span><span class="topic-stars">' + stars + '</span><span class="topic-conf">' + p + '%</span></div>';
+    if (p < 60) weakTopics.push(name);
+  });
+
+  let weakBox = "";
+  if (weakTopics.length > 0) {
+    weakBox = '<div class="weak-box"><h4>&#128204; Weak Areas to Revise</h4><ul>' +
+      weakTopics.map(t => "<li>" + t + " — go back to this part of the chapter and re-read it</li>").join("") +
+      "</ul></div>";
+  }
+
+  const panel = document.getElementById("result-screen");
+  panel.innerHTML =
+    (showTrophy ? '<span class="trophy">&#127942;</span>' : "") +
+    "<h2>" + (SET_LABEL[currentSetKey]) + " — Result</h2>" +
+    '<div class="elapsed-time">Time taken: ' + elapsed + "</div>" +
+    '<div class="tier-banner ' + tierClass + '">' + tierMsg + "</div>" +
+    '<div class="stats-row">' +
+      '<div class="stat-box"><div class="num" style="color:#00b894">' + correct + '</div><div class="lbl">Correct</div></div>' +
+      '<div class="stat-box"><div class="num" style="color:#ff6b6b">' + (total - correct) + '</div><div class="lbl">Wrong</div></div>' +
+      '<div class="stat-box"><div class="num">' + pct + '%</div><div class="lbl">Score</div></div>' +
+    "</div>" +
+    '<div class="topic-analysis"><h3 style="margin:0 0 .6rem">Topic Confidence</h3>' + topicRows + "</div>" +
+    weakBox +
+    '<div class="result-btns">' +
+      '<button class="result-btn btn-again" onclick="startTest(\'' + currentSetKey + '\', false)">&#128260; Reattempt (Shuffled)</button>' +
+      (lastWrong.length > 0 ? '<button class="result-btn btn-weak" onclick="startTest(\'' + currentSetKey + '\', true)">&#127919; Focus on Weak Topics</button>' : "") +
+      '<button class="result-btn btn-switch" onclick="backToStart()">&#128260; Try Other Set</button>' +
+      '<button class="result-btn btn-share" onclick="shareResult(' + correct + ',' + total + ',' + pct + ')">&#128279; Share Result</button>' +
+    "</div>";
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth" });
+
+  playFanfare(isPerfect);
+  if (isPerfect) spawnConfetti();
+  refreshResumeBanner();
+}
+
+function backToStart() {
+  document.getElementById("result-screen").style.display = "none";
+  document.getElementById("start-screen").style.display = "block";
+  refreshResumeBanner();
+}
+
+function shareResult(correct, total, pct) {
+  const setName = currentSetKey === "easy" ? "Set A (Easy-Moderate)" : "Set B (Difficult)";
+  const trophy = correct === total ? " 🏆" : "";
+  const text = "I scored " + correct + "/" + total + " (" + pct + "%) on \"1 EVER EVOLVING WORLD OF SCIENCE\" — " + setName + "! 🎯" + trophy;
+  if (navigator.share) {
+    navigator.share({ title: "Adaptive Test Result", text: text }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!")).catch(() => alert(text));
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theory — 1 EVER EVOLVING WORLD OF SCIENCE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Baloo+2:wght@600;700&display=swap');
+
+:root { --tf:'Baloo 2',cursive; --tb:'Quicksand',sans-serif; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:var(--tb); min-height:100vh; color:#3f3350; position:relative; overflow-x:hidden;
+  background:linear-gradient(160deg,#fdf6ff 0%,#f5f8ff 45%,#fff8f0 100%); }
+
+/* Artistic blurred blob background */
+.blob { position:fixed; border-radius:50%; filter:blur(70px); opacity:.55; z-index:0; pointer-events:none; }
+.blob-1 { width:420px; height:420px; top:-120px; left:-100px; background:#ffd6e8; }
+.blob-2 { width:380px; height:380px; top:20%; right:-140px; background:#c9e7ff; }
+.blob-3 { width:360px; height:360px; bottom:-100px; left:15%; background:#fff3c4; }
+.blob-4 { width:300px; height:300px; bottom:10%; right:10%; background:#d9f7e6; }
+
+/* Top bar */
+.th-top { position:sticky; top:0; z-index:50; background:rgba(255,255,255,.72); backdrop-filter:blur(10px);
+  border-bottom:1px solid #eee0f5; padding:.8rem 1.4rem; display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:.6rem; }
+.th-top a.back { color:#8b5cf6; text-decoration:none; font-weight:700; font-size:.85rem; }
+.th-top h1 { font-family:var(--tf); font-size:1.05rem; margin:0; color:#5b21b6; text-align:center; flex:1; }
+.th-toc select { border:1.5px solid #e4d3f5; background:#fff; border-radius:14px; padding:.4rem .8rem;
+  font-family:var(--tb); font-weight:600; font-size:.8rem; color:#5b21b6; max-width:200px; }
+
+.th-wrap { max-width:820px; margin:0 auto; padding:1.6rem 1.2rem 4rem; position:relative; z-index:1; }
+
+.th-hero { text-align:center; margin-bottom:1.8rem; }
+.th-hero .badge { display:inline-block; background:#fff; border:1px solid #eadcf9; border-radius:20px;
+  padding:.3rem 1rem; font-size:.78rem; font-weight:700; color:#8b5cf6; margin-bottom:.6rem; }
+.th-hero h2 { font-family:var(--tf); font-size:2rem; margin:.2rem 0; color:#3f3350; }
+.th-hero p { color:#7a6f8c; font-size:.95rem; }
+
+/* Topic block */
+.topic-block { background:var(--tbg); border:1px solid var(--tbrd); border-radius:26px; padding:1.6rem 1.7rem;
+  margin:1.6rem 0; box-shadow:0 10px 30px -12px rgba(80,50,120,.15); position:relative; }
+.topic-head { display:flex; align-items:center; gap:.7rem; margin-bottom:.5rem; }
+.topic-emoji { font-size:2rem; }
+.topic-head h3 { font-family:var(--tf); font-size:1.35rem; margin:0; color:var(--thd); }
+.topic-hook { font-style:italic; color:var(--thd); opacity:.85; margin:.2rem 0 .9rem; font-size:.95rem; }
+.topic-theory p { line-height:1.75; margin:0 0 .8rem; font-size:.97rem; color:#3f3350; }
+.key-points { display:flex; flex-wrap:wrap; gap:.5rem; margin:.8rem 0; }
+.key-points span { background:var(--tchip); color:var(--thd); border-radius:14px; padding:.35rem .85rem;
+  font-size:.82rem; font-weight:600; }
+.real-life { background:rgba(255,255,255,.65); border-left:4px solid var(--tbrd); border-radius:14px;
+  padding:.8rem 1rem; margin:1rem 0; font-size:.9rem; }
+.real-life b { color:var(--thd); }
+.topic-illus { width:100%; border-radius:18px; margin:1rem 0; display:block; box-shadow:0 8px 24px -10px rgba(80,50,120,.25); }
+
+/* Practice zone */
+.practice-zone { margin-top:1.3rem; background:rgba(255,255,255,.55); border:1.5px dashed var(--tbrd);
+  border-radius:20px; padding:1.1rem 1.2rem; }
+.practice-zone h4 { font-family:var(--tf); margin:0 0 .8rem; color:var(--thd); font-size:1.05rem; }
+.pq-grid { display:grid; gap:.7rem; }
+.pq-card { background:#fff; border:1px solid var(--tchip); border-radius:14px; padding:.7rem .9rem; }
+.pq-card .pq-q { font-weight:700; font-size:.88rem; color:#3f3350; margin-bottom:.4rem; }
+.pq-reveal { background:var(--taccent); color:#fff; border:none; border-radius:12px; padding:.32rem .8rem;
+  font-size:.75rem; font-weight:700; cursor:pointer; font-family:var(--tb); }
+.pq-answer { display:none; margin-top:.5rem; font-size:.85rem; border-radius:10px; padding:.5rem .7rem; }
+.pq-answer.show { display:block; }
+
+/* Game panel */
+.game-panel { background:#fff; border-radius:28px; padding:1.6rem; margin:2.2rem 0; box-shadow:0 14px 40px -14px rgba(80,50,120,.22);
+  border:2px solid #f3e6ff; position:relative; z-index:1; }
+.game-panel h3 { font-family:var(--tf); text-align:center; font-size:1.4rem; margin:0 0 .3rem; color:#7e22ce; }
+.game-panel .game-sub { text-align:center; color:#8a7d9c; font-size:.85rem; margin-bottom:1.1rem; }
+
+/* Crossword */
+.xw-area { display:flex; gap:1.4rem; flex-wrap:wrap; justify-content:center; }
+.xw-grid-wrap { overflow:auto; max-width:100%; }
+.xw-grid { display:grid; gap:2px; }
+.xw-cell { width:32px; height:32px; position:relative; }
+.xw-cell.blank { background:transparent; }
+.xw-cell.fill { background:#fdf6ff; border:1.5px solid #d8b9f2; border-radius:4px; }
+.xw-cell input { width:100%; height:100%; border:none; background:transparent; text-align:center; text-transform:uppercase;
+  font-weight:800; font-size:.95rem; color:#5b21b6; border-radius:4px; font-family:var(--tb); padding:0; }
+.xw-cell input:focus { outline:2px solid #a855f7; background:#f3e8ff; }
+.xw-cell.correct input { background:#dcfce7; color:#15803d; }
+.xw-cell.wrong input { background:#fee2e2; color:#b91c1c; }
+.xw-num { position:absolute; top:0; left:2px; font-size:.55rem; color:#a855f7; font-weight:700; }
+.xw-clues { min-width:200px; max-width:280px; font-size:.82rem; }
+.xw-clues h5 { margin:.2rem 0 .4rem; color:#7e22ce; font-family:var(--tf); font-size:.95rem; }
+.xw-clues ol { margin:0 0 1rem; padding:0; list-style:none; }
+.xw-clues li { margin-bottom:.35rem; color:#4b3f5e; }
+.xw-btn { display:block; margin:1.2rem auto 0; background:linear-gradient(135deg,#a855f7,#ec4899); color:#fff;
+  border:none; border-radius:20px; padding:.6rem 1.6rem; font-weight:700; cursor:pointer; font-family:var(--tb); font-size:.9rem; }
+.xw-msg { text-align:center; margin-top:.8rem; font-weight:700; font-family:var(--tf); font-size:1.1rem; min-height:1.4rem; color:#7e22ce; }
+
+/* Word search */
+.ws-area { display:flex; gap:1.4rem; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+.ws-grid-wrap { overflow:auto; max-width:100%; }
+.ws-grid { display:grid; gap:1px; user-select:none; touch-action:none; }
+.ws-cell { width:26px; height:26px; display:flex; align-items:center; justify-content:center; background:#fdf6ff;
+  border:1px solid #ecdbfb; font-weight:700; font-size:.72rem; color:#5b21b6; cursor:pointer; border-radius:3px; }
+.ws-cell.selected { background:#e9d5ff; }
+.ws-cell.found { background:#bbf7d0; color:#15803d; }
+.ws-words { min-width:180px; font-size:.85rem; }
+.ws-words h5 { margin:.2rem 0 .5rem; color:#7e22ce; font-family:var(--tf); font-size:.95rem; }
+.ws-words ul { list-style:none; margin:0; padding:0; }
+.ws-words li { padding:.3rem .6rem; border-radius:10px; margin-bottom:.35rem; background:#fdf6ff; font-weight:600; color:#4b3f5e; }
+.ws-words li.done { background:#dcfce7; color:#15803d; text-decoration:line-through; opacity:.7; }
+.ws-progress { text-align:center; font-weight:700; color:#7e22ce; margin-top:.8rem; font-family:var(--tf); }
+.ws-msg { text-align:center; margin-top:.6rem; font-weight:700; font-family:var(--tf); font-size:1.1rem; min-height:1.4rem; color:#7e22ce; }
+
+.th-end { text-align:center; margin-top:2.5rem; padding:2rem; background:linear-gradient(135deg,#fef3ff,#eef2ff);
+  border-radius:24px; }
+.th-end h2 { font-family:var(--tf); color:#7e22ce; font-size:1.6rem; margin:0 0 .5rem; }
+.th-end a { display:inline-block; margin-top:.8rem; background:#7e22ce; color:#fff; text-decoration:none;
+  padding:.7rem 1.6rem; border-radius:22px; font-weight:700; }
+
+@media (max-width:640px) {
+  .th-hero h2 { font-size:1.5rem; }
+  .xw-cell { width:26px; height:26px; }
+  .ws-cell { width:22px; height:22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="blob blob-4"></div>
+
+<div class="th-top">
+  <a class="back" href="index.html">&#8592; Chapter Hub</a>
+  <h1>📘 1 EVER EVOLVING WORLD OF SCIENCE — Theory</h1>
+  <div class="th-toc">
+    <select id="th-jump" onchange="document.getElementById(this.value).scrollIntoView({behavior:'smooth'})">
+      <option value="">Jump to topic…</option>
+      <option value="topic-0">🔬 Science is a Journey</option><option value="topic-1">❓ Curiosity and Asking Questions</option><option value="topic-2">🧪 Experiments and Fair Testing</option><option value="topic-3">🌍 Science Everywhere: From Cells to Space</option><option value="topic-4">🧠 Science Keeps Changing (Ever-Evolving Knowledge)</option>
+    </select>
+  </div>
+</div>
+
+<div class="th-wrap">
+  <div class="th-hero">
+    <span class="badge">Grade 7 &middot; Science</span>
+    <h2>1 EVER EVOLVING WORLD OF SCIENCE</h2>
+    <p>Your complete illustrated lesson — read, practise, and play as you go.</p>
+  </div>
+
+  
+<section class="topic-block" id="topic-0" style="--tbg:#FFF7ED;--tbrd:#F97316;--thd:#C2410C;--tchip:#FFEDD5;--taccent:#FB923C">
+  <div class="topic-head">
+    <span class="topic-emoji">🔬</span>
+    <h3>Science is a Journey</h3>
+  </div>
+  <p class="topic-hook">Science is not a list of facts—it is an exciting journey of questioning and discovering!</p>
+  <div class="topic-theory"><p>Science helps us understand the world by asking questions, observing carefully, and testing ideas.</p><p>In Grade 7, you will explore both the tiny (like cells) and the huge (like planets), learning how scientists think and how scientific knowledge keeps growing and improving over time.</p></div>
+  <img class="topic-illus" src="images/theory_page1_paperplanes.png" alt="Children flying paper planes in a park, with birds and butterflies around them">
+  <div class="key-points"><span style="background:#FFEDD5;color:#C2410C">Science invites questions and investigation</span><span style="background:#FFEDD5;color:#C2410C">Science explains the world from small to large scales</span><span style="background:#FFEDD5;color:#C2410C">Scientific knowledge changes with new evidence</span></div>
+  <div class="real-life" style="border-left-color:#F97316"><b>💡 Real-life connection:</b> A phone camera improved over years because scientists kept testing new lenses and sensors and learning from results.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What is one main goal of science?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ To understand and explain the natural world using evidence.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. Why is science described as a journey?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Because we keep exploring, testing, and learning new things over time.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. Give one example of something small and something large studied in science.</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Small: cells; large: planets.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. What makes science different from guessing?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Science uses observations and experiments as evidence.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. Why can scientific ideas change?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ New evidence can improve or replace older explanations.</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-1" style="--tbg:#EFF6FF;--tbrd:#3B82F6;--thd:#1D4ED8;--tchip:#DBEAFE;--taccent:#60A5FA">
+  <div class="topic-head">
+    <span class="topic-emoji">❓</span>
+    <h3>Curiosity and Asking Questions</h3>
+  </div>
+  <p class="topic-hook">Every big discovery begins with a simple, brave question!</p>
+  <div class="topic-theory"><p>Curiosity is the habit of wondering “why?” and “how?” about things you see around you. Good scientific questions are clear, testable, and focused on one idea at a time.</p><p>Scientists often start with observations, then ask questions that can be answered by collecting data. A strong question leads to a fair test and a meaningful conclusion.</p></div>
+  <img class="topic-illus" src="images/theory_page2_sourfruits.png" alt="A basket of fruits pointing to sour fruits like orange, grapes, mango and tomato, and a boy wondering why a haldi stain is hard to wash off a shirt">
+  <div class="key-points"><span style="background:#DBEAFE;color:#1D4ED8">Curiosity starts scientific thinking</span><span style="background:#DBEAFE;color:#1D4ED8">Good questions are clear and testable</span><span style="background:#DBEAFE;color:#1D4ED8">Observations help you form questions</span></div>
+  <div class="real-life" style="border-left-color:#3B82F6"><b>💡 Real-life connection:</b> Noticing plants near a window grow toward light can lead to the question: “Does light direction affect plant growth?”</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What is curiosity in science?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ The desire to ask questions and find explanations.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. Which is more testable: “Why is nature beautiful?” or “Does fertilizer increase plant height?”</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ “Does fertilizer increase plant height?”</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. What usually comes first: observation or conclusion?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ Observation.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Write one testable question about sound.</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ Does increasing volume make sound travel farther?</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. Why should a scientific question be focused?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ So you can test one idea clearly and interpret results.</div>
+</div></div>
+  </div>
+</section>
+<div class="game-panel" id="xw-root">
+  <h3>🧩 Crossword Break!</h3>
+  <p class="game-sub">Fill in the grid using clues from what you've learned so far.</p>
+  <div class="xw-area">
+    <div class="xw-grid-wrap"><div class="xw-grid" id="xw-grid"></div></div>
+    <div class="xw-clues">
+      <div><h5>Across</h5><ol id="xw-across"></ol></div>
+      <div><h5>Down</h5><ol id="xw-down"></ol></div>
+    </div>
+  </div>
+  <button class="xw-btn" onclick="checkCrossword()">✅ Check My Answers</button>
+  <div class="xw-msg" id="xw-msg"></div>
+</div>
+<script>
+(function(){
+  const RAW = [{"term": "science", "clue": "Study of the natural world using evidence"}, {"term": "curiosity", "clue": "Strong desire to know or learn"}, {"term": "observation", "clue": "Careful noticing using senses or tools"}, {"term": "question", "clue": "What you ask to guide an investigation"}, {"term": "experiment", "clue": "Planned test to find an answer"}, {"term": "evidence", "clue": "Facts or data that support an idea"}, {"term": "data", "clue": "Recorded results from measurements or observations"}];
+  const words = RAW.map(w => ({
+    term: (w.term||'').toUpperCase().replace(/[^A-Z]/g,''),
+    clue: w.clue || ''
+  })).filter(w => w.term.length >= 3).slice(0, 8);
+
+  const rootMsg = document.getElementById('xw-msg');
+  if (words.length === 0) {
+    document.getElementById('xw-root').style.display = 'none';
+    return;
+  }
+
+  words.sort((a,b) => b.term.length - a.term.length);
+
+  const grid = {}; // "r,c" -> {letter}
+  const placements = []; // {word, clue, row, col, dir}
+
+  function canPlace(word, row, col, dir) {
+    for (let i = 0; i < word.length; i++) {
+      const r = dir === 'D' ? row + i : row;
+      const c = dir === 'A' ? col + i : col;
+      const key = r + ',' + c;
+      if (grid[key] && grid[key].letter !== word[i]) return false;
+    }
+    return true;
+  }
+  function place(word, clue, row, col, dir) {
+    for (let i = 0; i < word.length; i++) {
+      const r = dir === 'D' ? row + i : row;
+      const c = dir === 'A' ? col + i : col;
+      const key = r + ',' + c;
+      if (!grid[key]) grid[key] = { letter: word[i] };
+    }
+    placements.push({ word, clue, row, col, dir });
+  }
+
+  place(words[0].term, words[0].clue, 0, 0, 'A');
+
+  for (let wi = 1; wi < words.length; wi++) {
+    const w = words[wi];
+    let placed = false;
+    outer:
+    for (let li = 0; li < w.term.length && !placed; li++) {
+      const ch = w.term[li];
+      for (const key in grid) {
+        if (grid[key].letter !== ch) continue;
+        const parts = key.split(',');
+        const gr = Number(parts[0]), gc = Number(parts[1]);
+        const vr = gr - li, vc = gc;
+        if (canPlace(w.term, vr, vc, 'D')) { place(w.term, w.clue, vr, vc, 'D'); placed = true; break outer; }
+        const hr = gr, hc = gc - li;
+        if (canPlace(w.term, hr, hc, 'A')) { place(w.term, w.clue, hr, hc, 'A'); placed = true; break outer; }
+      }
+    }
+    if (!placed) {
+      let maxRow = 0;
+      for (const key in grid) maxRow = Math.max(maxRow, Number(key.split(',')[0]));
+      place(w.term, w.clue, maxRow + 2, 0, 'A');
+    }
+  }
+
+  let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+  for (const key in grid) {
+    const parts = key.split(',');
+    const r = Number(parts[0]), c = Number(parts[1]);
+    minR = Math.min(minR, r); maxR = Math.max(maxR, r);
+    minC = Math.min(minC, c); maxC = Math.max(maxC, c);
+  }
+  const rows = maxR - minR + 1, cols = maxC - minC + 1;
+  const norm = {};
+  for (const key in grid) {
+    const parts = key.split(',');
+    const r = Number(parts[0]), c = Number(parts[1]);
+    norm[(r - minR) + ',' + (c - minC)] = grid[key];
+  }
+  placements.forEach(p => { p.row -= minR; p.col -= minC; });
+
+  const startCells = [];
+  placements.forEach(p => {
+    if (!startCells.some(s => s.row === p.row && s.col === p.col)) {
+      startCells.push({ row: p.row, col: p.col });
+    }
+  });
+  startCells.sort((a, b) => a.row - b.row || a.col - b.col);
+  startCells.forEach((s, i) => { s.num = i + 1; });
+  placements.forEach(p => {
+    p.num = startCells.find(s => s.row === p.row && s.col === p.col).num;
+  });
+
+  const gridEl = document.getElementById('xw-grid');
+  gridEl.style.gridTemplateColumns = 'repeat(' + cols + ', 32px)';
+  gridEl.style.gridTemplateRows = 'repeat(' + rows + ', 32px)';
+  const cellRefs = {};
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const key = r + ',' + c;
+      const div = document.createElement('div');
+      if (norm[key]) {
+        div.className = 'xw-cell fill';
+        const numHere = placements.find(p => p.row === r && p.col === c);
+        if (numHere) {
+          const num = document.createElement('span');
+          num.className = 'xw-num';
+          num.textContent = numHere.num;
+          div.appendChild(num);
+        }
+        const input = document.createElement('input');
+        input.maxLength = 1;
+        input.dataset.answer = norm[key].letter;
+        input.addEventListener('input', function(e) {
+          e.target.value = e.target.value.toUpperCase().replace(/[^A-Z]/, '');
+          if (e.target.value) {
+            const nextCell = e.target.parentElement.nextElementSibling;
+            if (nextCell) { const ni = nextCell.querySelector('input'); if (ni) ni.focus(); }
+          }
+        });
+        div.appendChild(input);
+        cellRefs[key] = input;
+      } else {
+        div.className = 'xw-cell blank';
+      }
+      gridEl.appendChild(div);
+    }
+  }
+
+  const acrossEl = document.getElementById('xw-across');
+  const downEl = document.getElementById('xw-down');
+  placements.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = p.num + '. ' + (p.clue || p.word);
+    (p.dir === 'A' ? acrossEl : downEl).appendChild(li);
+  });
+  if (!acrossEl.children.length) acrossEl.parentElement.style.display = 'none';
+  if (!downEl.children.length) downEl.parentElement.style.display = 'none';
+
+  window.checkCrossword = function() {
+    let correct = 0, total = 0;
+    for (const key in cellRefs) {
+      total++;
+      const input = cellRefs[key];
+      const cellDiv = input.parentElement;
+      cellDiv.classList.remove('correct', 'wrong');
+      if ((input.value || '').toUpperCase() === input.dataset.answer) {
+        cellDiv.classList.add('correct'); correct++;
+      } else if (input.value) {
+        cellDiv.classList.add('wrong');
+      }
+    }
+    if (correct === total) rootMsg.textContent = '🎉 Crossword solved! Great job!';
+    else rootMsg.textContent = correct + ' / ' + total + ' letters correct — keep going!';
+  };
+})();
+</script>
+<section class="topic-block" id="topic-2" style="--tbg:#FDF2F8;--tbrd:#EC4899;--thd:#BE185D;--tchip:#FCE7F3;--taccent:#F472B6">
+  <div class="topic-head">
+    <span class="topic-emoji">🧪</span>
+    <h3>Experiments and Fair Testing</h3>
+  </div>
+  <p class="topic-hook">Experiments are like detective work—careful tests that reveal the truth!</p>
+  <div class="topic-theory"><p>An experiment is a planned test used to find out if an idea is correct. A fair test changes only one factor at a time (the independent variable) and measures what happens (the dependent variable).</p><p>To make results trustworthy, you keep other factors the same (controlled variables), repeat trials, and record data neatly. This helps you reach conclusions based on evidence, not opinions.</p></div>
+  <div class="key-points"><span style="background:#FCE7F3;color:#BE185D">A fair test changes only one variable at a time</span><span style="background:#FCE7F3;color:#BE185D">Measurements and data make results reliable</span><span style="background:#FCE7F3;color:#BE185D">Repeating trials increases confidence</span></div>
+  <div class="real-life" style="border-left-color:#EC4899"><b>💡 Real-life connection:</b> Testing which paper towel absorbs most water by using the same water amount and timing for each brand.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What is the independent variable?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ The factor you change on purpose.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. What is the dependent variable?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ The factor you measure or observe as the result.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. Why do we repeat trials?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ To reduce errors and make results more reliable.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. In a test of plant growth, what should be kept the same?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ Soil type, pot size, water amount, and plant type.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. What is data?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ Recorded observations and measurements from an investigation.</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-3" style="--tbg:#F0FDF4;--tbrd:#22C55E;--thd:#15803D;--tchip:#DCFCE7;--taccent:#4ADE80">
+  <div class="topic-head">
+    <span class="topic-emoji">🌍</span>
+    <h3>Science Everywhere: From Cells to Space</h3>
+  </div>
+  <p class="topic-hook">Science connects the tiniest cell to the biggest galaxy—everything is linked!</p>
+  <div class="topic-theory"><p>The world of science covers many scales. Some scientists study living things, like cells inside your body, while others study Earth systems like weather and rocks.</p><p>Science also reaches far beyond our planet, helping us understand the Moon, the Sun, and the universe. Learning science builds a “big picture” of how nature works at every level.</p></div>
+  <div class="key-points"><span style="background:#DCFCE7;color:#15803D">Science studies living and non-living things</span><span style="background:#DCFCE7;color:#15803D">Science works at tiny and huge scales</span><span style="background:#DCFCE7;color:#15803D">Different fields connect to form a bigger understanding</span></div>
+  <div class="real-life" style="border-left-color:#22C55E"><b>💡 Real-life connection:</b> Doctors use cell knowledge to treat disease, while satellites use space science to predict storms on Earth.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. Name one thing studied in biology.</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ Cells or living organisms.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. Name one thing studied in astronomy.</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ Planets, stars, or galaxies.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. Is weather more related to Earth science or space science?</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ Earth science.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Why is it useful to study science at different scales?</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ It helps explain both small processes and large systems.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. Give one example of science helping daily life.</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ Weather forecasting helps people plan and stay safe.</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-4" style="--tbg:#FAF5FF;--tbrd:#A855F7;--thd:#7E22CE;--tchip:#F3E8FF;--taccent:#C084FC">
+  <div class="topic-head">
+    <span class="topic-emoji">🧠</span>
+    <h3>Science Keeps Changing (Ever-Evolving Knowledge)</h3>
+  </div>
+  <p class="topic-hook">In science, new evidence can rewrite what we think we know—and that is a strength!</p>
+  <div class="topic-theory"><p>Science is “ever-evolving” because explanations improve when new observations and better technology appear. Scientists compare ideas with evidence, and weak ideas are corrected or replaced.</p><p>This does not mean science is unreliable; it means science is self-correcting. Over time, repeated testing and peer checking help build stronger, more accurate knowledge.</p></div>
+  <div class="key-points"><span style="background:#F3E8FF;color:#7E22CE">New evidence can change scientific explanations</span><span style="background:#F3E8FF;color:#7E22CE">Technology helps scientists observe more accurately</span><span style="background:#F3E8FF;color:#7E22CE">Science is self-correcting through testing and checking</span></div>
+  <div class="real-life" style="border-left-color:#A855F7"><b>💡 Real-life connection:</b> Pluto was reclassified as a dwarf planet after better observations and clearer scientific definitions.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What does “ever-evolving” mean in science?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ Scientific knowledge changes and improves over time.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. Why can technology change scientific ideas?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ It provides better observations and measurements.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. Does changing ideas make science weak or strong?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ Strong, because it corrects itself using evidence.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. What is evidence in science?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ Reliable observations and data that support or challenge an idea.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. How do repeated tests help science?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ They confirm results and reduce the chance of error.</div>
+</div></div>
+  </div>
+</section>
+<div class="game-panel" id="ws-root">
+  <h3>🔍 Word Search Challenge!</h3>
+  <p class="game-sub">Drag across letters to find every word from this chapter.</p>
+  <div class="ws-area">
+    <div class="ws-grid-wrap"><div class="ws-grid" id="ws-grid"></div></div>
+    <div class="ws-words">
+      <h5>Find these words</h5>
+      <ul id="ws-words-list"></ul>
+    </div>
+  </div>
+  <div class="ws-progress"><span id="ws-found">0</span> / <span id="ws-total">0</span> found</div>
+  <div class="ws-msg" id="ws-msg"></div>
+</div>
+<script>
+(function(){
+  const RAW = [{"term": "variable", "clue": "A factor that can change in a test"}, {"term": "fair test", "clue": "Test where only one factor is changed"}, {"term": "conclusion", "clue": "Decision based on results and evidence"}, {"term": "technology", "clue": "Tools that help solve problems or improve study"}, {"term": "cell", "clue": "Smallest basic unit of living things"}, {"term": "scale", "clue": "Size level from tiny to huge"}, {"term": "astronomy", "clue": "Study of space objects like stars and planets"}];
+  const items = RAW.map(w => ({
+    display: w.term || '',
+    grid: (w.term || '').toUpperCase().replace(/[^A-Z]/g, '')
+  })).filter(w => w.grid.length >= 3).slice(0, 10);
+
+  if (items.length === 0) {
+    document.getElementById('ws-root').style.display = 'none';
+    return;
+  }
+
+  const maxLen = Math.max.apply(null, items.map(w => w.grid.length));
+  const SIZE = Math.max(12, maxLen + 3);
+  const cells = [];
+  for (let r = 0; r < SIZE; r++) cells.push(new Array(SIZE).fill(null));
+
+  const DIRS = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
+  const placedWords = [];
+
+  items.forEach(item => {
+    const w = item.grid;
+    let placed = false;
+    for (let attempt = 0; attempt < 80 && !placed; attempt++) {
+      const dir = DIRS[Math.floor(Math.random() * DIRS.length)];
+      const row = Math.floor(Math.random() * SIZE);
+      const col = Math.floor(Math.random() * SIZE);
+      const endR = row + dir[0] * (w.length - 1);
+      const endC = col + dir[1] * (w.length - 1);
+      if (endR < 0 || endR >= SIZE || endC < 0 || endC >= SIZE) continue;
+      let ok = true;
+      for (let i = 0; i < w.length; i++) {
+        const r = row + dir[0]*i, c = col + dir[1]*i;
+        if (cells[r][c] !== null && cells[r][c] !== w[i]) { ok = false; break; }
+      }
+      if (!ok) continue;
+      for (let i = 0; i < w.length; i++) {
+        const r = row + dir[0]*i, c = col + dir[1]*i;
+        cells[r][c] = w[i];
+      }
+      placedWords.push({ display: item.display, grid: w, row: row, col: col, dir: dir, len: w.length });
+      placed = true;
+    }
+  });
+
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      if (cells[r][c] === null) cells[r][c] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    }
+  }
+
+  const gridEl = document.getElementById('ws-grid');
+  gridEl.style.gridTemplateColumns = 'repeat(' + SIZE + ', 26px)';
+  const cellEls = [];
+  for (let r = 0; r < SIZE; r++) {
+    const rowEls = [];
+    for (let c = 0; c < SIZE; c++) {
+      const div = document.createElement('div');
+      div.className = 'ws-cell';
+      div.textContent = cells[r][c];
+      div.dataset.r = r; div.dataset.c = c;
+      gridEl.appendChild(div);
+      rowEls.push(div);
+    }
+    cellEls.push(rowEls);
+  }
+
+  const wordsListEl = document.getElementById('ws-words-list');
+  placedWords.forEach((w, i) => {
+    const li = document.createElement('li');
+    li.textContent = w.display;
+    li.id = 'ws-word-' + i;
+    wordsListEl.appendChild(li);
+  });
+
+  const totalCount = placedWords.length;
+  let foundCount = 0;
+  const foundWordSet = new Set();
+  document.getElementById('ws-total').textContent = totalCount;
+  document.getElementById('ws-found').textContent = '0';
+
+  let selecting = false, startCell = null, selectedCells = [];
+
+  function clearSelection() {
+    selectedCells.forEach(el => el.classList.remove('selected'));
+    selectedCells = [];
+  }
+  function selectLine(r1, c1, r2, c2) {
+    clearSelection();
+    const dr = Math.sign(r2 - r1), dc = Math.sign(c2 - c1);
+    if (r1 !== r2 && c1 !== c2 && Math.abs(r2 - r1) !== Math.abs(c2 - c1)) return;
+    const steps = Math.max(Math.abs(r2 - r1), Math.abs(c2 - c1));
+    for (let i = 0; i <= steps; i++) {
+      const r = r1 + dr*i, c = c1 + dc*i;
+      const el = cellEls[r][c];
+      el.classList.add('selected');
+      selectedCells.push(el);
+    }
+  }
+  function checkSelection() {
+    if (selectedCells.length < 2) { clearSelection(); return; }
+    const letters = selectedCells.map(el => el.textContent).join('');
+    const reversed = letters.split('').reverse().join('');
+    let matchIdx = -1;
+    placedWords.forEach((w, i) => {
+      if (foundWordSet.has(i)) return;
+      if (w.grid === letters || w.grid === reversed) matchIdx = i;
+    });
+    if (matchIdx >= 0) {
+      foundWordSet.add(matchIdx);
+      selectedCells.forEach(el => { el.classList.add('found'); el.classList.remove('selected'); });
+      document.getElementById('ws-word-' + matchIdx).classList.add('done');
+      foundCount++;
+      document.getElementById('ws-found').textContent = foundCount;
+      selectedCells = [];
+      if (foundCount === totalCount) {
+        document.getElementById('ws-msg').textContent = '🏆 All words found! You are a champion!';
+      }
+    } else {
+      clearSelection();
+    }
+  }
+
+  function cellFromPoint(x, y) {
+    const el = document.elementFromPoint(x, y);
+    return el ? el.closest('.ws-cell') : null;
+  }
+
+  gridEl.addEventListener('mousedown', e => {
+    const cell = e.target.closest('.ws-cell');
+    if (!cell) return;
+    selecting = true; startCell = cell;
+    clearSelection(); cell.classList.add('selected'); selectedCells = [cell];
+  });
+  gridEl.addEventListener('mouseover', e => {
+    if (!selecting) return;
+    const cell = e.target.closest('.ws-cell');
+    if (!cell || !startCell) return;
+    selectLine(Number(startCell.dataset.r), Number(startCell.dataset.c), Number(cell.dataset.r), Number(cell.dataset.c));
+  });
+  document.addEventListener('mouseup', () => {
+    if (!selecting) return;
+    selecting = false;
+    checkSelection();
+  });
+  gridEl.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    const cell = cellFromPoint(t.clientX, t.clientY);
+    if (!cell) return;
+    selecting = true; startCell = cell;
+    clearSelection(); cell.classList.add('selected'); selectedCells = [cell];
+  }, { passive: true });
+  gridEl.addEventListener('touchmove', e => {
+    if (!selecting) return;
+    const t = e.touches[0];
+    const cell = cellFromPoint(t.clientX, t.clientY);
+    if (!cell || !startCell) return;
+    selectLine(Number(startCell.dataset.r), Number(startCell.dataset.c), Number(cell.dataset.r), Number(cell.dataset.c));
+  }, { passive: true });
+  gridEl.addEventListener('touchend', () => {
+    if (!selecting) return;
+    selecting = false;
+    checkSelection();
+  });
+})();
+</script>
+
+  <div class="th-end">
+    <h2>🎉 Chapter Complete!</h2>
+    <p>Great work getting through the whole theory lesson.</p>
+    <a href="index.html">Back to Chapter Hub &rarr;</a>
+  </div>
+</div>
+
+</body>
+</html>

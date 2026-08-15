@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notes — 1 EVER EVOLVING WORLD OF SCIENCE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root { --fh:'Kalam','Caveat',cursive; --fb:'Nunito',sans-serif; }
+body { margin:0; background:#c8c2ba; font-family:var(--fb); min-height:100vh; }
+
+/* ── Top bar ─────────────────────────────────────────────────────────────── */
+.top-bar { background:linear-gradient(135deg,#6c63ff,#a855f7); padding:.7rem 1.4rem;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+  position:sticky; top:0; z-index:100; box-shadow:0 3px 16px rgba(0,0,0,.22); }
+.top-bar h1 { color:#fff; margin:0; font-size:1rem; font-family:var(--fh); font-weight:700; }
+.top-bar-actions { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+.tb-btn { background:rgba(255,255,255,.18); color:#fff; border:1.5px solid rgba(255,255,255,.38);
+  border-radius:20px; padding:.38rem .9rem; font-size:.78rem; font-weight:700; cursor:pointer;
+  font-family:var(--fb); transition:.15s; white-space:nowrap; }
+.tb-btn:hover { background:rgba(255,255,255,.32); }
+.tb-btn.on { background:#fff; color:#6c63ff; }
+.back-btn { color:rgba(255,255,255,.85); text-decoration:none; font-size:.85rem; font-weight:600; }
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.flipbook-wrap { max-width:760px; margin:1.2rem auto; padding:0 1rem 4rem; }
+.tools-row { display:flex; align-items:center; gap:.6rem; margin-bottom:.9rem; flex-wrap:wrap; }
+.search-wrap { display:flex; gap:.4rem; flex:1; min-width:180px; }
+.search-wrap input { flex:1; padding:.5rem 1rem; border-radius:22px;
+  border:2px solid #d1ccc0; background:#fff; font-family:var(--fb); font-size:.88rem; transition:.15s; }
+.search-wrap input:focus { outline:none; border-color:#6c63ff; }
+.search-wrap button { background:#6c63ff; color:#fff; border:none; border-radius:22px;
+  padding:.5rem 1rem; cursor:pointer; font-size:.82rem; font-weight:700; font-family:var(--fb); }
+#search-results { margin-bottom:.7rem; }
+.sr-item { background:#fff; border:2px solid #e5e7eb; border-radius:12px; padding:.7rem 1rem;
+  margin-bottom:.4rem; cursor:pointer; transition:.15s; font-size:.88rem; }
+.sr-item:hover { border-color:#6c63ff; background:#f5f3ff; }
+.sr-item mark { background:#fde68a; border-radius:3px; padding:0 2px; }
+
+/* ── Progress dots ───────────────────────────────────────────────────────── */
+.flip-progress { display:flex; gap:6px; justify-content:center; margin-bottom:1rem; flex-wrap:wrap; }
+.flip-dot { width:10px; height:10px; border-radius:50%; background:#c9c2b8; cursor:pointer;
+  transition:.22s; position:relative; }
+.flip-dot.active { transform:scale(1.55); }
+.flip-dot.done { opacity:.8; }
+.flip-dot.bookmarked::after { content:'★'; position:absolute; top:-14px; left:50%;
+  transform:translateX(-50%); font-size:10px; color:#f9a825; }
+
+/* ── Notebook page card — ruled paper ────────────────────────────────────── */
+.flip-page {
+  border-radius:2px 10px 10px 2px;
+  box-shadow:4px 6px 24px rgba(0,0,0,.22),-2px 0 0 #bbb,2px 0 0 #e8e4de;
+  min-height:520px; display:flex; flex-direction:column; overflow:hidden;
+  position:relative; animation:pgIn .3s cubic-bezier(.22,.61,.36,1);
+  background-color:#fefdf6;
+  background-image:
+    linear-gradient(90deg,transparent 54px,rgba(215,75,75,.25) 54px,rgba(215,75,75,.25) 56px,transparent 56px),
+    repeating-linear-gradient(transparent 0px,transparent 31px,#c2d9f0 31px,#c2d9f0 32px);
+}
+@keyframes pgIn { from{opacity:0;transform:translateX(32px) scale(.99)} to{opacity:1;transform:none} }
+@keyframes pgOut { from{opacity:1;transform:none} to{opacity:0;transform:translateX(-32px) scale(.99)} }
+.flip-page.leaving { animation:pgOut .2s ease forwards; pointer-events:none; }
+
+/* ── Spiral binding ──────────────────────────────────────────────────────── */
+.spiral-col {
+  position:absolute; left:0; top:0; bottom:0; width:38px;
+  background:rgba(228,222,212,.8); border-right:1.5px solid rgba(0,0,0,.07);
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:space-around; padding:18px 0; z-index:3; pointer-events:none;
+}
+.spiral-ring {
+  width:20px; height:20px; border-radius:50%;
+  background:linear-gradient(145deg,#d5d5d5,#999);
+  border:2.5px solid #888; flex-shrink:0;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.25),0 1px 3px rgba(0,0,0,.18);
+}
+
+/* ── Bookmark corner fold ────────────────────────────────────────────────── */
+.bk-btn { position:absolute; top:0; right:0; width:44px; height:44px; cursor:pointer;
+  z-index:10; background:transparent; border:none; padding:0; }
+.bk-btn::before { content:''; position:absolute; top:0; right:0; border-style:solid;
+  border-width:0 44px 44px 0; border-color:transparent rgba(0,0,0,.09) transparent transparent;
+  transition:.2s; }
+.bk-btn.on::before { border-color:transparent #f9a825 transparent transparent; }
+.bk-btn span { position:relative; z-index:1; font-size:.85rem; position:absolute;
+  top:5px; right:5px; color:rgba(0,0,0,.22); transition:.2s; }
+.bk-btn.on span { color:#fff; }
+
+/* ── Notebook page header ────────────────────────────────────────────────── */
+.nb-page-header {
+  padding:.85rem 1.2rem .8rem 60px;
+  display:flex; align-items:center; gap:.9rem;
+  border-bottom:2.5px dashed rgba(0,0,0,.1);
+  position:relative; z-index:2;
+}
+.nb-page-badge {
+  background:#fff; border:2px solid rgba(0,0,0,.13); border-radius:6px;
+  font-size:.66rem; font-weight:800; font-family:var(--fb);
+  text-transform:uppercase; letter-spacing:.07em; padding:.22rem .58rem;
+  color:#666; flex-shrink:0; white-space:nowrap; box-shadow:1px 1px 4px rgba(0,0,0,.1);
+}
+.nb-title-wrap { flex:1; }
+.nb-chapter-label {
+  font-size:.72rem; font-weight:700; font-family:var(--fh);
+  opacity:.58; margin-bottom:.15rem; letter-spacing:.03em;
+}
+.nb-topic {
+  margin:0; font-family:var(--fh); font-size:1.68rem; font-weight:700; line-height:1.2;
+  text-decoration:underline; text-decoration-style:wavy; text-underline-offset:4px;
+}
+.nb-page-emoji { font-size:2.2rem; line-height:1; flex-shrink:0; }
+
+/* ── Page body ───────────────────────────────────────────────────────────── */
+.page-body { padding:1rem 1.4rem 1.4rem 66px; flex:1; display:flex; flex-direction:column; gap:.85rem; position:relative; z-index:2; }
+.faculty-text { font-family:var(--fh); font-size:1.15rem; line-height:1.9; margin:0; color:#333; }
+
+/* ── Subtopics ───────────────────────────────────────────────────────────── */
+.subtopics-section { display:flex; flex-direction:column; gap:.8rem; }
+.subtopic-block { border-radius:0 10px 10px 0; padding:.8rem 1rem .8rem .9rem;
+  border-left:5px solid; background:rgba(255,255,255,.62); }
+.subtopic-header { display:flex; align-items:center; gap:.55rem; margin-bottom:.38rem; }
+.section-num { display:inline-flex; align-items:center; justify-content:center;
+  width:26px; height:26px; border-radius:50%; color:#fff;
+  font-weight:800; font-size:.8rem; flex-shrink:0; font-family:var(--fb);
+  box-shadow:0 2px 6px rgba(0,0,0,.22); }
+.subtopic-title { font-family:var(--fh); font-size:1.18rem; font-weight:700; margin:0;
+  text-decoration:underline; text-underline-offset:3px; }
+.subtopic-body { font-size:.9rem; line-height:1.65; margin:0 0 .15rem; color:#333; }
+.bullet-list { margin:.38rem 0 0; padding-left:0; list-style:none; }
+.bullet-list li { margin-bottom:.28rem; font-size:.9rem; line-height:1.5;
+  padding-left:1.5rem; position:relative; }
+.bullet-list li::before { content:'✓'; position:absolute; left:0; font-weight:800; }
+.subtopic-example { background:rgba(255,255,255,.82); border-radius:6px;
+  padding:.42rem .8rem; margin-top:.5rem; font-size:.85rem;
+  border:2px dashed rgba(0,0,0,.18); font-family:var(--fh); color:#555; }
+.subtopic-example::before { content:'✏️ Example: '; font-weight:700; }
+
+/* ── Important / Remember box ────────────────────────────────────────────── */
+.important-box { background:#fff9c4; border:2.5px solid #fdd835; border-radius:6px;
+  padding:.85rem 1.1rem; font-family:var(--fh); font-size:1.05rem;
+  box-shadow:3px 3px 10px rgba(0,0,0,.11); }
+.important-box::before { content:'Remember! 📌'; display:block; font-weight:800; font-size:.75rem;
+  font-family:var(--fb); text-transform:uppercase; letter-spacing:.06em;
+  color:#e65100; margin-bottom:.32rem; }
+
+/* ── Mnemonic box ────────────────────────────────────────────────────────── */
+.mnemonic-box { background:#fff9c4; border:2px solid #ffd54f; border-radius:8px;
+  padding:.7rem 1rem; font-family:var(--fh); font-size:1.08rem;
+  display:flex; gap:.55rem; align-items:flex-start;
+  box-shadow:2px 3px 8px rgba(0,0,0,.1); }
+.mnemonic-box::before { content:'🧠'; font-size:1.2rem; flex-shrink:0; margin-top:.1rem; }
+
+/* ── Exam tip ────────────────────────────────────────────────────────────── */
+.exam-tip { border-radius:0 10px 10px 0; border-left:5px solid; padding:.7rem 1rem;
+  font-size:.88rem; font-weight:600; background:rgba(255,255,255,.65); font-family:var(--fb); }
+.exam-tip::before { content:'🎯 Exam Tip: '; font-weight:800; }
+
+/* ── Common mistake ──────────────────────────────────────────────────────── */
+.mistake-box { border-radius:8px; border:2px dashed; padding:.7rem 1rem;
+  font-size:.88rem; background:rgba(255,235,235,.75); font-family:var(--fb); }
+.mistake-box::before { content:'⚠️ Common Mistake: '; font-weight:800; }
+
+/* ── Key terms ───────────────────────────────────────────────────────────── */
+.kt-row { display:flex; gap:.4rem; flex-wrap:wrap; margin:.2rem 0; }
+.kt-chip { border-radius:6px; padding:.3rem .75rem; font-family:var(--fh); font-size:.95rem;
+  font-weight:700; border:2px solid rgba(0,0,0,.1); background:rgba(255,255,255,.8);
+  position:relative; cursor:default; }
+.kt-chip[data-def]:hover::after { content:attr(data-def); display:block;
+  position:absolute; bottom:calc(100%+8px); left:50%; transform:translateX(-50%);
+  background:#1e1b4b; color:#fff; padding:.45rem .75rem; border-radius:8px;
+  font-size:.78rem; white-space:normal; max-width:220px; text-align:center;
+  z-index:30; font-family:var(--fb); font-weight:400; box-shadow:0 4px 12px rgba(0,0,0,.3); }
+
+/* ── Formula strip ───────────────────────────────────────────────────────── */
+.formula-strip { background:rgba(108,99,255,.09); border-radius:8px; padding:.75rem 1.1rem;
+  font-family:var(--fh); font-size:1.1rem; font-weight:700;
+  border:2px solid rgba(108,99,255,.28); text-align:center; letter-spacing:.04em; color:#3d35a0; }
+.formula-strip::before { content:'🧮  '; }
+
+/* ── Video placeholder ───────────────────────────────────────────────────── */
+.video-placeholder { border-radius:12px; border:2.5px dashed rgba(0,0,0,.15);
+  padding:.9rem 1.1rem; display:flex; align-items:center; gap:.9rem; background:rgba(255,255,255,.55); }
+.video-play-btn { width:44px; height:44px; border-radius:50%; background:#ff0000;
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem;
+  flex-shrink:0; text-decoration:none; box-shadow:0 3px 10px rgba(255,0,0,.3); transition:.15s; }
+.video-play-btn:hover { transform:scale(1.08); }
+.video-title { font-weight:700; font-size:.88rem; margin:0 0 .2rem; }
+.video-hint { font-size:.76rem; opacity:.6; margin:0; }
+
+/* ── Diagram placeholder ─────────────────────────────────────────────────── */
+.diagram-placeholder { border-radius:12px; border:2.5px dashed rgba(0,0,0,.2);
+  padding:1.1rem; text-align:center; background:rgba(255,255,255,.45);
+  font-size:.9rem; color:rgba(0,0,0,.55); }
+.diagram-icon { font-size:2.2rem; display:block; margin-bottom:.4rem; }
+.nb-illus { width:100%; border-radius:10px; display:block; box-shadow:2px 3px 10px rgba(0,0,0,.15); }
+
+/* ── Mini quiz ───────────────────────────────────────────────────────────── */
+.mini-quiz-box { border-radius:12px; padding:.95rem 1.2rem; border:2.5px solid; background:rgba(255,255,255,.65); }
+.mq-q { margin:0 0 .65rem; font-family:var(--fh); font-size:1.15rem; font-weight:700; }
+.mq-reveal { border:none; border-radius:20px; padding:.42rem 1.1rem; cursor:pointer;
+  font-size:.84rem; font-weight:700; font-family:var(--fb); color:#fff; transition:.15s; }
+.mq-reveal:hover { filter:brightness(1.1); }
+.mq-answer { margin:.7rem 0 0; font-size:.9rem; font-weight:600; display:none; }
+
+/* ── Sticky notes ────────────────────────────────────────────────────────── */
+.stickies-container { display:flex; flex-wrap:wrap; gap:.55rem; }
+.sticky-note { position:relative; border-radius:4px 12px 12px 4px; padding:.65rem 1rem .65rem .85rem;
+  font-family:var(--fh); font-size:1rem; line-height:1.6; min-width:130px; max-width:230px;
+  box-shadow:2px 3px 10px rgba(0,0,0,.18); transform:rotate(-1.5deg); }
+.sticky-del { position:absolute; top:4px; right:7px; background:none; border:none;
+  cursor:pointer; font-size:.72rem; color:rgba(0,0,0,.38); padding:0; }
+.sticky-del:hover { color:rgba(200,0,0,.7); }
+#sticky-fab { position:fixed; bottom:5.5rem; right:1.2rem; z-index:150;
+  width:50px; height:50px; border-radius:50%; background:#fbbf24; border:none;
+  font-size:1.4rem; cursor:pointer; color:#fff; font-weight:700;
+  box-shadow:0 4px 16px rgba(0,0,0,.25); display:none; align-items:center; justify-content:center; }
+#sticky-fab.vis { display:flex; }
+.modal { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200;
+  display:none; align-items:center; justify-content:center; padding:1rem; }
+.modal.open { display:flex; }
+.modal-card { background:#fff; border-radius:18px; padding:1.4rem; max-width:370px; width:100%;
+  box-shadow:0 8px 32px rgba(0,0,0,.25); }
+.modal-card h3 { margin:0 0 .75rem; font-size:1.05rem; color:#333; }
+.modal-card textarea { width:100%; min-height:85px; border:2px solid #e5e7eb; border-radius:10px;
+  padding:.55rem .8rem; font-family:var(--fh); font-size:1rem; resize:vertical; box-sizing:border-box; }
+.modal-card textarea:focus { outline:none; border-color:#6c63ff; }
+.modal-actions { display:flex; gap:.55rem; margin-top:.75rem; justify-content:flex-end; }
+.m-btn { padding:.45rem 1.1rem; border-radius:18px; border:none; cursor:pointer;
+  font-weight:700; font-size:.84rem; font-family:var(--fb); }
+.m-btn.pri { background:#6c63ff; color:#fff; }
+.m-btn.sec { background:#f1f0f0; color:#555; }
+
+/* ── Highlight toolbar ───────────────────────────────────────────────────── */
+#hl-bar { position:fixed; background:#1e1b4b; border-radius:22px; padding:.38rem .55rem;
+  display:none; gap:.4rem; align-items:center; z-index:300; box-shadow:0 4px 14px rgba(0,0,0,.3); }
+#hl-bar.vis { display:flex; }
+.hl-dot { width:24px; height:24px; border-radius:50%; border:2px solid rgba(255,255,255,.45);
+  cursor:pointer; transition:.15s; }
+.hl-dot:hover { transform:scale(1.2); }
+.hl-y { background:#fef08a; } .hl-g { background:#bbf7d0; } .hl-p { background:#e9d5ff; }
+.hl-x { background:#ef4444; }
+.hl-yellow { background:#fef08a; border-radius:3px; padding:0 1px; }
+.hl-green  { background:#bbf7d0; border-radius:3px; padding:0 1px; }
+.hl-purple { background:#e9d5ff; border-radius:3px; padding:0 1px; }
+
+/* ── Navigation ──────────────────────────────────────────────────────────── */
+.flip-nav { display:flex; align-items:center; justify-content:center; gap:1rem; margin-top:1.2rem; }
+.nav-arrow { background:#fff; border:2px solid #d1ccc0; border-radius:50%; width:48px; height:48px;
+  font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:.2s; color:#333; box-shadow:0 2px 8px rgba(0,0,0,.1); }
+.nav-arrow:hover:not(:disabled) { background:#6c63ff; color:#fff; border-color:#6c63ff; transform:scale(1.08); }
+.nav-arrow:disabled { opacity:.3; cursor:default; }
+.nav-counter { font-size:1.25rem; font-weight:700; color:#555; min-width:80px; text-align:center; font-family:var(--fh); }
+.swipe-hint { text-align:center; font-size:.72rem; color:#aaa; margin-top:.35rem; }
+
+/* ── Revision panel ──────────────────────────────────────────────────────── */
+#revision-panel { display:none; background:#fff; border:2px solid #e5e7eb;
+  border-radius:16px; padding:1.5rem; margin-top:1.4rem; }
+#revision-panel h3 { margin:0 0 .9rem; font-family:var(--fh); font-size:1.5rem; }
+.rev-item { padding:.55rem .75rem; border-radius:10px; margin-bottom:.45rem; cursor:pointer;
+  display:flex; align-items:flex-start; gap:.5rem; transition:.15s; }
+.rev-item:hover { filter:brightness(.96); }
+.rev-pg { font-size:.72rem; font-weight:800; opacity:.5; min-width:20px; margin-top:.15rem; }
+.rev-topic { font-family:var(--fh); font-size:1.05rem; font-weight:700; margin:0 0 .12rem; }
+.rev-note { font-size:.82rem; opacity:.68; margin:0; line-height:1.4; }
+
+/* ── Bookmarks panel ─────────────────────────────────────────────────────── */
+#bookmarks-panel { display:none; background:#fff; border:2px solid #fde68a;
+  border-radius:16px; padding:1.5rem; margin-top:1.4rem; }
+#bookmarks-panel h3 { margin:0 0 .8rem; font-family:var(--fh); font-size:1.4rem; color:#d97706; }
+.bk-list { display:flex; flex-direction:column; gap:.45rem; }
+.bk-item { background:#fffbeb; border:1.5px solid #fde68a; border-radius:12px;
+  padding:.55rem .9rem; cursor:pointer; display:flex; align-items:center; gap:.55rem; transition:.15s; }
+.bk-item:hover { background:#fef3c7; }
+.bk-em { font-size:1.4rem; } .bk-t { font-family:var(--fh); font-size:1rem; font-weight:700; }
+.bk-pg { font-size:.7rem; opacity:.5; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width:600px) {
+  .page-body { padding:.9rem .9rem 1.2rem 58px; }
+  .nb-page-header { padding:.7rem .9rem .7rem 54px; }
+  .nb-topic { font-size:1.4rem; }
+  .faculty-text { font-size:1.08rem; }
+  .spiral-col { width:32px; }
+  .spiral-ring { width:16px; height:16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1>✏️ 1 EVER EVOLVING WORLD OF SCIENCE</h1>
+  <div class="top-bar-actions">
+    <button class="tb-btn" id="btn-annot" onclick="toggleAnnotMode()">🖊 Annotate</button>
+    <button class="tb-btn" onclick="toggleBookmarksPanel()">★ Bookmarks</button>
+    <button class="tb-btn" onclick="toggleRevision()">⚡ Revision</button>
+  </div>
+</div>
+
+<!-- Highlight toolbar (appears on text selection in annot mode) -->
+<div id="hl-bar">
+  <div class="hl-dot hl-y" title="Yellow" onclick="applyHighlight('hl-yellow')"></div>
+  <div class="hl-dot hl-g" title="Green"  onclick="applyHighlight('hl-green')"></div>
+  <div class="hl-dot hl-p" title="Purple" onclick="applyHighlight('hl-purple')"></div>
+  <div class="hl-dot hl-x" title="Remove" onclick="removeHighlight()"></div>
+</div>
+
+<!-- Sticky note FAB -->
+<button id="sticky-fab" onclick="openStickyModal()">📌</button>
+
+<!-- Sticky note modal -->
+<div class="modal" id="sticky-modal">
+  <div class="modal-card">
+    <h3>📌 Add Note — Page <span id="modal-pg-num">1</span></h3>
+    <textarea id="sticky-text" placeholder="Write your note..."></textarea>
+    <div class="modal-actions">
+      <button class="m-btn sec" onclick="closeStickyModal()">Cancel</button>
+      <button class="m-btn pri" onclick="saveSticky()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<div class="flipbook-wrap">
+
+  <div class="tools-row">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search notes..." oninput="searchNotes(this.value)">
+      <button onclick="clearSearch()">✕</button>
+    </div>
+  </div>
+  <div id="search-results"></div>
+
+  <div class="flip-progress" id="flip-progress"></div>
+
+  <div id="flip-pages">
+<div class="flip-page" id="page-0" style="display:flex" data-page="0">
+  <div class="spiral-col">
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div>
+  </div>
+  <button class="bk-btn" id="bk-0" onclick="toggleBookmark(0)" title="Bookmark"><span>★</span></button>
+  <div class="nb-page-header">
+    <div class="nb-page-badge">Page 1</div>
+    <div class="nb-title-wrap">
+      <div class="nb-chapter-label" style="color:#B45309">≥ Science · Grade 7 ≤</div>
+      <h2 class="nb-topic" style="color:#B45309;text-decoration-color:#F59E0B">Science is a Journey</h2>
+    </div>
+    <span class="nb-page-emoji">🔬</span>
+  </div>
+  <div class="page-body">
+    <p class="faculty-text">Today we are going to learn about Science is a Journey. Science is not a list of facts—it is an exciting journey of questioning and discovering!</p>
+    <div class="subtopic-block" style="border-left-color:#F59E0B">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#F9A825">1</span>
+    <div class="subtopic-title" style="color:#B45309;text-decoration-color:#F59E0B">Science is a Journey</div>
+  </div>
+  <p class="subtopic-body">Science helps us understand the world by asking questions, observing carefully, and testing ideas.</p>
+  <ul class="bullet-list" style="color:#B45309"><li>Science invites questions and investigation</li><li>Science explains the world from small to large scales</li><li>Scientific knowledge changes with new evidence</li></ul>
+  <div class="subtopic-example">A phone camera improved over years because scientists kept testing new lenses and sensors and learning from results.</div>
+</div>
+    <div class="subtopic-block" style="border-left-color:#F59E0B">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#F9A825">2</span>
+    <div class="subtopic-title" style="color:#B45309;text-decoration-color:#F59E0B">Going Deeper</div>
+  </div>
+  <p class="subtopic-body">In Grade 7, you will explore both the tiny (like cells) and the huge (like planets), learning how scientists think and how scientific knowledge keeps growing and improving over time.</p>
+</div>
+    <div class="important-box" style="border-color:#F59E0B;color:#B45309">Science is not a list of facts—it is an exciting journey of questioning and discovering!</div>
+    <div class="kt-row"><span class="kt-chip" style="background:#FDE68A;color:#B45309" data-def="Study of the natural world using evidence">Science</span><span class="kt-chip" style="background:#FDE68A;color:#B45309" data-def="Facts or data that support an idea">Evidence</span></div>
+    <div class="video-placeholder" style="border-color:#F59E0B">
+  <a class="video-play-btn" href="https://www.youtube.com/results?search_query=1+EVER+EVOLVING+WORLD+OF+SCIENCE+Science+is+a+Journey+explained" target="_blank">▶</a>
+  <div class="video-info">
+    <p class="video-title">📺 1 EVER EVOLVING WORLD OF SCIENCE Science is a Journey explained</p>
+    <p class="video-hint">Click to search on YouTube — or embed your video here</p>
+  </div>
+</div>
+    <img class="nb-illus" src="images/theory_page1_paperplanes.png" alt="Children flying paper planes in a park, with birds and butterflies around them">
+    <div class="mini-quiz-box" style="border-color:#F59E0B">
+  <p class="mq-q" style="color:#B45309">❓ Quick Check: What is one main goal of science?</p>
+  <button class="mq-reveal" style="background:#F9A825" onclick="revealAnswer(this)">Show Answer</button>
+  <p class="mq-answer" style="color:#B45309">✅ To understand and explain the natural world using evidence.</p>
+</div>
+    <div class="stickies-container" id="stickies-0"></div>
+  </div>
+</div>
+<div class="flip-page" id="page-1" style="display:none" data-page="1">
+  <div class="spiral-col">
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div>
+  </div>
+  <button class="bk-btn" id="bk-1" onclick="toggleBookmark(1)" title="Bookmark"><span>★</span></button>
+  <div class="nb-page-header">
+    <div class="nb-page-badge">Page 2</div>
+    <div class="nb-title-wrap">
+      <div class="nb-chapter-label" style="color:#1D4ED8">≥ Science · Grade 7 ≤</div>
+      <h2 class="nb-topic" style="color:#1D4ED8;text-decoration-color:#2196F3">Curiosity and Asking Questions</h2>
+    </div>
+    <span class="nb-page-emoji">❓</span>
+  </div>
+  <div class="page-body">
+    <p class="faculty-text">Today we are going to learn about Curiosity and Asking Questions. Every big discovery begins with a simple, brave question!</p>
+    <div class="subtopic-block" style="border-left-color:#2196F3">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#1565C0">1</span>
+    <div class="subtopic-title" style="color:#1D4ED8;text-decoration-color:#2196F3">Curiosity and Asking Questions</div>
+  </div>
+  <p class="subtopic-body">Curiosity is the habit of wondering “why?” and “how?” about things you see around you. Good scientific questions are clear, testable, and focused on one idea at a time.</p>
+  <ul class="bullet-list" style="color:#1D4ED8"><li>Curiosity starts scientific thinking</li><li>Good questions are clear and testable</li><li>Observations help you form questions</li></ul>
+  <div class="subtopic-example">Noticing plants near a window grow toward light can lead to the question: “Does light direction affect plant growth?”</div>
+</div>
+    <div class="subtopic-block" style="border-left-color:#2196F3">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#1565C0">2</span>
+    <div class="subtopic-title" style="color:#1D4ED8;text-decoration-color:#2196F3">Going Deeper</div>
+  </div>
+  <p class="subtopic-body">Scientists often start with observations, then ask questions that can be answered by collecting data. A strong question leads to a fair test and a meaningful conclusion.</p>
+</div>
+    <div class="important-box" style="border-color:#2196F3;color:#1D4ED8">Every big discovery begins with a simple, brave question!</div>
+    <div class="kt-row"><span class="kt-chip" style="background:#BFDBFE;color:#1D4ED8" data-def="Strong desire to know or learn">Curiosity</span><span class="kt-chip" style="background:#BFDBFE;color:#1D4ED8" data-def="What you ask to guide an investigation">Question</span><span class="kt-chip" style="background:#BFDBFE;color:#1D4ED8" data-def="Careful noticing using senses or tools">Observation</span></div>
+    <div class="video-placeholder" style="border-color:#2196F3">
+  <a class="video-play-btn" href="https://www.youtube.com/results?search_query=1+EVER+EVOLVING+WORLD+OF+SCIENCE+Curiosity+and+Asking+Questions+explained" target="_blank">▶</a>
+  <div class="video-info">
+    <p class="video-title">📺 1 EVER EVOLVING WORLD OF SCIENCE Curiosity and Asking Questions explained</p>
+    <p class="video-hint">Click to search on YouTube — or embed your video here</p>
+  </div>
+</div>
+    <img class="nb-illus" src="images/theory_page2_sourfruits.png" alt="A basket of fruits pointing to sour fruits like orange, grapes, mango and tomato, and a boy wondering why a haldi stain is hard to wash off a shirt">
+    <div class="mini-quiz-box" style="border-color:#2196F3">
+  <p class="mq-q" style="color:#1D4ED8">❓ Quick Check: What is curiosity in science?</p>
+  <button class="mq-reveal" style="background:#1565C0" onclick="revealAnswer(this)">Show Answer</button>
+  <p class="mq-answer" style="color:#1D4ED8">✅ The desire to ask questions and find explanations.</p>
+</div>
+    <div class="stickies-container" id="stickies-1"></div>
+  </div>
+</div>
+<div class="flip-page" id="page-2" style="display:none" data-page="2">
+  <div class="spiral-col">
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div>
+  </div>
+  <button class="bk-btn" id="bk-2" onclick="toggleBookmark(2)" title="Bookmark"><span>★</span></button>
+  <div class="nb-page-header">
+    <div class="nb-page-badge">Page 3</div>
+    <div class="nb-title-wrap">
+      <div class="nb-chapter-label" style="color:#9D174D">≥ Science · Grade 7 ≤</div>
+      <h2 class="nb-topic" style="color:#9D174D;text-decoration-color:#E91E63">Experiments and Fair Testing</h2>
+    </div>
+    <span class="nb-page-emoji">🧪</span>
+  </div>
+  <div class="page-body">
+    <p class="faculty-text">Today we are going to learn about Experiments and Fair Testing. Experiments are like detective work—careful tests that reveal the truth!</p>
+    <div class="subtopic-block" style="border-left-color:#E91E63">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#C2185B">1</span>
+    <div class="subtopic-title" style="color:#9D174D;text-decoration-color:#E91E63">Experiments and Fair Testing</div>
+  </div>
+  <p class="subtopic-body">An experiment is a planned test used to find out if an idea is correct. A fair test changes only one factor at a time (the independent variable) and measures what happens (the dependent variable).</p>
+  <ul class="bullet-list" style="color:#9D174D"><li>A fair test changes only one variable at a time</li><li>Measurements and data make results reliable</li><li>Repeating trials increases confidence</li></ul>
+  <div class="subtopic-example">Testing which paper towel absorbs most water by using the same water amount and timing for each brand.</div>
+</div>
+    <div class="subtopic-block" style="border-left-color:#E91E63">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#C2185B">2</span>
+    <div class="subtopic-title" style="color:#9D174D;text-decoration-color:#E91E63">Going Deeper</div>
+  </div>
+  <p class="subtopic-body">To make results trustworthy, you keep other factors the same (controlled variables), repeat trials, and record data neatly. This helps you reach conclusions based on evidence, not opinions.</p>
+</div>
+    <div class="important-box" style="border-color:#E91E63;color:#9D174D">Experiments are like detective work—careful tests that reveal the truth!</div>
+    <div class="kt-row"><span class="kt-chip" style="background:#FBCFE8;color:#9D174D" data-def="A factor that can change in a test">Variable</span><span class="kt-chip" style="background:#FBCFE8;color:#9D174D" data-def="Test where only one factor is changed">Fair Test</span><span class="kt-chip" style="background:#FBCFE8;color:#9D174D" data-def="Recorded results from measurements or observations">Data</span></div>
+    <div class="video-placeholder" style="border-color:#E91E63">
+  <a class="video-play-btn" href="https://www.youtube.com/results?search_query=1+EVER+EVOLVING+WORLD+OF+SCIENCE+Experiments+and+Fair+Testing+explained" target="_blank">▶</a>
+  <div class="video-info">
+    <p class="video-title">📺 1 EVER EVOLVING WORLD OF SCIENCE Experiments and Fair Testing explained</p>
+    <p class="video-hint">Click to search on YouTube — or embed your video here</p>
+  </div>
+</div>
+    <img class="nb-illus" src="images/theory_page3_circuit.png" alt="A simple circuit made of a battery, wires, a small bulb, and a steel spoon used to test which materials conduct electricity">
+    <div class="mini-quiz-box" style="border-color:#E91E63">
+  <p class="mq-q" style="color:#9D174D">❓ Quick Check: What is the independent variable?</p>
+  <button class="mq-reveal" style="background:#C2185B" onclick="revealAnswer(this)">Show Answer</button>
+  <p class="mq-answer" style="color:#9D174D">✅ The factor you change on purpose.</p>
+</div>
+    <div class="stickies-container" id="stickies-2"></div>
+  </div>
+</div>
+<div class="flip-page" id="page-3" style="display:none" data-page="3">
+  <div class="spiral-col">
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div>
+  </div>
+  <button class="bk-btn" id="bk-3" onclick="toggleBookmark(3)" title="Bookmark"><span>★</span></button>
+  <div class="nb-page-header">
+    <div class="nb-page-badge">Page 4</div>
+    <div class="nb-title-wrap">
+      <div class="nb-chapter-label" style="color:#166534">≥ Science · Grade 7 ≤</div>
+      <h2 class="nb-topic" style="color:#166534;text-decoration-color:#4CAF50">Science Everywhere: From Cells to Space</h2>
+    </div>
+    <span class="nb-page-emoji">🌍</span>
+  </div>
+  <div class="page-body">
+    <p class="faculty-text">Today we are going to learn about Science Everywhere: From Cells to Space. Science connects the tiniest cell to the biggest galaxy—everything is linked!</p>
+    <div class="subtopic-block" style="border-left-color:#4CAF50">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#2E7D32">1</span>
+    <div class="subtopic-title" style="color:#166534;text-decoration-color:#4CAF50">Science Everywhere: From Cells to Space</div>
+  </div>
+  <p class="subtopic-body">The world of science covers many scales. Some scientists study living things, like cells inside your body, while others study Earth systems like weather and rocks.</p>
+  <ul class="bullet-list" style="color:#166534"><li>Science studies living and non-living things</li><li>Science works at tiny and huge scales</li><li>Different fields connect to form a bigger understanding</li></ul>
+  <div class="subtopic-example">Doctors use cell knowledge to treat disease, while satellites use space science to predict storms on Earth.</div>
+</div>
+    <div class="subtopic-block" style="border-left-color:#4CAF50">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#2E7D32">2</span>
+    <div class="subtopic-title" style="color:#166534;text-decoration-color:#4CAF50">Going Deeper</div>
+  </div>
+  <p class="subtopic-body">Science also reaches far beyond our planet, helping us understand the Moon, the Sun, and the universe. Learning science builds a “big picture” of how nature works at every level.</p>
+</div>
+    <div class="important-box" style="border-color:#4CAF50;color:#166534">Science connects the tiniest cell to the biggest galaxy—everything is linked!</div>
+    <div class="kt-row"><span class="kt-chip" style="background:#BBF7D0;color:#166534" data-def="Smallest basic unit of living things">Cell</span><span class="kt-chip" style="background:#BBF7D0;color:#166534" data-def="Study of space objects like stars and planets">Astronomy</span><span class="kt-chip" style="background:#BBF7D0;color:#166534" data-def="Size level from tiny to huge">Scale</span></div>
+    <div class="video-placeholder" style="border-color:#4CAF50">
+  <a class="video-play-btn" href="https://www.youtube.com/results?search_query=1+EVER+EVOLVING+WORLD+OF+SCIENCE+Science+Everywhere+From+Cells+to+Space+explained" target="_blank">▶</a>
+  <div class="video-info">
+    <p class="video-title">📺 1 EVER EVOLVING WORLD OF SCIENCE Science Everywhere: From Cells to Space explained</p>
+    <p class="video-hint">Click to search on YouTube — or embed your video here</p>
+  </div>
+</div>
+    <img class="nb-illus" src="images/theory_page5_earth.png" alt="Earth in space, half lit by sunlight and half in shadow, showing how day and night happen as the Earth rotates">
+    <div class="mini-quiz-box" style="border-color:#4CAF50">
+  <p class="mq-q" style="color:#166534">❓ Quick Check: Name one thing studied in biology.</p>
+  <button class="mq-reveal" style="background:#2E7D32" onclick="revealAnswer(this)">Show Answer</button>
+  <p class="mq-answer" style="color:#166534">✅ Cells or living organisms.</p>
+</div>
+    <div class="stickies-container" id="stickies-3"></div>
+  </div>
+</div>
+<div class="flip-page" id="page-4" style="display:none" data-page="4">
+  <div class="spiral-col">
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div><div class="spiral-ring"></div>
+    <div class="spiral-ring"></div><div class="spiral-ring"></div>
+  </div>
+  <button class="bk-btn" id="bk-4" onclick="toggleBookmark(4)" title="Bookmark"><span>★</span></button>
+  <div class="nb-page-header">
+    <div class="nb-page-badge">Page 5</div>
+    <div class="nb-title-wrap">
+      <div class="nb-chapter-label" style="color:#6D28D9">≥ Science · Grade 7 ≤</div>
+      <h2 class="nb-topic" style="color:#6D28D9;text-decoration-color:#9C27B0">Science Keeps Changing (Ever-Evolving Knowledge)</h2>
+    </div>
+    <span class="nb-page-emoji">🧠</span>
+  </div>
+  <div class="page-body">
+    <p class="faculty-text">Today we are going to learn about Science Keeps Changing (Ever-Evolving Knowledge). In science, new evidence can rewrite what we think we know—and that is a strength!</p>
+    <div class="subtopic-block" style="border-left-color:#9C27B0">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#5E35B1">1</span>
+    <div class="subtopic-title" style="color:#6D28D9;text-decoration-color:#9C27B0">Science Keeps Changing (Ever-Evolving Knowledge)</div>
+  </div>
+  <p class="subtopic-body">Science is “ever-evolving” because explanations improve when new observations and better technology appear. Scientists compare ideas with evidence, and weak ideas are corrected or replaced.</p>
+  <ul class="bullet-list" style="color:#6D28D9"><li>New evidence can change scientific explanations</li><li>Technology helps scientists observe more accurately</li><li>Science is self-correcting through testing and checking</li></ul>
+  <div class="subtopic-example">Pluto was reclassified as a dwarf planet after better observations and clearer scientific definitions.</div>
+</div>
+    <div class="subtopic-block" style="border-left-color:#9C27B0">
+  <div class="subtopic-header">
+    <span class="section-num" style="background:#5E35B1">2</span>
+    <div class="subtopic-title" style="color:#6D28D9;text-decoration-color:#9C27B0">Going Deeper</div>
+  </div>
+  <p class="subtopic-body">This does not mean science is unreliable; it means science is self-correcting. Over time, repeated testing and peer checking help build stronger, more accurate knowledge.</p>
+</div>
+    <div class="important-box" style="border-color:#9C27B0;color:#6D28D9">In science, new evidence can rewrite what we think we know—and that is a strength!</div>
+    <div class="kt-row"><span class="kt-chip" style="background:#DDD6FE;color:#6D28D9" data-def="Tools that help solve problems or improve study">Technology</span><span class="kt-chip" style="background:#DDD6FE;color:#6D28D9" data-def="Decision based on results and evidence">Conclusion</span></div>
+    <div class="video-placeholder" style="border-color:#9C27B0">
+  <a class="video-play-btn" href="https://www.youtube.com/results?search_query=1+EVER+EVOLVING+WORLD+OF+SCIENCE+Science+Keeps+Changing+Ever+Evolving+Knowledge+explained" target="_blank">▶</a>
+  <div class="video-info">
+    <p class="video-title">📺 1 EVER EVOLVING WORLD OF SCIENCE Science Keeps Changing (Ever-Evolving Knowledge) explained</p>
+    <p class="video-hint">Click to search on YouTube — or embed your video here</p>
+  </div>
+</div>
+    <img class="nb-illus" src="images/theory_page4_sunflower.png" alt="A sunflower growing from a seed, showing roots below the soil and the plant growing upward toward the sun">
+    <div class="mini-quiz-box" style="border-color:#9C27B0">
+  <p class="mq-q" style="color:#6D28D9">❓ Quick Check: What does “ever-evolving” mean in science?</p>
+  <button class="mq-reveal" style="background:#5E35B1" onclick="revealAnswer(this)">Show Answer</button>
+  <p class="mq-answer" style="color:#6D28D9">✅ Scientific knowledge changes and improves over time.</p>
+</div>
+    <div class="stickies-container" id="stickies-4"></div>
+  </div>
+</div>
+</div>
+
+  <div class="flip-nav">
+    <button class="nav-arrow" id="btn-prev" onclick="navigate(-1)" disabled>&#8592;</button>
+    <span class="nav-counter" id="nav-counter">1 / 5</span>
+    <button class="nav-arrow" id="btn-next" onclick="navigate(1)">&#8594;</button>
+  </div>
+  <p class="swipe-hint">← Swipe or use Arrow keys to flip pages →</p>
+
+  <div id="revision-panel">
+    <h3>⚡ Revision Mode — All Topics</h3>
+    <div class='rev-item' style='background:#FDE68A66' onclick='goTo(0);toggleRevision()'><span class='rev-pg'>1</span><div><div class='rev-topic' style='color:#B45309'>🔬 Science is a Journey</div><p class='rev-note'>Science is not a list of facts—it is an exciting journey of questioning and discovering!</p></div></div>
+    <div class='rev-item' style='background:#BFDBFE66' onclick='goTo(1);toggleRevision()'><span class='rev-pg'>2</span><div><div class='rev-topic' style='color:#1D4ED8'>❓ Curiosity and Asking Questions</div><p class='rev-note'>Every big discovery begins with a simple, brave question!</p></div></div>
+    <div class='rev-item' style='background:#FBCFE866' onclick='goTo(2);toggleRevision()'><span class='rev-pg'>3</span><div><div class='rev-topic' style='color:#9D174D'>🧪 Experiments and Fair Testing</div><p class='rev-note'>Experiments are like detective work—careful tests that reveal the truth!</p></div></div>
+    <div class='rev-item' style='background:#BBF7D066' onclick='goTo(3);toggleRevision()'><span class='rev-pg'>4</span><div><div class='rev-topic' style='color:#166534'>🌍 Science Everywhere: From Cells to Space</div><p class='rev-note'>Science connects the tiniest cell to the biggest galaxy—everything is linked!</p></div></div>
+    <div class='rev-item' style='background:#DDD6FE66' onclick='goTo(4);toggleRevision()'><span class='rev-pg'>5</span><div><div class='rev-topic' style='color:#6D28D9'>🧠 Science Keeps Changing (Ever-Evolving Knowledge)</div><p class='rev-note'>In science, new evidence can rewrite what we think we know—and that is a strength!</p></div></div>
+  </div>
+
+  <div id="bookmarks-panel">
+    <h3>★ Bookmarked Pages</h3>
+    <div class="bk-list" id="bk-list"></div>
+    <p id="bk-empty" style="color:#aaa;font-size:.9rem">No bookmarks yet — tap ★ on any page corner.</p>
+  </div>
+
+</div>
+
+<script>
+const TOTAL = 5;
+const SLUG = '1_ever_evolving_worl';
+let current = 0;
+let annotMode = false;
+const visited = new Set([0]);
+const PALETTES = [{"bg": "#FFFDE7", "accent": "#F9A825", "border": "#F59E0B", "heading": "#B45309", "chip": "#FDE68A"}, {"bg": "#E3F2FD", "accent": "#1565C0", "border": "#2196F3", "heading": "#1D4ED8", "chip": "#BFDBFE"}, {"bg": "#FCE4EC", "accent": "#C2185B", "border": "#E91E63", "heading": "#9D174D", "chip": "#FBCFE8"}, {"bg": "#E8F5E9", "accent": "#2E7D32", "border": "#4CAF50", "heading": "#166534", "chip": "#BBF7D0"}, {"bg": "#EDE7F6", "accent": "#5E35B1", "border": "#9C27B0", "heading": "#6D28D9", "chip": "#DDD6FE"}, {"bg": "#FFF3E0", "accent": "#E65100", "border": "#FF9800", "heading": "#C2410C", "chip": "#FED7AA"}, {"bg": "#E0F7FA", "accent": "#00695C", "border": "#00BCD4", "heading": "#0E7490", "chip": "#A5F3FC"}, {"bg": "#FBE9E7", "accent": "#BF360C", "border": "#FF5722", "heading": "#9A3412", "chip": "#FECACA"}];
+const PAGE_DATA = [{"heading": "Science is a Journey", "emoji": "🔬", "content": "Science helps us understand the world by asking questions, observing carefully, and testing ideas.", "key_point": "Science is not a list of facts—it is an exciting journey of questioning and discovering!"}, {"heading": "Curiosity and Asking Questions", "emoji": "❓", "content": "Curiosity is the habit of wondering “why?” and “how?” about things you see around you. Good scientific questions are clear, testable, and focused on one idea at a time.", "key_point": "Every big discovery begins with a simple, brave question!"}, {"heading": "Experiments and Fair Testing", "emoji": "🧪", "content": "An experiment is a planned test used to find out if an idea is correct. A fair test changes only one factor at a time (the independent variable) and measures what happens (the dependent variable).", "key_point": "Experiments are like detective work—careful tests that reveal the truth!"}, {"heading": "Science Everywhere: From Cells to Space", "emoji": "🌍", "content": "The world of science covers many scales. Some scientists study living things, like cells inside your body, while others study Earth systems like weather and rocks.", "key_point": "Science connects the tiniest cell to the biggest galaxy—everything is linked!"}, {"heading": "Science Keeps Changing (Ever-Evolving Knowledge)", "emoji": "🧠", "content": "Science is “ever-evolving” because explanations improve when new observations and better technology appear. Scientists compare ideas with evidence, and weak ideas are corrected or replaced.", "key_point": "In science, new evidence can rewrite what we think we know—and that is a strength!"}];
+
+// ── localStorage helpers ────────────────────────────────────────────────────
+function lsGet(k) { try { return JSON.parse(localStorage.getItem(k)); } catch(e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+
+// ── Dots ────────────────────────────────────────────────────────────────────
+function buildDots() {
+  const c = document.getElementById('flip-progress');
+  c.innerHTML = '';
+  const bks = lsGet('ngmc_bk_'+SLUG) || [];
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    const pal = PALETTES[i % PALETTES.length];
+    d.className = 'flip-dot' + (i===0?' active':'');
+    if (bks.includes(i)) d.classList.add('bookmarked');
+    d.style.background = i===0 ? pal.accent : '#c9c2b8';
+    d.title = 'Page '+(i+1);
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function updateDots() {
+  const bks = lsGet('ngmc_bk_'+SLUG) || [];
+  document.querySelectorAll('.flip-dot').forEach((d,i) => {
+    const pal = PALETTES[i % PALETTES.length];
+    d.classList.toggle('bookmarked', bks.includes(i));
+    if (i===current) { d.style.background=pal.accent; d.style.transform='scale(1.55)'; }
+    else if (visited.has(i)) { d.style.background='#00b894'; d.style.transform='scale(1)'; }
+    else { d.style.background='#c9c2b8'; d.style.transform='scale(1)'; }
+  });
+}
+
+// ── Navigation ──────────────────────────────────────────────────────────────
+function goTo(n) {
+  if (n<0 || n>=TOTAL) return;
+  const prev = document.getElementById('page-'+current);
+  if (prev) { prev.classList.add('leaving'); setTimeout(()=>{ prev.style.display='none'; prev.classList.remove('leaving'); }, 200); }
+  visited.add(current); current=n; visited.add(n);
+  setTimeout(() => {
+    const pg = document.getElementById('page-'+current);
+    if (pg) { pg.style.display='flex'; pg.style.flexDirection='column'; }
+    document.getElementById('btn-prev').disabled = current===0;
+    document.getElementById('btn-next').disabled = current===TOTAL-1;
+    document.getElementById('nav-counter').textContent = (current+1)+' / '+TOTAL;
+    updateDots(); saveProgress();
+    renderStickies(current);
+    updateBookmarkBtn(current);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }, 50);
+}
+
+function navigate(dir) { goTo(current+dir); }
+
+function saveProgress() {
+  const pct = Math.round((visited.size/TOTAL)*100);
+  lsSet('ngmc_prog_notes.html', pct);
+}
+
+function revealAnswer(btn) {
+  btn.style.display='none';
+  btn.nextElementSibling.style.display='block';
+}
+
+// ── Revision panel ──────────────────────────────────────────────────────────
+function toggleRevision() {
+  const p=document.getElementById('revision-panel');
+  p.style.display = p.style.display==='none'?'block':'none';
+  if (p.style.display==='block') p.scrollIntoView({behavior:'smooth'});
+}
+
+// ── Search ──────────────────────────────────────────────────────────────────
+function searchNotes(q) {
+  const sr=document.getElementById('search-results');
+  if (!q.trim()) { sr.style.display='none'; return; }
+  const results = PAGE_DATA.map((p,i)=>({...p,idx:i}))
+    .filter(p=>(p.heading+p.content+p.key_point).toLowerCase().includes(q.toLowerCase()));
+  if (!results.length) { sr.innerHTML='<p style="color:#888">No results.</p>'; sr.style.display='block'; return; }
+  sr.innerHTML = results.map(r=>`<div class="sr-item" onclick="goTo(${r.idx});clearSearch()">
+    <strong>Page ${r.idx+1}: ${r.heading}</strong>
+    <br><small style="color:#888">${r.key_point}</small></div>`).join('');
+  sr.style.display='block';
+}
+function clearSearch() {
+  document.getElementById('search-input').value='';
+  document.getElementById('search-results').style.display='none';
+}
+
+// ── Bookmarks ───────────────────────────────────────────────────────────────
+function toggleBookmark(n) {
+  let bks = lsGet('ngmc_bk_'+SLUG) || [];
+  if (bks.includes(n)) bks=bks.filter(x=>x!==n); else bks.push(n);
+  lsSet('ngmc_bk_'+SLUG, bks);
+  updateBookmarkBtn(n); updateDots(); renderBookmarksPanel();
+}
+function updateBookmarkBtn(n) {
+  const bks = lsGet('ngmc_bk_'+SLUG) || [];
+  const btn = document.getElementById('bk-'+n);
+  if (btn) btn.classList.toggle('on', bks.includes(n));
+}
+function toggleBookmarksPanel() {
+  const p=document.getElementById('bookmarks-panel');
+  p.style.display = p.style.display==='none'?'block':'none';
+  if (p.style.display==='block') { renderBookmarksPanel(); p.scrollIntoView({behavior:'smooth'}); }
+}
+function renderBookmarksPanel() {
+  const bks = lsGet('ngmc_bk_'+SLUG) || [];
+  const el = document.getElementById('bk-list');
+  const empty = document.getElementById('bk-empty');
+  if (!bks.length) { el.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  el.innerHTML = bks.sort((a,b)=>a-b).map(i=>{
+    const pg=PAGE_DATA[i]; const pal=PALETTES[i%PALETTES.length];
+    return `<div class="bk-item" style="border-color:${pal.border}" onclick="goTo(${i});toggleBookmarksPanel()">
+      <span class="bk-em">${pg&&pg.emoji||'📖'}</span>
+      <div><div class="bk-t">${pg&&pg.heading||'Page '+(i+1)}</div>
+      <div class="bk-pg">Page ${i+1}</div></div></div>`;
+  }).join('');
+}
+
+// ── Sticky notes ────────────────────────────────────────────────────────────
+const STICKY_COLORS = ['#fef08a','#bbf7d0','#fbcfe8','#bfdbfe','#fed7aa'];
+function renderStickies(n) {
+  const container = document.getElementById('stickies-'+n);
+  if (!container) return;
+  const all = lsGet('ngmc_sticky_'+SLUG) || {};
+  const notes = all[n] || [];
+  container.innerHTML = notes.length ? notes.map((txt,i)=>{
+    const col=STICKY_COLORS[i%STICKY_COLORS.length];
+    return `<div class="sticky-note" style="background:${col}">${txt}
+      <button class="sticky-del" onclick="deleteSticky(${n},${i})">✕</button></div>`;
+  }).join('') : '';
+}
+function openStickyModal() {
+  document.getElementById('modal-pg-num').textContent = current+1;
+  document.getElementById('sticky-text').value = '';
+  document.getElementById('sticky-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('sticky-text').focus(), 100);
+}
+function closeStickyModal() { document.getElementById('sticky-modal').classList.remove('open'); }
+function saveSticky() {
+  const txt = document.getElementById('sticky-text').value.trim();
+  if (!txt) { closeStickyModal(); return; }
+  const all = lsGet('ngmc_sticky_'+SLUG) || {};
+  if (!all[current]) all[current]=[];
+  all[current].push(txt);
+  lsSet('ngmc_sticky_'+SLUG, all);
+  renderStickies(current);
+  closeStickyModal();
+}
+function deleteSticky(page, idx) {
+  const all = lsGet('ngmc_sticky_'+SLUG) || {};
+  if (all[page]) { all[page].splice(idx,1); lsSet('ngmc_sticky_'+SLUG, all); renderStickies(page); }
+}
+
+// ── Annotation mode (text highlighting) ─────────────────────────────────────
+function toggleAnnotMode() {
+  annotMode = !annotMode;
+  document.getElementById('btn-annot').classList.toggle('on', annotMode);
+  document.getElementById('sticky-fab').classList.toggle('vis', annotMode);
+  if (!annotMode) document.getElementById('hl-bar').classList.remove('vis');
+}
+let savedRange = null;
+document.addEventListener('mouseup', () => {
+  if (!annotMode) return;
+  const sel = window.getSelection();
+  if (sel && sel.toString().trim().length > 1) {
+    savedRange = sel.getRangeAt(0).cloneRange();
+    const rect = savedRange.getBoundingClientRect();
+    const bar = document.getElementById('hl-bar');
+    bar.style.top = (rect.top + window.scrollY - 42)+'px';
+    bar.style.left = (rect.left + rect.width/2 - 70)+'px';
+    bar.classList.add('vis');
+  } else {
+    document.getElementById('hl-bar').classList.remove('vis');
+  }
+});
+function applyHighlight(cls) {
+  if (!savedRange) return;
+  const span = document.createElement('span');
+  span.className = cls;
+  try { savedRange.surroundContents(span); } catch(e) {}
+  window.getSelection().removeAllRanges();
+  document.getElementById('hl-bar').classList.remove('vis');
+  savedRange = null;
+}
+function removeHighlight() {
+  if (!savedRange) return;
+  const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(savedRange);
+  document.execCommand('removeFormat');
+  document.getElementById('hl-bar').classList.remove('vis');
+  savedRange = null;
+}
+
+// ── Keyboard & swipe ────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+  if (e.key==='ArrowRight') navigate(1);
+  if (e.key==='ArrowLeft')  navigate(-1);
+  if (e.key==='b' || e.key==='B') toggleBookmark(current);
+  if (e.key==='Escape') { closeStickyModal(); annotMode=false; toggleAnnotMode(); }
+});
+let tsx=0, tsy=0;
+document.addEventListener('touchstart', e=>{ tsx=e.touches[0].clientX; tsy=e.touches[0].clientY; }, {passive:true});
+document.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX-tsx, dy=e.changedTouches[0].clientY-tsy;
+  if (Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>40) { if(dx<0) navigate(1); else navigate(-1); }
+}, {passive:true});
+
+// ── Restore bookmarks state ──────────────────────────────────────────────────
+function restoreBookmarks() {
+  const bks = lsGet('ngmc_bk_'+SLUG) || [];
+  bks.forEach(i => { const b=document.getElementById('bk-'+i); if(b) b.classList.add('on'); });
+}
+
+// ── Init ────────────────────────────────────────────────────────────────────
+buildDots(); updateDots(); saveProgress(); restoreBookmarks(); renderStickies(0);
+</script>
+</body>
+</html>

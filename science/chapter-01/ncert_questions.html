@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCERT Q&A — 1 EVER EVOLVING WORLD OF SCIENCE</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { background:var(--bg); color:var(--text); font-family:var(--font); min-height:100vh; margin:0; }
+  .top-bar { background:var(--gradient); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
+  .top-bar h1 { color:#fff; margin:0; font-size:1.3rem; }
+  .back-btn { color:#fff; text-decoration:none; font-size:.9rem; opacity:.85; }
+  .content { max-width:860px; margin:2rem auto; padding:0 1.5rem 4rem; }
+  .tabs { display:flex; gap:.5rem; margin-bottom:1.5rem; }
+  .tab-btn { padding:.6rem 1.4rem; border-radius:25px; border:1px solid var(--border); background:var(--card); color:var(--text); cursor:pointer; font-weight:600; font-size:.9rem; transition:.2s; }
+  .tab-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .toolbar { display:flex; gap:.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .tool-btn { padding:.5rem 1rem; border-radius:20px; border:1px solid var(--border); background:var(--card); color:var(--text); cursor:pointer; font-size:.85rem; font-weight:600; }
+  .tool-btn:hover { background:var(--accent-light); }
+  .search-wrap { flex:1; min-width:160px; display:flex; }
+  .search-wrap input { flex:1; padding:.5rem 1rem; border-radius:20px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:.88rem; }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+  .qa-card { background:var(--card); border:1px solid var(--border); border-radius:14px; margin-bottom:.8rem; overflow:hidden; }
+  .qa-header { display:flex; align-items:flex-start; gap:.8rem; padding:1rem 1.2rem; cursor:pointer; }
+  .qa-header:hover { background:var(--accent-light); }
+  .q-num { background:var(--accent); color:#fff; border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; flex-shrink:0; margin-top:.1rem; }
+  .q-text { flex:1; font-weight:600; font-size:.95rem; line-height:1.45; }
+  .toggle-icon { font-size:.8rem; color:var(--muted); transition:.2s; }
+  .qa-answer { display:none; padding:0 1.2rem 1.2rem 1.2rem; border-top:1px solid var(--border); }
+  .qa-answer.open { display:block; }
+  .qa-answer p { margin:.8rem 0 0; line-height:1.75; font-size:.92rem; color:var(--muted); }
+  @media print { .top-bar,.toolbar { display:none; } .qa-answer { display:block !important; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1>&#128218; 1 EVER EVOLVING WORLD OF SCIENCE — NCERT Q&amp;A</h1>
+</div>
+
+<div class="content">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('intext')">&#128196; Intext Questions</button>
+    <button class="tab-btn" onclick="switchTab('exercises')">&#128218; Exercises</button>
+  </div>
+
+  <div class="toolbar">
+    <button class="tool-btn" onclick="revealAll()">&#128065; Reveal All</button>
+    <button class="tool-btn" onclick="hideAll()">&#128274; Hide All</button>
+    <div class="search-wrap"><input type="text" placeholder="&#128269; Search questions..." oninput="searchQA(this.value)"></div>
+    <button class="tool-btn" onclick="window.print()">&#128424; Print</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-intext">
+    
+          <div class="qa-card" id="in-0">
+            <div class="qa-header" onclick="toggleQ('in-0')">
+              <span class="q-num">Q1</span>
+              <span class="q-text">The chapter says science is not just a collection of facts. What does it mean when we say science is a ‘process’?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Science as a ‘process’ means it is a method of finding out how the world works, not just memorising information.
+
+Step-by-step:
+1) Start with curiosity and careful observation (noticing something in nature or daily life).
+2) Ask clear questions such as ‘How does it work?’ or ‘Why does it happen?’
+3) Suggest possible answers (ideas or predictions) based on what you already know.
+4) Test these ideas by doing activities/experiments or collecting evidence.
+5) Compare results with the prediction and draw a conclusion.
+6) Share, repeat, and improve ideas when new evidence is found.
+
+So, scientific knowledge keeps changing and improving as new observations and experiments are done.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-1">
+            <div class="qa-header" onclick="toggleQ('in-1')">
+              <span class="q-num">Q2</span>
+              <span class="q-text">Give two examples each to show that science studies (a) very small things and (b) very large things, as mentioned in the text.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step:
+1) Very small things (microscopic or tiny):
+   - Tiny cells inside a leaf.
+   - Small properties of materials around us (for example, what makes a fruit sour or how a haldi stain changes).
+
+2) Very large things (astronomical or large-scale):
+   - Movement of the Sun.
+   - Movement of stars in the sky.
+
+These examples show that science covers everything from the micro-world to the vast universe.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-2">
+            <div class="qa-header" onclick="toggleQ('in-2')">
+              <span class="q-num">Q3</span>
+              <span class="q-text">The page numbers follow the flight of a butterfly and a paper plane. What message does this design feature give about learning science?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step interpretation:
+1) A butterfly fluttering and a paper plane flying represent free movement and exploration.
+2) The design suggests learning ‘takes flight’ when curiosity leads.
+3) It reminds students that science learning is active: observing, asking questions, trying, failing, and improving.
+4) It encourages imagination and experimentation, just like making and testing paper planes.
+
+Message: Science is best learned by curious exploration, not by rote learning.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-3">
+            <div class="qa-header" onclick="toggleQ('in-3')">
+              <span class="q-num">Q4</span>
+              <span class="q-text">How did a simple paper plane inspire real scientific explorations of flight? Explain the idea in your own words.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step:
+1) A paper plane is a simple model that can fly for a short time.
+2) When people observe how it glides, turns, or falls, they start asking: ‘Why does it fly?’ and ‘How can it fly longer?’
+3) Early inventors also observed bird wings to understand lift and movement in air.
+4) Through repeated observations and experiments, designs improved.
+5) Modern engineers use the same approach—testing models, studying air flow, and improving shapes—to design aircraft.
+
+So, simple observations and small experiments can lead to bigger scientific and technological developments.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-4">
+            <div class="qa-header" onclick="toggleQ('in-4')">
+              <span class="q-num">Q5</span>
+              <span class="q-text">According to the chapter, what kinds of deeper questions will Grade 7 learners try to ask? Write any three.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>The chapter suggests asking deeper ‘how’ and ‘why’ questions.
+
+Any three examples:
+1) How do things work?
+2) Why do events happen the way they do?
+3) What can we learn from patterns we see in nature?
+
+These questions push us beyond facts and towards understanding reasons and relationships.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-5">
+            <div class="qa-header" onclick="toggleQ('in-5')">
+              <span class="q-num">Q6</span>
+              <span class="q-text">Why does the chapter say we must ‘step out of the book’ and do activities and experiments?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step:
+1) Reading gives information, but science understanding becomes stronger when we see and test things ourselves.
+2) Activities and experiments provide real experiences and evidence.
+3) They help us connect ideas to the environment around us (home, school, neighbourhood, nature).
+4) They act as ‘stepping stones’ to deeper understanding because we learn by doing, observing results, and reasoning.
+5) They show that science is an ongoing process of discovery, not a fixed list of answers.
+
+Therefore, practical exploration is necessary to think scientifically.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-6">
+            <div class="qa-header" onclick="toggleQ('in-6')">
+              <span class="q-num">Q7</span>
+              <span class="q-text">The chapter connects science with responsibility. Explain how human activities are linked to the natural world and society.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step:
+1) Humans use natural resources (water, soil, air, minerals, forests) for living and development.
+2) Our actions can change the environment—for example, pollution, waste, overuse of water, or cutting trees.
+3) Environmental changes affect nature (plants, animals, climate, water flow).
+4) These changes also affect society—health, farming, availability of clean water, and quality of life.
+5) Science helps us understand these links and find solutions to reduce harm.
+
+So, science is not only about discovering; it is also about using knowledge responsibly for a sustainable world.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-7">
+            <div class="qa-header" onclick="toggleQ('in-7')">
+              <span class="q-num">Q8</span>
+              <span class="q-text">The chapter says different fields of science are interconnected. Explain this idea using an example from the topics mentioned.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step:
+1) Physics, chemistry, biology, and earth science may appear separate, but real-life problems involve more than one field.
+2) Example using topics from the text:
+   - When we study heat flow (physics), it helps explain melting of ice or glaciers.
+   - Melting and evaporation are changes of state of water (physical change) and relate to the water cycle (earth science).
+   - The availability of water affects living beings (biology) and human society.
+3) Thus, one scientific idea (heat transfer) supports understanding in another area (water cycle and environment).
+
+Hence, scientific knowledge is connected like a network, not isolated chapters.</p>
+            </div>
+          </div>
+  </div>
+  <div class="tab-panel" id="tab-exercises">
+    
+          <div class="qa-card" id="ex-0">
+            <div class="qa-header" onclick="toggleQ('ex-0')">
+              <span class="q-num">Q1</span>
+              <span class="q-text">Define ‘science’ in your own words as suggested by the chapter. Mention at least four features of scientific thinking.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Science can be defined as a systematic way of exploring and understanding the natural world through observation, questioning, testing, and reasoning.
+
+Four (or more) features of scientific thinking:
+1) Curiosity: wanting to know why and how things happen.
+2) Observation: carefully noticing details (size, colour, changes, patterns).
+3) Questioning: forming clear questions that can be explored.
+4) Experimentation/Testing: doing activities or experiments to collect evidence.
+5) Openness to the unknown: accepting that we may not know everything and must learn.
+6) Logical reasoning: using evidence to reach conclusions.
+7) Willingness to revise: changing ideas when new evidence appears.
+
+These features show science is a process, not just facts.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-1">
+            <div class="qa-header" onclick="toggleQ('ex-1')">
+              <span class="q-num">Q2</span>
+              <span class="q-text">The chapter invites you to be an ‘explorer’ and make small discoveries yourself. Write a simple plan for a home-based science exploration (no special equipment).</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>One possible home-based exploration plan:
+
+Topic: Which household materials are good for making a small lamp glow (idea linked to wires, lamps, batteries)?
+
+Step-by-step plan:
+1) Question: Which materials allow electric current to pass easily?
+2) Materials needed: a small battery cell, a small bulb/LED (if available), two wires (or thin metal strips), and test objects (coin, paper clip, aluminium foil, rubber eraser, plastic scale, wooden stick).
+3) Setup: Make a simple circuit by connecting battery–wire–bulb–wire–back to battery. Ensure bulb works.
+4) Testing: Break the circuit at one point and place the test material there to complete the circuit.
+5) Observation: Note whether the bulb glows brightly, dimly, or not at all.
+6) Recording: Make a table: Material tested / Bulb glows? / Conclusion.
+7) Conclusion: Classify materials as conductors (glow) and insulators (no glow).
+8) Safety: Use only small cells; never use mains electricity.
+
+This plan uses observation, testing, recording, and conclusion—key steps in science.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-2">
+            <div class="qa-header" onclick="toggleQ('ex-2')">
+              <span class="q-num">Q3</span>
+              <span class="q-text">Explain, with examples, how ‘patterns in nature’ can help us learn science. Give any three patterns and what we can learn from them.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Patterns in nature are repeated events or regular arrangements. Studying them helps us predict and explain processes.
+
+Three examples:
+1) Day and night pattern:
+   - Observation: Day follows night regularly.
+   - Learning: Helps us understand Earth’s rotation and time measurement.
+2) Seasonal pattern:
+   - Observation: Weather and day length change through the year.
+   - Learning: Leads to understanding Earth’s revolution and its tilt.
+3) Water cycle pattern:
+   - Observation: Water evaporates, forms clouds, and returns as rain.
+   - Learning: Helps explain evaporation, condensation, rainfall, groundwater flow, and water availability.
+
+Thus, patterns guide scientific questions and help create explanations.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-3">
+            <div class="qa-header" onclick="toggleQ('ex-3')">
+              <span class="q-num">Q4</span>
+              <span class="q-text">Differentiate between ‘discovery’ and ‘responsibility’ in science. How can science help in creating a sustainable world? Write four points.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Difference:
+1) Discovery in science: Finding new knowledge about nature through observation and experiments (for example, understanding heat flow or material properties).
+2) Responsibility in science: Using scientific knowledge carefully to reduce harm and improve life for present and future generations.
+
+How science helps create a sustainable world (four points):
+1) Identifies problems: measures pollution levels, water quality, or resource depletion.
+2) Explains causes: shows how human activities affect air, water, soil, and living beings.
+3) Develops solutions: cleaner technologies, renewable energy, efficient use of materials, better waste management.
+4) Guides decisions: provides evidence for rules and practices like conserving water, reducing plastic use, and protecting ecosystems.
+
+So, science supports both understanding and responsible action.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-4">
+            <div class="qa-header" onclick="toggleQ('ex-4')">
+              <span class="q-num">Q5</span>
+              <span class="q-text">The chapter mentions questions like: Why are some fruits sour? What happens when we wash a haldi stain? Choose ONE and write how you would investigate it scientifically.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Investigation example: What happens when we wash a haldi (turmeric) stain?
+
+Step-by-step method:
+1) Question: Does washing with different substances change the haldi stain differently?
+2) Materials: small pieces of white cloth, turmeric paste, water, soap solution, lemon juice, baking soda solution (optional), a dropper/spoon.
+3) Procedure:
+   a) Make equal turmeric stains on each cloth piece and let them dry similarly.
+   b) Wash one with plain water, one with soap solution, one with lemon juice, and one with baking soda solution.
+   c) Keep time of washing and amount of liquid similar for fair testing.
+4) Observations: Note colour change, fading, or spreading; record in a table.
+5) Conclusion: Decide which method removes/fades the stain most and describe the change.
+6) Scientific thinking: Keep one factor constant (same cloth, same stain size) and change only the washing substance.
+
+This uses fair testing, observation, and evidence-based conclusion.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-5">
+            <div class="qa-header" onclick="toggleQ('ex-5')">
+              <span class="q-num">Q6</span>
+              <span class="q-text">Classify the following as changes that are likely to be reversible or irreversible: (a) ice melting into water (b) a battery running out (c) a fruit ripening (d) a rock breaking into pebbles. Give reasons.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step classification with reasons:
+(a) Ice melting into water: Reversible.
+- Reason: Water can be cooled and frozen back into ice; the substance remains water.
+
+(b) A battery running out: Irreversible (in normal use).
+- Reason: The chemical substances inside change during use and the battery cannot be easily restored by simple reversal in daily life.
+
+(c) A fruit ripening: Irreversible.
+- Reason: Ripening involves complex biological and chemical changes; the fruit cannot return to the unripe state.
+
+(d) A rock breaking into pebbles: Irreversible.
+- Reason: Once broken, the original rock cannot be obtained back simply by reversing the action.
+
+Thus, melting is reversible; battery discharge, ripening, and breaking are generally irreversible.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-6">
+            <div class="qa-header" onclick="toggleQ('ex-6')">
+              <span class="q-num">Q7</span>
+              <span class="q-text">Heat can make changes happen faster. Explain this statement using two examples mentioned or implied in the text.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step-by-step:
+1) Heating gives energy to particles, increasing their motion.
+2) Increased motion can speed up processes like melting or evaporation.
+
+Two examples:
+1) Melting of ice:
+- An ice cube melts faster in a warmer environment because heat flows into the ice, changing it to water.
+2) Evaporation of water:
+- Water evaporates faster when heated by the Sun because more particles gain enough energy to escape into the air.
+
+Therefore, heat often increases the rate of change.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-7">
+            <div class="qa-header" onclick="toggleQ('ex-7')">
+              <span class="q-num">Q8</span>
+              <span class="q-text">Write the main steps of a scientific investigation (scientific method) suitable for Grade 7. Explain each step briefly.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Main steps of a scientific investigation:
+1) Observation: Notice a phenomenon carefully (e.g., stain changes, melting, bulb glow).
+2) Question/Problem: Ask what you want to find out in a clear way.
+3) Hypothesis/Prediction: Suggest a possible answer based on prior knowledge.
+4) Planning a fair test: Decide variables—
+   - Change only one factor (independent variable),
+   - Measure/observe results (dependent variable),
+   - Keep others constant (controlled variables).
+5) Experiment/Activity: Perform the test carefully and safely.
+6) Recording data: Note observations in a table/notes; measure if possible.
+7) Analysis: Compare results, look for patterns.
+8) Conclusion: State what the results show and whether the prediction was supported.
+9) Communication and improvement: Share findings; repeat or improve the test if needed.
+
+These steps reflect science as a process.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-8">
+            <div class="qa-header" onclick="toggleQ('ex-8')">
+              <span class="q-num">Q9</span>
+              <span class="q-text">Draw a concept map showing how the chapter connects these ideas: curiosity, observation, experiments, patterns in nature, discovery, responsibility, sustainable world. (Write the concept map in words if you cannot draw.)</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Type: concept map in words (text concept map)
+
+Curiosity → leads to → Observation
+Observation → helps us ask → Questions
+Questions → are tested by → Experiments/Activities
+Experiments → produce → Evidence/Data
+Evidence → reveals → Patterns in Nature
+Patterns in Nature → help in → Understanding (Scientific ideas)
+Understanding → leads to → Discovery
+Discovery → should be used with → Responsibility
+Responsibility → helps address → Environmental challenges
+Addressing challenges → supports → Sustainable World
+
+This concept map shows the flow from curiosity to sustainability through scientific thinking.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-9">
+            <div class="qa-header" onclick="toggleQ('ex-9')">
+              <span class="q-num">Q10</span>
+              <span class="q-text">The chapter says different fields of science are interconnected. Explain this with one detailed example linking physics, chemistry, biology, and earth science using topics hinted in the text (heat, water, materials, living beings).</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Example: Understanding water in our environment
+
+Step-by-step linking:
+1) Physics (heat and changes of state):
+- Heat flow causes ice to melt and water to evaporate.
+- This explains why glaciers melt faster in warmer conditions and why water evaporates under sunlight.
+2) Earth science (water cycle and groundwater):
+- Evaporated water forms clouds and returns as rain.
+- Rainwater can flow on the surface or trickle down to become groundwater.
+3) Chemistry (properties of materials and water interactions):
+- Water dissolves some substances and not others; this affects soil and water quality.
+- Material properties help us understand why some stains wash out differently and how substances mix with water.
+4) Biology (effects on living beings):
+- Plants and animals depend on water availability.
+- Changes in water supply affect growth, health, and ecosystems.
+
+Conclusion: A single real-life topic like water involves ideas from multiple branches, showing science is interconnected.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-10">
+            <div class="qa-header" onclick="toggleQ('ex-10')">
+              <span class="q-num">Q11</span>
+              <span class="q-text">Case-based question: Your friend says, “Science is only what is written in the textbook. Experiments are optional.” Write an answer to correct your friend using ideas from the chapter (at least five points).</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>To correct the statement:
+1) Science is not just facts; it is a process of thinking and finding out.
+2) Curiosity and questioning are central—science begins with asking ‘how’ and ‘why’.
+3) Experiments/activities provide evidence; without evidence we cannot test whether an idea is correct.
+4) Doing investigations helps deeper understanding of the environment and our place on Earth.
+5) Science is ever-evolving: new discoveries happen when people observe and experiment, not when they only read.
+6) Practical exploration makes learning meaningful—connecting daily life (stains, sour fruits, batteries, melting) with concepts.
+7) Science also involves responsibility; experiments and observations help us understand human impact and find sustainable solutions.
+
+Therefore, experiments are not optional extras; they are an essential part of learning science.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-11">
+            <div class="qa-header" onclick="toggleQ('ex-11')">
+              <span class="q-num">Q12</span>
+              <span class="q-text">Write a short note (120–150 words) on how curiosity can ‘take flight’ in science learning, using the examples of the butterfly/paper plane idea from the chapter.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Curiosity helps science learning take flight because it pushes us to observe, ask questions, and test ideas. The book’s page numbers following a butterfly and a paper plane symbolize free exploration. Like a butterfly that moves from one flower to another, a curious learner moves from one question to the next. A paper plane shows how a simple activity can lead to real scientific thinking: we observe how it glides, changes direction, or falls; then we change its folds and test again. This cycle of observation and experiment builds understanding. In the same way, science is not limited to reading facts; it grows through trying, improving, and discovering. When curiosity leads, learning becomes active and meaningful, and students begin to think like explorers who can make small discoveries on their own.</p>
+            </div>
+          </div>
+  </div>
+</div>
+
+<script>
+function switchTab(t) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleQ(id) {
+  const card = document.getElementById(id);
+  const ans = card.querySelector('.qa-answer');
+  const icon = card.querySelector('.toggle-icon');
+  ans.classList.toggle('open');
+  icon.style.transform = ans.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+function revealAll() {
+  document.querySelectorAll('.qa-answer').forEach(a => a.classList.add('open'));
+  document.querySelectorAll('.toggle-icon').forEach(i => i.style.transform = 'rotate(180deg)');
+}
+
+function hideAll() {
+  document.querySelectorAll('.qa-answer').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.toggle-icon').forEach(i => i.style.transform = '');
+}
+
+function searchQA(q) {
+  const term = q.toLowerCase();
+  document.querySelectorAll('.qa-card').forEach(card => {
+    const text = card.querySelector('.q-text').textContent.toLowerCase();
+    card.style.display = (!term || text.includes(term)) ? '' : 'none';
+  });
+}
+
+try { localStorage.setItem('ngmc_prog_ncert_questions.html', 50); } catch(e) {}
+</script>
+</body>
+</html>

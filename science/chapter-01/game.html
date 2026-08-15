@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Curiosity Runner: World of Science Adventure</title>
+<link rel='stylesheet' href='css/styles.css'>
+<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;600;700&display=swap' rel='stylesheet'>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;600;700&display=swap');
+  body{margin:0;background:#04040f;color:#e8eaf6;font-family:'Rajdhani',var(--font,'Segoe UI'),system-ui,sans-serif;overflow:hidden;}
+  .top-bar{background:rgba(4,4,20,.85);backdrop-filter:blur(10px);padding:.55rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem;position:relative;z-index:20;border-bottom:1px solid rgba(108,99,255,.3);}
+  .top-bar a{color:rgba(160,160,255,.8);text-decoration:none;font-size:.85rem;font-family:'Rajdhani',sans-serif;font-weight:600;}
+  .hud{display:flex;align-items:center;gap:1rem;}
+  #hud-score-wrap{font-size:1rem;font-weight:700;color:#ffd700;display:flex;gap:.3rem;align-items:center;font-family:'Orbitron',sans-serif;}
+  #hud-lives{font-size:1.1rem;letter-spacing:.15em;}
+  #score-display{font-size:1.1rem;font-weight:800;color:#ffd700;font-family:'Orbitron',sans-serif;}
+  .cp-track{height:5px;background:rgba(255,255,255,.15);border-radius:3px;width:100px;overflow:hidden;}
+  #cp-bar{height:100%;background:linear-gradient(90deg,#6c63ff,#00b894);border-radius:3px;width:0%;transition:.4s;}
+  #game-wrap{position:relative;display:flex;justify-content:center;align-items:flex-start;background:#04040f;overflow:hidden;height:calc(100vh - 120px);}
+  canvas{height:100%;width:auto;max-width:100%;display:block;touch-action:none;}
+  /* START SCREEN */
+  #start-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,4,15,.93);z-index:30;padding:1.5rem;text-align:center;}
+  #start-screen h2{font-size:1.7rem;margin:0 0 .5rem;color:#fff;}
+  #start-screen p{color:rgba(255,255,255,.7);margin:0 0 .8rem;}
+  .controls-hint{background:rgba(255,255,255,.08);border-radius:14px;padding:.9rem 1.3rem;margin-bottom:1.2rem;font-size:.85rem;color:rgba(255,255,255,.65);max-width:360px;}
+  .start-btn{background:linear-gradient(135deg,#6c63ff,#48c6ef);color:#fff;border:none;padding:.9rem 2.5rem;border-radius:25px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-top:.5rem;}
+  .start-btn:hover{transform:scale(1.04);}
+  /* QUESTION OVERLAY */
+  #q-overlay{display:none;position:fixed;inset:0;background:rgba(4,4,15,.9);z-index:25;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;animation:fadeInQ .25s ease;}
+  @keyframes fadeInQ{from{opacity:0}to{opacity:1}}
+  #q-topic{font-size:.78rem;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem;font-family:'Orbitron',sans-serif;text-align:center;}
+  #q-text{font-size:1.05rem;font-weight:700;color:#fff;text-align:center;max-width:440px;margin:0 0 1rem;line-height:1.45;font-family:'Rajdhani',sans-serif;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;width:100%;max-width:420px;}
+  .opt{background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.18);border-radius:12px;color:#fff;padding:.75rem .6rem;cursor:pointer;font-size:.83rem;text-align:left;transition:.18s;line-height:1.4;font-family:'Rajdhani',sans-serif;}
+  .opt:hover:not(:disabled){background:rgba(108,99,255,.3);border-color:#6c63ff;}
+  .opt.correct{background:rgba(0,184,148,.25);border-color:#00b894;color:#00e6a8;font-weight:700;}
+  .opt.wrong{background:rgba(255,107,107,.2);border-color:#ff6b6b;color:#ff8787;}
+  .opt:disabled{cursor:default;}
+  #q-fb{margin-top:.8rem;font-size:.88rem;font-weight:600;min-height:1.4em;text-align:center;max-width:420px;}
+  /* END SCREEN */
+  #end-screen{display:none;position:fixed;inset:0;background:rgba(4,4,15,.96);z-index:40;overflow-y:auto;padding:2rem;text-align:center;}
+  .end-hero{font-size:4rem;margin-bottom:.5rem;}
+  #end-screen h2{font-size:1.8rem;margin:0 0 .3rem;}
+  .end-sub{color:rgba(255,255,255,.6);margin:0 0 1rem;}
+  .end-stats{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .es{background:rgba(255,255,255,.07);border-radius:14px;padding:.9rem 1.2rem;min-width:80px;}
+  .en{display:block;font-size:1.6rem;font-weight:800;}
+  .el{font-size:.72rem;color:rgba(255,255,255,.55);}
+  .brow{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin:.8rem 0 1.2rem;}
+  .bchip{background:rgba(249,168,37,.15);border:1px solid rgba(249,168,37,.4);border-radius:20px;padding:.3rem .8rem;font-size:.82rem;}
+  .play-btn{background:linear-gradient(135deg,#6c63ff,#48c6ef);color:#fff;border:none;padding:.85rem 2rem;border-radius:25px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:.8rem;}
+  .play-btn:hover{transform:scale(1.04);}
+  .back-a{display:block;color:rgba(255,255,255,.55);font-size:.85rem;text-decoration:none;}
+  /* Badge pop */
+  #badge-pop{position:fixed;top:70px;right:16px;background:linear-gradient(135deg,#f9a825,#ff6b6b);color:#fff;border-radius:14px;padding:.7rem 1.1rem;font-weight:700;font-size:.9rem;z-index:100;opacity:0;transform:translateY(-20px);transition:opacity .3s,transform .3s;pointer-events:none;}
+  /* On-screen control buttons (mobile) */
+  .ctrl-row{display:flex;gap:.7rem;justify-content:center;align-items:center;padding:.5rem .8rem;background:rgba(0,0,0,.65);width:100%;box-sizing:border-box;flex-wrap:wrap;}
+  .ctrl-btn{background:rgba(108,99,255,.3);border:2px solid rgba(108,99,255,.6);color:#fff;border-radius:14px;padding:.6rem 1.1rem;font-size:1.1rem;font-weight:700;cursor:pointer;user-select:none;transition:.15s;touch-action:none;}
+  .ctrl-btn:active{background:rgba(108,99,255,.7);transform:scale(.94);}
+  .ctrl-jump{background:rgba(0,184,148,.28);border-color:rgba(0,184,148,.7);padding:.6rem 1.6rem;font-size:.95rem;}
+  .ctrl-jump:active{background:rgba(0,184,148,.6);}
+  .ctrl-hint{color:rgba(255,255,255,.4);font-size:.72rem;text-align:center;width:100%;margin-top:.15rem;}
+</style></head><body>
+<div id='badge-pop'></div>
+<div class='top-bar'><a href='index.html'>&#8592; Chapter Hub</a><span style='color:#fff;font-weight:700;font-size:.9rem'>&#128640; Curiosity Runner: World of Science</span><div class='hud'><div id='hud-lives'>❤️❤️❤️</div><div id='hud-score-wrap'>&#127942; <span id='score-display'>0</span></div><div class='cp-track'><div id='cp-bar'></div></div></div></div>
+<div id='game-wrap'><canvas id='gc' width='860' height='420'></canvas></div>
+<div class='ctrl-row'>
+  <button class='ctrl-btn' id='btn-left'>&#11013;&#65039;</button>
+  <button class='ctrl-btn ctrl-jump' id='btn-jump'>&#11014;&#65039; JUMP</button>
+  <button class='ctrl-btn' id='btn-right'>&#10145;&#65039;</button>
+  <span class='ctrl-hint'>&#8592;&#8594; / A D to run &nbsp;&#8226;&nbsp; &#8593; / W / SPACE to jump &nbsp;&#8226;&nbsp; Reach each glowing gate and answer to break through!</span>
+</div>
+<div id='start-screen'>
+  <h2>&#128640; Curiosity Runner</h2>
+  <p>World of Science Adventure — Grade 7 Science</p>
+  <div class='controls-hint'>
+    &#8592; &#8594; / A D — Run<br>
+    &#8593; / W / SPACE — Jump over gaps<br>
+    &#127775; Collect stardust coins along the way<br>
+    &#128302; Reach a glowing <strong>Question Gate</strong> and answer correctly to smash through it and keep running!<br>
+    &#128681; Don't fall into the void, and don't run out of hearts!
+  </div>
+  <button class='start-btn' onclick='startGame()'>&#9654; Start Adventure!</button>
+</div>
+<div id='q-overlay'>
+  <div id='q-topic'></div>
+  <div id='q-text'></div>
+  <div class='opts' id='opts-wrap'></div>
+  <div id='q-fb'></div>
+</div>
+<div id='end-screen'></div>
+<script>
+
+const QS = [
+  {q:"According to the chapter, science in Grade 7 should mainly be seen as a ______, not just a collection of facts.", opts:["A) way of thinking that welcomes curiosity","B) final exam to be cleared","C) list of inventions to memorise","D) set of laws that never change"], a:0, exp:"Science is a process — a way of thinking that welcomes curiosity and asks questions.", topic:"Nature of science", xp:10},
+  {q:"Which pair of deeper questions does the chapter say Grade 7 explorers should start asking?", opts:["A) Who invented it and when was it patented?","B) How do things work, and why do events happen the way they do?","C) What is the exact spelling and definition?","D) Which topic will be tested first?"], a:1, exp:"The chapter explicitly lists asking how things work and why events happen.", topic:"Deeper questions", xp:10},
+  {q:"The chapter compares activities and experiments to \"stepping stones\" because they mainly help us:", opts:["A) skip revision before tests","B) understand our environment and our place on the planet more deeply","C) avoid asking any more questions","D) replace the need for textbooks entirely"], a:1, exp:"These experiences serve as stepping stones to a deeper understanding of our environment and our place on the planet.", topic:"Experiments as stepping stones", xp:10},
+  {q:"Which example does the chapter give to show that science studies things at very different scales?", opts:["A) Tiny cells inside a leaf, and the movement of the sun and stars","B) Only the size of a football field","C) Only the length of a classroom","D) Only the size of a single atom"], a:0, exp:"The chapter highlights cells inside a leaf and the movement of the sun and stars as examples of very different scales.", topic:"Scale of science", xp:10},
+  {q:"The chapter says that although chapters look like different topics, physics, chemistry, biology and earth science are actually:", opts:["A) completely separate and never connected","B) interconnected, with ideas in one area inspiring discoveries in another","C) not meant to be studied in the same book","D) only relevant in higher classes"], a:1, exp:"Scientific ideas in one area often inspire discoveries in another, or let us ask questions in another area.", topic:"Interconnected science", xp:15},
+  {q:"Wondering why some fruits taste sour, or why a haldi (turmeric) stain is hard to wash out, are examples of investigating the ______ of materials.", opts:["A) age","B) properties","C) price","D) shape only"], a:1, exp:"The chapter uses sour fruits and haldi stains as everyday examples of exploring material properties.", topic:"Properties of materials", xp:10},
+  {q:"In the chapter's example, playing with batteries, lamps and wires to see what makes a lamp glow eventually leads to classifying materials into:", opts:["A) metals and non-metals","B) solids and liquids only","C) hot and cold objects","D) heavy and light objects"], a:0, exp:"This simple electrical exploration leads into the world of metals and non-metals.", topic:"Metals & non-metals", xp:10},
+  {q:"A torch battery running out for good, ice melting into water, and a fruit ripening are examples the chapter uses to introduce the idea of:", opts:["A) reversible and irreversible changes","B) only chemical formulas","C) only electric circuits","D) only weather prediction"], a:0, exp:"Some changes can be reversed and others cannot — batteries, melting ice, and ripening fruit are the chapter's examples.", topic:"Reversible & irreversible changes", xp:15},
+  {q:"The chapter links the melting of an ice cube in a glass and the melting of a glacier to understanding how ______ flows.", opts:["A) sound","B) heat","C) electricity only","D) blood"], a:1, exp:"Both examples are used to introduce how heat flows.", topic:"Heat flow", xp:10},
+  {q:"Water evaporating from the seas due to the Sun's heat, falling as rain, and trickling underground describes part of the:", opts:["A) rock cycle","B) water cycle","C) carbon cycle","D) life cycle of a plant"], a:1, exp:"Evaporation, rainfall, and groundwater trickling down are all part of the water cycle.", topic:"Water cycle", xp:10},
+  {q:"According to the chapter, which life processes are essential for animals — including us — to grow and survive?", opts:["A) Eating, breathing, and circulating nutrients through the blood","B) Only sleeping for long hours","C) Only staying indoors","D) Only exercising outdoors"], a:0, exp:"To grow, we must eat and breathe, and blood must circulate nutrients from food around the body.", topic:"Life processes", xp:10},
+  {q:"The chapter raises a curious question about plants — since they can't eat like animals do, it asks how plants:", opts:["A) get their food, and whether they also breathe","B) avoid life processes completely","C) grow without any energy at all","D) survive without needing water"], a:0, exp:"The chapter wonders how plants get their food, and whether they too breathe.", topic:"Plants & life processes", xp:15},
+  {q:"Before electric clocks and digital watches existed, the chapter says early humans measured time by observing:", opts:["A) the position of shadows cast by the Sun","B) the sound of birds chirping","C) the colour of the sky only","D) the number of visible stars"], a:0, exp:"Early humans used the position of shadows in the Sun to tell the time.", topic:"Measuring time", xp:10},
+  {q:"The chapter says that asking questions about the nature of light has given us a deep understanding of:", opts:["A) only how to build a torch","B) the universe we live in","C) only shadow puppetry","D) only the taste of food"], a:1, exp:"Questions about light have given us a deep understanding of the universe.", topic:"Light & the universe", xp:10},
+  {q:"According to the chapter, eclipses are a fascinating phenomenon caused by:", opts:["A) shadows cast by the Earth and the Moon","B) sound waves bouncing off clouds","C) magnetic fields in metals","D) chemical reactions in the air"], a:0, exp:"The Earth and the Moon can cast shadows, leading to eclipses.", topic:"Eclipses", xp:15},
+  {q:"To fully understand day, night, and eclipses, the chapter says we need to know how the Earth rotates on its axis, how the Moon goes around the Earth, and how:", opts:["A) the Earth goes around the Sun","B) the Sun goes around the Moon","C) stars orbit the Earth","D) clouds orbit the atmosphere"], a:0, exp:"We need to understand Earth's rotation, the Moon's orbit around Earth, and Earth's orbit around the Sun.", topic:"Earth-Moon-Sun system", xp:15},
+  {q:"The chapter says science is not just about discovery — being a young science explorer also means understanding:", opts:["A) responsibility, since human activities are linked to nature and society","B) that discoveries should be kept secret","C) that only scientists are allowed to ask questions","D) that mistakes are never allowed"], a:0, exp:"Science is about discovery and responsibility, since human activities connect to nature and society.", topic:"Science & responsibility", xp:10},
+  {q:"The chapter hopes readers will see the role science can play in addressing environmental challenges and creating a:", opts:["A) more sustainable world","B) shorter school year","C) bigger textbook","D) faster internet connection"], a:0, exp:"Science can help address environmental challenges and build a more sustainable world.", topic:"Sustainability", xp:10},
+  {q:"The page numbers in this book are designed to follow the playful flight of a butterfly and a paper plane, symbolising the idea that:", opts:["A) learning takes flight when curiosity leads the way","B) page numbers should be ignored","C) butterflies are the main topic of this book","D) paper planes matter more than experiments"], a:0, exp:"The design reflects that learning takes flight when curiosity leads the way.", topic:"Book design & curiosity", xp:10},
+  {q:"The chapter says a simple paper plane inspired real scientific exploration of flight, starting with early inventors studying:", opts:["A) bird wings","B) car engines","C) ocean currents","D) volcanic rock"], a:0, exp:"From early inventors studying bird wings to modern engineers, the dream of flying started with simple observations.", topic:"Flight & inspiration", xp:10},
+  {q:"In Activity 1.1, \"Question the Answer\", you must invent a creative question for a given answer instead of the other way round. Which of these is actually one of the example answers given?", opts:["A) \"Don't panic, I have my towel.\"","B) \"The answer is always yes.\"","C) \"Ask your teacher.\"","D) \"It depends on gravity.\""], a:0, exp:"One of the given answers to invent a question for is: \"Don't panic, I have my towel.\"", topic:"Question the Answer activity", xp:15},
+  {q:"The chapter's fun wordplay, carried over from Grade 6, says that to be a wise person, you must be a:", opts:["A) \"whys\" person","B) \"size\" person","C) \"prize\" person","D) \"wise-guy\" person"], a:0, exp:"\"To be a wise person, you must be a whys person\" — encouraging curious questioning.", topic:"Curiosity wordplay", xp:10}
+];
+const CHAPTER_TITLE = "1 EVER EVOLVING WORLD OF SCIENCE";
+const canvas = document.getElementById('gc');
+const ctx    = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const GROUND_Y = H - 80;
+
+// ── Physics constants ───────────────────────────────────────────────────────
+const ACC = 0.9, FRICTION = 0.85, MAXV = 4.6, GRAVITY = 0.75, JUMP_V = -13.5, SEG = 620, START_X = 260;
+
+// ── State ──────────────────────────────────────────────────────────────────
+let player = { wx:60, y:GROUND_Y-48, vx:0, vy:0, w:32, h:48, onGround:true, facing:1 };
+let camX = 0;
+let score = 0, lives = 3, frame = 0;
+let streak = 0, totalRight = 0, shakeEnd = 0;
+let feedbackMsg = '', feedbackCol = '#fff', feedbackTimer = 0;
+let particles = [], stars = [], bgRocks = [];
+let gates = [], pits = [], platforms = [], coins = [];
+let levelLen = 0, flagWx = 0;
+let running = false, paused = false, overlayOpen = false, won = false, currentGate = null;
+let keys = { left:false, right:false, jumpHeld:false, jumpEdge:false };
+let workingQS = [...QS];
+
+function clamp(v,lo,hi){ return Math.max(lo, Math.min(hi, v)); }
+
+function shuffle(arr) {
+  for (let i = arr.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// ── Web Audio ──────────────────────────────────────────────────────────────
+let audioCtx = null;
+function initAudio() {
+  if (audioCtx) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const master = audioCtx.createGain();
+    master.gain.value = 0.16;
+    master.connect(audioCtx.destination);
+    [55, 110, 165].forEach((freq, i) => {
+      const o = audioCtx.createOscillator();
+      o.type = 'sine'; o.frequency.value = freq;
+      const g = audioCtx.createGain();
+      g.gain.value = [0.3, 0.16, 0.08][i];
+      const lfo = audioCtx.createOscillator();
+      lfo.frequency.value = 0.05 + i*0.03;
+      const lg = audioCtx.createGain();
+      lg.gain.value = freq * 0.014;
+      lfo.connect(lg); lg.connect(o.frequency);
+      lfo.start(); o.connect(g); g.connect(master); o.start();
+    });
+    const notes = [261.6, 329.6, 392, 523.2, 392, 329.6];
+    let ni = 0;
+    const arp = () => {
+      if (!audioCtx) return;
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = 'triangle'; o.frequency.value = notes[ni % notes.length]; ni++;
+      const t = audioCtx.currentTime;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(0.05,t+.06);
+      g.gain.exponentialRampToValueAtTime(0.001,t+.5);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t+.55);
+      setTimeout(arp, 480 + Math.random()*300);
+    };
+    setTimeout(arp, 1200);
+  } catch(e) {}
+}
+function snd(type) {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  if (type==='jump') {
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='square'; o.frequency.setValueAtTime(340,t);
+    o.frequency.exponentialRampToValueAtTime(680,t+.1);
+    g.gain.setValueAtTime(.14,t); g.gain.exponentialRampToValueAtTime(.001,t+.12);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+.13);
+  } else if (type==='coin') {
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='square'; o.frequency.setValueAtTime(988,t);
+    o.frequency.setValueAtTime(1318,t+.08);
+    g.gain.setValueAtTime(.15,t); g.gain.exponentialRampToValueAtTime(.001,t+.18);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+.2);
+  } else if (type==='correct') {
+    [523,659,784,1047].forEach((f,i) => {
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(0,t+i*.09);
+      g.gain.linearRampToValueAtTime(.2,t+i*.09+.04);
+      g.gain.exponentialRampToValueAtTime(.001,t+i*.09+.28);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t+i*.09); o.stop(t+i*.09+.3);
+    });
+  } else if (type==='wrong') {
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='square'; o.frequency.setValueAtTime(180,t);
+    o.frequency.exponentialRampToValueAtTime(80,t+.32);
+    g.gain.setValueAtTime(.18,t); g.gain.exponentialRampToValueAtTime(.001,t+.32);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+.33);
+  } else if (type==='boom') {
+    const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.5,audioCtx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.5);
+    const src=audioCtx.createBufferSource(), g=audioCtx.createGain();
+    src.buffer=buf; g.gain.value=.28;
+    src.connect(g); g.connect(audioCtx.destination); src.start();
+  } else if (type==='victory') {
+    [523,659,784,1047,1318].forEach((f,i) => {
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='triangle'; o.frequency.value=f;
+      g.gain.setValueAtTime(0,t+i*.13);
+      g.gain.linearRampToValueAtTime(.22,t+i*.13+.05);
+      g.gain.exponentialRampToValueAtTime(.001,t+i*.13+.5);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t+i*.13); o.stop(t+i*.13+.55);
+    });
+  }
+}
+
+// ── Starfield / background ──────────────────────────────────────────────────
+for (let i = 0; i < 90; i++)
+  stars.push({ x: Math.random()*W*3, y: Math.random()*H*0.7, r: Math.random()*1.4+.3, tw: Math.random()*6.28 });
+for (let i = 0; i < 14; i++)
+  bgRocks.push({ wx: Math.random()*6000, y: 30+Math.random()*110, r: 20+Math.random()*28, col: ['#ff9ecb','#7dd3fc','#fef08a'][i%3] });
+
+// ── Achievements ─────────────────────────────────────────────────────────
+const ACHIEVEMENTS = [
+  {id:'firstdiscovery', badge:'🌠', name:'First Discovery',  cond:()=>totalRight>=1},
+  {id:'hotstreak',      badge:'🔥', name:'Hot Streak',        cond:()=>streak>=5},
+  {id:'starvoyager',    badge:'⭐', name:'Star Voyager',       cond:()=>score>=100},
+  {id:'missionace',     badge:'🚀', name:'Mission Ace',        cond:()=>gates.length>0 && gates.every(g=>g.passed)},
+];
+let earned = [];
+try { earned = JSON.parse(localStorage.getItem('ngmc_achievements')||'[]').map(a=>a.id); } catch(e) {}
+
+function chkAch() {
+  ACHIEVEMENTS.forEach(a => {
+    if (!earned.includes(a.id) && a.cond()) {
+      earned.push(a.id);
+      const all = JSON.parse(localStorage.getItem('ngmc_achievements')||'[]');
+      all.push({id:a.id, badge:a.badge, name:a.name});
+      try { localStorage.setItem('ngmc_achievements', JSON.stringify(all)); } catch(e) {}
+      badgePop(a.badge, a.name);
+    }
+  });
+}
+function badgePop(b, n) {
+  const el = document.getElementById('badge-pop');
+  el.textContent = b+' '+n;
+  el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateY(-20px)'; }, 2600);
+}
+
+// ── Particles ─────────────────────────────────────────────────────────────
+function spark(x, y, col, n, sp) {
+  for (let i = 0; i < n; i++)
+    particles.push({ x, y, vx:(Math.random()-.5)*sp, vy:(Math.random()-.5)*sp,
+                     col, life:1, sz:Math.random()*5+2, g:.08 });
+}
+
+// ── Level construction ───────────────────────────────────────────────────
+function buildLevel() {
+  const n = workingQS.length;
+  gates = []; pits = []; coins = [];
+  for (let i = 0; i < n; i++) gates.push({ wx: START_X + i*SEG, qIndex:i, passed:false, burst:0 });
+  for (let i = 1; i < n; i++) {
+    const g = gates[i];
+    pits.push({ start: g.wx-210, end: g.wx-210+(i%3===0?95:68) });
+    if (i%3===0) pits.push({ start: g.wx-430, end: g.wx-430+70 });
+  }
+  pits.sort((a,b)=>a.start-b.start);
+  platforms = []; let cursor = 0;
+  pits.forEach(p => { if (p.start > cursor) platforms.push({start:cursor,end:p.start}); cursor = Math.max(cursor,p.end); });
+  platforms.push({ start: cursor, end: 999999 });
+  coins = [];
+  for (let i = 0; i < n; i++) {
+    const base = i===0 ? 60 : gates[i-1].wx+60;
+    const end  = gates[i].wx-70;
+    for (let k = 0; k < 3; k++) {
+      const wx = base + (end-base)*((k+1)/4) + (Math.random()*30-15);
+      coins.push({ wx, y: GROUND_Y-46-(Math.random()<0.4?76:0), r:8, got:false, phase:Math.random()*10 });
+    }
+  }
+  levelLen = gates[n-1].wx + 520;
+  flagWx   = gates[n-1].wx + 380;
+}
+
+function supportsGround(wx) {
+  return !pits.some(p => wx > p.start && wx < p.end);
+}
+function nextUnpassedGate() { return gates.find(g => !g.passed); }
+
+// ── Question overlay ──────────────────────────────────────────────────────
+function openQuestion(gate) {
+  overlayOpen = true; paused = true; currentGate = gate;
+  const q = workingQS[gate.qIndex];
+  document.getElementById('q-topic').textContent = '🛰️ ' + (q.topic || 'Checkpoint ' + (gate.qIndex+1));
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-fb').textContent = '';
+  const wrap = document.getElementById('opts-wrap');
+  wrap.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt'; b.textContent = opt;
+    b.onclick = () => answerQuestion(i, b);
+    wrap.appendChild(b);
+  });
+  document.getElementById('q-overlay').style.display = 'flex';
+}
+
+function answerQuestion(i, btn) {
+  const q = workingQS[currentGate.qIndex];
+  const fb = document.getElementById('q-fb');
+  const allBtns = document.querySelectorAll('#opts-wrap .opt');
+  if (i === q.a) {
+    btn.classList.add('correct');
+    allBtns.forEach(b => b.disabled = true);
+    streak++; totalRight++;
+    score += (q.xp||10) + Math.min(streak*2, 20);
+    fb.style.color = '#00e6a8';
+    fb.textContent = '✅ Correct! ' + q.exp;
+    snd('correct');
+    currentGate.passed = true;
+    currentGate.burst = 26;
+    chkAch();
+    document.getElementById('cp-bar').style.width = (gates.filter(g=>g.passed).length/gates.length*100)+'%';
+    document.getElementById('score-display').textContent = score;
+    setTimeout(() => {
+      document.getElementById('q-overlay').style.display = 'none';
+      overlayOpen = false; paused = false; currentGate = null;
+      player.vx = 3;
+    }, 1100);
+  } else {
+    btn.classList.add('wrong'); btn.disabled = true;
+    streak = 0;
+    lives = Math.max(0, lives-1);
+    score = Math.max(0, score-5);
+    fb.style.color = '#ff8787';
+    fb.textContent = '❌ Not quite — try another door!';
+    snd('wrong');
+    shakeEnd = Date.now()+380;
+    renderLives();
+    document.getElementById('score-display').textContent = score;
+    if (lives <= 0) {
+      setTimeout(() => {
+        document.getElementById('q-overlay').style.display = 'none';
+        overlayOpen = false;
+        endGame(false);
+      }, 700);
+    }
+  }
+}
+
+// ── Damage / respawn ──────────────────────────────────────────────────────
+function loseLifeFall() {
+  lives = Math.max(0, lives-1);
+  renderLives();
+  shakeEnd = Date.now()+400;
+  snd('boom');
+  feedbackMsg = '😵 Into the void! -1 life'; feedbackCol = '#ff6b6b'; feedbackTimer = 70;
+  respawn();
+  if (lives <= 0) setTimeout(() => endGame(false), 500);
+}
+function respawn() {
+  const passed = gates.filter(g => g.passed);
+  const safeX = passed.length ? passed[passed.length-1].wx+40 : 60;
+  player.wx = safeX; player.y = GROUND_Y-player.h; player.vy = 0; player.vx = 0;
+}
+
+// ── Victory ───────────────────────────────────────────────────────────────
+function triggerVictory() {
+  if (won) return;
+  won = true; paused = true;
+  feedbackMsg = '🏁 Beacon reached!'; feedbackCol = '#ffd700'; feedbackTimer = 100;
+  snd('victory');
+  setTimeout(() => endGame(true), 1300);
+}
+
+// ── Player update ─────────────────────────────────────────────────────────
+function updatePlayer() {
+  if (!paused) {
+    if (keys.left && !keys.right) player.vx -= ACC;
+    else if (keys.right && !keys.left) player.vx += ACC;
+    player.vx *= FRICTION;
+    if (Math.abs(player.vx) < 0.05) player.vx = 0;
+    player.vx = clamp(player.vx, -MAXV, MAXV);
+    if (player.vx > 0.2) player.facing = 1;
+    if (player.vx < -0.2) player.facing = -1;
+    player.wx += player.vx;
+
+    const ng = nextUnpassedGate();
+    const wallX = ng ? ng.wx-42 : Infinity;
+    if (player.wx > wallX) { player.wx = wallX; if (player.vx > 0) player.vx = 0; }
+    if (player.wx < 20) player.wx = 20;
+
+    if (keys.jumpEdge && player.onGround) {
+      player.vy = JUMP_V; player.onGround = false; snd('jump');
+    }
+    keys.jumpEdge = false;
+  }
+
+  player.vy += GRAVITY;
+  player.y += player.vy;
+
+  const grounded = supportsGround(player.wx);
+  if (grounded && player.y >= GROUND_Y-player.h) {
+    player.y = GROUND_Y-player.h; player.vy = 0; player.onGround = true;
+  } else {
+    player.onGround = false;
+  }
+
+  if (player.y > H+90 && !overlayOpen) loseLifeFall();
+
+  if (!paused) {
+    const ng = nextUnpassedGate();
+    if (ng && !overlayOpen && player.wx >= ng.wx-44) openQuestion(ng);
+
+    coins.forEach(c => {
+      if (!c.got && Math.hypot(player.wx-c.wx, (player.y+player.h/2)-c.y) < 24) {
+        c.got = true; score += 2; snd('coin');
+        document.getElementById('score-display').textContent = score;
+        spark(c.wx-camX, c.y, '#ffd700', 10, 8);
+      }
+    });
+
+    if (!won && player.wx >= flagWx-14) triggerVictory();
+  }
+
+  camX = clamp(camX + (clamp(player.wx-W*0.35, 0, Math.max(0,levelLen-W)) - camX)*0.12, 0, Math.max(0,levelLen-W));
+}
+
+// ── Drawing ────────────────────────────────────────────────────────────────
+function drawBackground() {
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0, '#6a3fd1'); grad.addColorStop(.42,'#4a67e8'); grad.addColorStop(.75,'#2fa8c9'); grad.addColorStop(1,'#1b5f8a');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+
+  stars.forEach(s => {
+    if (s.y > H*0.55) return;
+    const sx = ((s.x - camX*0.15) % (W*3) + W*3) % (W*3);
+    if (sx > W) return;
+    const tw = 0.5+0.5*Math.sin(frame*0.05+s.tw);
+    ctx.fillStyle = `rgba(255,255,255,${.45+tw*.5})`;
+    ctx.beginPath(); ctx.arc(sx, s.y, s.r+0.5, 0, Math.PI*2); ctx.fill();
+  });
+
+  // soft nebula clouds
+  bgRocks.forEach((r,i) => {
+    const sx = r.wx - camX*0.35;
+    if (sx < -100 || sx > W+100) return;
+    ctx.save();
+    const cg = ctx.createRadialGradient(sx,r.y,2,sx,r.y,r.r*1.4);
+    cg.addColorStop(0, r.col); cg.addColorStop(1,'transparent');
+    ctx.globalAlpha = 0.65;
+    ctx.fillStyle = cg;
+    ctx.beginPath(); ctx.arc(sx, r.y, r.r*1.4, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+  });
+
+  // bright fluffy clouds, closer parallax
+  for (let i=0;i<8;i++) {
+    const baseWx = i*900+300;
+    const sx = baseWx - camX*0.55;
+    if (sx < -140 || sx > W+140) continue;
+    const cy = 55 + (i%3)*30;
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(sx, cy, 34, 16, 0, 0, Math.PI*2);
+    ctx.ellipse(sx+26, cy+4, 24, 13, 0, 0, Math.PI*2);
+    ctx.ellipse(sx-24, cy+5, 22, 12, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function drawGround() {
+  platforms.forEach(p => {
+    const sx0 = p.start - camX, sx1 = Math.min(p.end,levelLen) - camX;
+    if (sx1 < -20 || sx0 > W+20) return;
+    const x0 = Math.max(sx0,-20), x1 = Math.min(sx1,W+20);
+    ctx.fillStyle = '#5b3fa8';
+    ctx.fillRect(x0, GROUND_Y, x1-x0, H-GROUND_Y);
+    const g = ctx.createLinearGradient(0,GROUND_Y,0,GROUND_Y+10);
+    g.addColorStop(0,'#baa6ff'); g.addColorStop(1,'#7a5fe0');
+    ctx.fillStyle = g;
+    ctx.fillRect(x0, GROUND_Y, x1-x0, 10);
+    ctx.fillStyle = 'rgba(255,255,255,.35)';
+    ctx.fillRect(x0, GROUND_Y, x1-x0, 2);
+    ctx.fillStyle = 'rgba(45,25,90,.55)';
+    for (let x = Math.floor(x0/34)*34; x < x1; x += 34) ctx.fillRect(x, GROUND_Y+10, 2, H-GROUND_Y-10);
+  });
+  pits.forEach(p => {
+    const sx0 = p.start - camX, sx1 = p.end - camX;
+    if (sx1 < -20 || sx0 > W+20) return;
+    const vg = ctx.createLinearGradient(0,GROUND_Y,0,H);
+    vg.addColorStop(0,'#0c0620'); vg.addColorStop(1,'#04040f');
+    ctx.fillStyle = vg;
+    ctx.fillRect(sx0, GROUND_Y, sx1-sx0, H-GROUND_Y);
+    ctx.fillStyle = '#ff5a5a';
+    ctx.fillRect(sx0-3, GROUND_Y, 5, 12); ctx.fillRect(sx1-2, GROUND_Y, 5, 12);
+  });
+}
+
+function drawCoins() {
+  coins.forEach(c => {
+    if (c.got) return;
+    const sx = c.wx - camX;
+    if (sx < -20 || sx > W+20) return;
+    const bob = Math.sin(frame*0.12 + c.phase)*4;
+    ctx.save();
+    ctx.translate(sx, c.y+bob);
+    ctx.rotate(frame*0.08 + c.phase);
+    ctx.shadowColor = '#ffd700'; ctx.shadowBlur = 10;
+    ctx.fillStyle = '#ffd700';
+    ctx.beginPath(); ctx.ellipse(0,0, c.r*0.55, c.r, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff6c8';
+    ctx.fillRect(-1,-c.r*0.6,2,c.r*1.2);
+    ctx.restore();
+  });
+}
+
+function drawGates() {
+  gates.forEach((g, idx) => {
+    const sx = g.wx - camX;
+    if (g.passed) {
+      if (g.burst > 0) { spark(sx, GROUND_Y-50, '#00e6a8', 3, 10); g.burst--; }
+      return;
+    }
+    if (sx < -80 || sx > W+80) return;
+    const isNext = idx === gates.findIndex(x=>!x.passed);
+    const pulse = 0.6+0.4*Math.sin(frame*0.1);
+    ctx.save();
+    ctx.strokeStyle = isNext ? `rgba(255,255,255,${pulse})` : 'rgba(167,139,250,.5)';
+    ctx.lineWidth = isNext ? 5 : 3;
+    ctx.shadowColor = isNext ? '#fff' : '#a78bfa';
+    ctx.shadowBlur = isNext ? 22 : 8;
+    ctx.beginPath();
+    ctx.moveTo(sx, GROUND_Y);
+    ctx.lineTo(sx, GROUND_Y-150);
+    ctx.stroke();
+    const rg = ctx.createRadialGradient(sx,GROUND_Y-95,4,sx,GROUND_Y-95,42);
+    rg.addColorStop(0, isNext ? 'rgba(167,139,250,.8)' : 'rgba(108,99,255,.35)');
+    rg.addColorStop(1,'transparent');
+    ctx.fillStyle = rg;
+    ctx.beginPath(); ctx.arc(sx, GROUND_Y-95, 42, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 30px Orbitron, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('?', sx, GROUND_Y-85);
+    if (isNext) {
+      ctx.font = 'bold 11px Rajdhani, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,.85)';
+      ctx.fillText('ANSWER TO BREAK THROUGH', sx, GROUND_Y-160);
+    }
+    ctx.restore();
+  });
+}
+
+function drawFlag() {
+  const sx = flagWx - camX;
+  if (sx < -60 || sx > W+60) return;
+  ctx.save();
+  ctx.strokeStyle = '#bbb'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(sx, GROUND_Y); ctx.lineTo(sx, GROUND_Y-170); ctx.stroke();
+  const glow = 0.6+0.4*Math.sin(frame*0.15);
+  ctx.shadowColor = '#ffd700'; ctx.shadowBlur = 16*glow;
+  ctx.fillStyle = '#ffd700';
+  ctx.beginPath(); ctx.arc(sx, GROUND_Y-172, 8, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+  const wave = Math.sin(frame*0.1)*6;
+  ctx.fillStyle = '#ff6b6b';
+  ctx.beginPath();
+  ctx.moveTo(sx, GROUND_Y-160);
+  ctx.lineTo(sx+38+wave, GROUND_Y-150);
+  ctx.lineTo(sx, GROUND_Y-138);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function drawPlayer() {
+  const sx = player.wx - camX, sy = player.y;
+  const running = Math.abs(player.vx) > 0.3 && player.onGround;
+  const legSwing = running ? Math.sin(frame*0.45)*8 : 0;
+  const bob = running ? Math.abs(Math.sin(frame*0.45))*2 : 0;
+  const OUT = '#1a1030';
+  ctx.save();
+  ctx.translate(sx, sy - bob);
+  if (player.facing < 0) ctx.scale(-1,1);
+
+  // jetpack flame when airborne
+  if (!player.onGround) {
+    ctx.save();
+    ctx.shadowColor = '#ffb43c'; ctx.shadowBlur = 14;
+    ctx.fillStyle = '#ffb43c';
+    ctx.beginPath(); ctx.ellipse(-2, player.h+2+Math.random()*5, 5, 9, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff6c8';
+    ctx.beginPath(); ctx.ellipse(-2, player.h+2, 2.5, 5, 0, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  // cape — flows opposite to facing/motion, big Mario-esque flair
+  const capeWave = Math.sin(frame*0.18)*6 + (running? -6:0);
+  ctx.fillStyle = '#ff6b4a';
+  ctx.strokeStyle = OUT; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(-9, player.h*0.32);
+  ctx.quadraticCurveTo(-26+capeWave*0.4, player.h*0.55, -18+capeWave, player.h*0.95);
+  ctx.quadraticCurveTo(-14, player.h*0.7, -9, player.h*0.62);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // legs
+  ctx.fillStyle = '#2f2657';
+  ctx.strokeStyle = OUT; ctx.lineWidth = 2.5;
+  [[-7+legSwing*0.18, 7], [1-legSwing*0.18, 7]].forEach(([lx,lw]) => {
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(lx, player.h-16, lw, 16, 3); else ctx.rect(lx, player.h-16, lw, 16);
+    ctx.fill(); ctx.stroke();
+  });
+  // boots
+  ctx.fillStyle = '#ffd166';
+  [[-8+legSwing*0.18], [0-legSwing*0.18]].forEach(([lx]) => {
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(lx, player.h-6, 9, 6, 2); else ctx.rect(lx, player.h-6, 9, 6);
+    ctx.fill(); ctx.stroke();
+  });
+
+  // body suit
+  ctx.fillStyle = '#ff4d5e';
+  ctx.strokeStyle = OUT; ctx.lineWidth = 3;
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(-12, player.h*0.24, 24, player.h*0.62, 9);
+  else ctx.rect(-12, player.h*0.24, 24, player.h*0.62);
+  ctx.fill(); ctx.stroke();
+
+  // chest emblem — a little star
+  ctx.fillStyle = '#ffd700';
+  ctx.beginPath();
+  for (let i=0;i<5;i++) {
+    const ang = -Math.PI/2 + i*(Math.PI*2/5);
+    const ang2 = ang + Math.PI/5;
+    ctx.lineTo(Math.cos(ang)*5, player.h*0.5+Math.sin(ang)*5);
+    ctx.lineTo(Math.cos(ang2)*2.2, player.h*0.5+Math.sin(ang2)*2.2);
+  }
+  ctx.closePath(); ctx.fill();
+
+  // arms
+  ctx.fillStyle = '#48c6ef';
+  ctx.strokeStyle = OUT; ctx.lineWidth = 2.5;
+  [[-15,player.h*0.32],[7,player.h*0.32]].forEach(([ax,ay]) => {
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(ax, ay, 6, player.h*0.34, 3); else ctx.rect(ax, ay, 6, player.h*0.34);
+    ctx.fill(); ctx.stroke();
+  });
+  // gloves
+  ctx.fillStyle = '#fff';
+  [[-12,player.h*0.63],[10,player.h*0.63]].forEach(([gx,gy]) => {
+    ctx.beginPath(); ctx.arc(gx, gy, 4, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+  });
+
+  // helmet
+  ctx.fillStyle = '#f4f1ff';
+  ctx.strokeStyle = OUT; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(0, 6, 14, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+  // visor
+  ctx.fillStyle = '#2fc4e8';
+  ctx.strokeStyle = OUT; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.ellipse(3, 7, 9, 9.5, 0, -0.3, Math.PI+0.5); ctx.fill(); ctx.stroke();
+  // visor shine
+  ctx.fillStyle = 'rgba(255,255,255,.75)';
+  ctx.beginPath(); ctx.ellipse(0, 2, 3, 4, -0.5, 0, Math.PI*2); ctx.fill();
+  // face — friendly eyes + smile through visor
+  ctx.fillStyle = '#0d2b3a';
+  ctx.beginPath(); ctx.arc(1, 7, 1.6, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(7, 7, 1.6, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#0d2b3a'; ctx.lineWidth = 1.3;
+  ctx.beginPath(); ctx.arc(4, 9.5, 3, 0.15*Math.PI, 0.85*Math.PI); ctx.stroke();
+  // antenna
+  ctx.strokeStyle = OUT; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0,-8); ctx.lineTo(-2,-14); ctx.stroke();
+  ctx.fillStyle = '#ff4d5e';
+  ctx.beginPath(); ctx.arc(-2,-15,2.6,0,Math.PI*2); ctx.fill();
+
+  ctx.restore();
+}
+
+// ── Main loop ──────────────────────────────────────────────────────────────
+function loop() {
+  frame++;
+  updatePlayer();
+
+  let sx = 0, sy = 0;
+  if (Date.now() < shakeEnd) {
+    const t = (shakeEnd-Date.now())/400;
+    sx = (Math.random()-.5)*9*t; sy = (Math.random()-.5)*6*t;
+  }
+  ctx.save(); ctx.translate(sx, sy);
+
+  drawBackground();
+  drawGround();
+  drawCoins();
+  drawGates();
+  drawFlag();
+  drawPlayer();
+
+  particles = particles.filter(p => {
+    p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.life-=.024;
+    ctx.globalAlpha=p.life; ctx.fillStyle=p.col;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.sz,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=1; return p.life>0;
+  });
+
+  if (feedbackTimer > 0) {
+    feedbackTimer--;
+    ctx.globalAlpha = Math.min(1, feedbackTimer/18);
+    ctx.fillStyle = feedbackCol; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(feedbackMsg, W/2, 50);
+    ctx.globalAlpha = 1;
+  }
+
+  ctx.restore();
+  if (running) requestAnimationFrame(loop);
+}
+
+// ── Controls ──────────────────────────────────────────────────────────────
+window.addEventListener('keydown', e => {
+  if (e.code==='ArrowLeft'  || e.code==='KeyA') keys.left = true;
+  if (e.code==='ArrowRight' || e.code==='KeyD') keys.right = true;
+  if (e.code==='ArrowUp' || e.code==='KeyW' || e.code==='Space') {
+    if (!keys.jumpHeld) keys.jumpEdge = true;
+    keys.jumpHeld = true;
+    e.preventDefault();
+  }
+}, {passive:false});
+window.addEventListener('keyup', e => {
+  if (e.code==='ArrowLeft'  || e.code==='KeyA') keys.left = false;
+  if (e.code==='ArrowRight' || e.code==='KeyD') keys.right = false;
+  if (e.code==='ArrowUp' || e.code==='KeyW' || e.code==='Space') keys.jumpHeld = false;
+});
+
+function bindHold(id, onDown, onUp) {
+  const el = document.getElementById(id);
+  const down = ev => { ev.preventDefault(); onDown(); };
+  const up = ev => { ev.preventDefault(); onUp(); };
+  el.addEventListener('pointerdown', down);
+  el.addEventListener('pointerup', up);
+  el.addEventListener('pointerleave', up);
+  el.addEventListener('pointercancel', up);
+}
+bindHold('btn-left',  ()=>keys.left=true,  ()=>keys.left=false);
+bindHold('btn-right', ()=>keys.right=true, ()=>keys.right=false);
+document.getElementById('btn-jump').addEventListener('pointerdown', e => { e.preventDefault(); keys.jumpEdge = true; });
+
+// ── Start / End ───────────────────────────────────────────────────────────
+function startGame() {
+  workingQS = shuffle([...QS]);
+  score = 0; lives = 3; streak = 0; totalRight = 0; frame = 0;
+  won = false; overlayOpen = false; paused = false; currentGate = null;
+  particles = [];
+  player = { wx:60, y:GROUND_Y-48, vx:0, vy:0, w:32, h:48, onGround:true, facing:1 };
+  camX = 0;
+  buildLevel();
+  document.getElementById('score-display').textContent = '0';
+  document.getElementById('cp-bar').style.width = '0%';
+  document.getElementById('end-screen').style.display = 'none';
+  document.getElementById('q-overlay').style.display = 'none';
+  document.getElementById('game-wrap').style.display = '';
+  document.getElementById('start-screen').style.display = 'none';
+  running = true;
+  initAudio();
+  renderLives();
+  requestAnimationFrame(loop);
+}
+
+function renderLives() {
+  document.getElementById('hud-lives').innerHTML =
+    Array.from({length:3}, (_,i) => i<lives ? '❤️' : '🖤').join('');
+}
+
+function endGame(win) {
+  running = false;
+  const totalQ = workingQS.length;
+  const acc = totalQ ? Math.round(totalRight/totalQ*100) : 0;
+  try { localStorage.setItem('ngmc_prog_game.html', acc); } catch(e) {}
+  const ach = JSON.parse(localStorage.getItem('ngmc_achievements')||'[]');
+  const bchips = ach.map(a=>`<span class="bchip">${a.badge} ${a.name}</span>`).join('')
+    || '<span style="color:rgba(255,255,255,.4)">Complete the adventure to earn badges!</span>';
+  document.getElementById('end-screen').innerHTML = `
+    <div class="end-hero">${win?'🏆':'💥'}</div>
+    <h2>${win?'Adventure Complete!':'Mission Failed!'}</h2>
+    <p class="end-sub">${CHAPTER_TITLE}</p>
+    <div class="end-stats">
+      <div class="es"><span class="en" style="color:#ffeaa7">${score.toLocaleString()}</span><span class="el">Score</span></div>
+      <div class="es"><span class="en" style="color:#00b894">${totalRight}/${totalQ}</span><span class="el">Correct</span></div>
+      <div class="es"><span class="en">${acc}%</span><span class="el">Accuracy</span></div>
+    </div>
+    <div class="brow">${bchips}</div>
+    <button class="play-btn" onclick="startGame()">🔄 Play Again (New Order)</button>
+    <a class="back-a" href="index.html">← Back to Chapter Hub</a>`;
+  document.getElementById('end-screen').style.display = 'block';
+  document.getElementById('game-wrap').style.display = 'none';
+}
+
+</script>
+</body></html>
