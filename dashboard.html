@@ -489,45 +489,6 @@
     50%     { transform: translateY(-3px); }
   }
   .penguin-inner { transform-origin: bottom center; }
-
-  /* ── MOBILE LAYOUT ── */
-  @media (max-width: 768px) {
-    html, body { height: 100%; overflow: hidden; }
-    body { flex-direction: column; }
-
-    .sidebar {
-      width: 100%;
-      min-width: 0;
-      height: auto;
-      max-height: 40vh;
-      border-right: none;
-      border-bottom: 1px solid var(--border-dim);
-    }
-    .sidebar-top { padding: 10px 12px 8px; }
-    .subjects-scroll {
-      flex-direction: row;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      padding: 8px 10px;
-    }
-    .subject-card { flex: 0 0 auto; width: 210px; }
-
-    .main { min-height: 0; }
-
-    /* Chapter overlay becomes a full-screen sheet instead of just covering .main */
-    .chapter-overlay { position: fixed; z-index: 50; }
-    .chapter-header { padding: 16px 16px 12px; }
-    .chapter-header-left { gap: 10px; flex-wrap: wrap; }
-    .chapter-subject-name { font-size: 15px; }
-    .chapter-grid {
-      grid-template-columns: 1fr;
-      padding: 14px 16px 24px;
-    }
-
-    .welcome-title { font-size: 26px; letter-spacing: 3px; }
-    .welcome-sub { font-size: 12px; }
-  }
 </style>
 </head>
 <body>
@@ -601,7 +562,7 @@ const subjects = [
   {
     id: 'science', name: 'Science', sub: 'CURIOSITY', icon: '⚛️',
     iconBg: '#162035', badgeBg: '#0e2a45', badgeColor: '#5bc8f5', count: 12,
-    links: { 1: 'science/chapter-01/index.html', 2: 'science/chapter-02/index.html' },
+    links: { 1: 'science/chapter-01/index.html', 2: 'science/chapter-02/index.html', 3: 'science/chapter-03/index.html' },
     chapters: [
       'The Ever-Evolving World of Science',
       'Exploring Substances: Acidic, Basic and Neutral',
