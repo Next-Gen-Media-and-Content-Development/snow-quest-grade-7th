@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCERT Q&A — 3.Electricity circuits and its applications</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+  :root { --fh:'Kalam','Caveat',cursive; --fb:'Nunito',sans-serif; }
+  body {
+    background: linear-gradient(135deg,#fef6e4 0%,#f0f4ff 35%,#fce4f6 65%,#e8f8f0 100%);
+    background-attachment:fixed;
+    color:#2d2d2d; font-family:var(--fb); min-height:100vh; margin:0;
+    position:relative; overflow-x:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27320%27%20height%3D%27320%27%3E%0A%3Ccircle%20cx%3D%2760%27%20cy%3D%2760%27%20r%3D%278%27%20fill%3D%27%236c63ff%27/%3E%0A%3Cellipse%20cx%3D%2760%27%20cy%3D%2760%27%20rx%3D%2728%27%20ry%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%236c63ff%27%20stroke-width%3D%272%27/%3E%0A%3Cellipse%20cx%3D%2760%27%20cy%3D%2760%27%20rx%3D%2728%27%20ry%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%236c63ff%27%20stroke-width%3D%272%27%20transform%3D%27rotate%2860%2060%2060%29%27/%3E%0A%3Cellipse%20cx%3D%2760%27%20cy%3D%2760%27%20rx%3D%2728%27%20ry%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%236c63ff%27%20stroke-width%3D%272%27%20transform%3D%27rotate%28120%2060%2060%29%27/%3E%0A%3Cg%20transform%3D%27translate%28140%2C15%29%20rotate%2835%29%27%3E%0A%20%20%3Crect%20x%3D%270%27%20y%3D%270%27%20width%3D%2710%27%20height%3D%2746%27%20rx%3D%272%27%20fill%3D%27none%27%20stroke%3D%27%23e91e63%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cpolygon%20points%3D%270%2C46%2010%2C46%205%2C58%27%20fill%3D%27none%27%20stroke%3D%27%23e91e63%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Crect%20x%3D%270%27%20y%3D%270%27%20width%3D%2710%27%20height%3D%278%27%20fill%3D%27%23f8bbd0%27%20opacity%3D%27.6%27/%3E%0A%3C/g%3E%0A%3Cpath%20d%3D%27M215%2045%20C200%2030%20178%2032%20178%2050%20C178%2062%20195%2062%20213%2072%20C231%2062%20248%2062%20248%2050%20C248%2032%20226%2030%20211%2045%20Z%27%20fill%3D%27none%27%20stroke%3D%27%234caf50%27%20stroke-width%3D%272%27/%3E%0A%3Cline%20x1%3D%27213%27%20y1%3D%2745%27%20x2%3D%27213%27%20y2%3D%2772%27%20stroke%3D%27%234caf50%27%20stroke-width%3D%271.5%27/%3E%0A%3Ctext%20x%3D%2730%27%20y%3D%27160%27%20font-size%3D%2722%27%20fill%3D%27%23ffb300%27%3E%26%2310022%3B%3C/text%3E%0A%3Cg%20transform%3D%27translate%2865%2C205%29%27%3E%0A%20%20%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2716%27%20fill%3D%27none%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Crect%20x%3D%2710%27%20y%3D%2730%27%20width%3D%2712%27%20height%3D%278%27%20rx%3D%272%27%20fill%3D%27none%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cline%20x1%3D%2716%27%20y1%3D%270%27%20x2%3D%2716%27%20y2%3D%27-6%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cline%20x1%3D%272%27%20y1%3D%276%27%20x2%3D%27-3%27%20y2%3D%272%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cline%20x1%3D%2730%27%20y1%3D%276%27%20x2%3D%2735%27%20y2%3D%272%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%3C/g%3E%0A%3Ccircle%20cx%3D%27200%27%20cy%3D%27180%27%20r%3D%276%27%20fill%3D%27none%27%20stroke%3D%27%232196f3%27%20stroke-width%3D%271.5%27/%3E%0A%3Ccircle%20cx%3D%27215%27%20cy%3D%27165%27%20r%3D%274%27%20fill%3D%27none%27%20stroke%3D%27%232196f3%27%20stroke-width%3D%271.5%27/%3E%0A%3Ccircle%20cx%3D%27225%27%20cy%3D%27178%27%20r%3D%278%27%20fill%3D%27none%27%20stroke%3D%27%232196f3%27%20stroke-width%3D%271.5%27/%3E%0A%3Ccircle%20cx%3D%27270%27%20cy%3D%27190%27%20r%3D%2716%27%20fill%3D%27none%27%20stroke%3D%27%23795548%27%20stroke-width%3D%272%27/%3E%0A%3Cline%20x1%3D%27281%27%20y1%3D%27201%27%20x2%3D%27294%27%20y2%3D%27214%27%20stroke%3D%27%23795548%27%20stroke-width%3D%273%27%20stroke-linecap%3D%27round%27/%3E%0A%3Ctext%20x%3D%27150%27%20y%3D%27245%27%20font-size%3D%2716%27%20fill%3D%27%23607d8b%27%20font-family%3D%27serif%27%20font-weight%3D%27bold%27%3EA%2B%3C/text%3E%0A%3Ctext%20x%3D%27290%27%20y%3D%27100%27%20font-size%3D%2716%27%20fill%3D%27%23ab47bc%27%3E%26%2310023%3B%3C/text%3E%0A%3Ctext%20x%3D%2730%27%20y%3D%27300%27%20font-size%3D%2714%27%20fill%3D%27%23ab47bc%27%3E%26%2310022%3B%3C/text%3E%0A%3Ctext%20x%3D%27180%27%20y%3D%27310%27%20font-size%3D%2720%27%20fill%3D%27%23ffb300%27%3E%26%239733%3B%3C/text%3E%0A%3C/svg%3E");
+    background-size:320px 320px;
+  }
+  .top-bar {
+    background:linear-gradient(120deg,#6c63ff 0%,#e91e8c 60%,#ff7043 100%);
+    padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+    position:relative; z-index:10; box-shadow:0 4px 20px rgba(108,99,255,.35);
+  }
+  .top-bar h1 { color:#fff; margin:0; font-size:1.3rem; font-family:var(--fh); text-shadow:0 1px 4px rgba(0,0,0,.25); }
+  .back-btn { color:#fff; text-decoration:none; font-size:.9rem; opacity:.85; }
+
+  .content { max-width:860px; margin:2rem auto; padding:0 1.5rem 4rem; position:relative; z-index:2; }
+
+  .tabs { display:flex; gap:.5rem; margin-bottom:1.5rem; }
+  .tab-btn {
+    padding:.6rem 1.4rem; border-radius:25px;
+    border:2px solid #d0c4f7; background:rgba(255,255,255,.75);
+    color:#5a52e0; cursor:pointer; font-weight:700; font-size:.9rem; transition:.2s;
+    font-family:var(--fb); backdrop-filter:blur(4px);
+    box-shadow:0 2px 8px rgba(108,99,255,.12);
+  }
+  .tab-btn.active { background:linear-gradient(120deg,#6c63ff,#e91e8c); color:#fff; border-color:transparent; box-shadow:0 4px 14px rgba(108,99,255,.35); }
+
+  .toolbar { display:flex; gap:.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .tool-btn {
+    padding:.5rem 1rem; border-radius:20px;
+    border:1.5px solid #d0c4f7; background:rgba(255,255,255,.75);
+    color:#5a52e0; cursor:pointer; font-size:.85rem; font-weight:600;
+    font-family:var(--fb); backdrop-filter:blur(4px); transition:.2s;
+  }
+  .tool-btn:hover { background:rgba(108,99,255,.12); }
+  .search-wrap { flex:1; min-width:160px; display:flex; }
+  .search-wrap input {
+    flex:1; padding:.5rem 1rem; border-radius:20px;
+    border:1.5px solid #d0c4f7; background:rgba(255,255,255,.85);
+    color:#2d2d2d; font-size:.88rem; font-family:var(--fb);
+  }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  .qa-card {
+    background:rgba(255,255,255,.78);
+    border:1.5px solid rgba(108,99,255,.18);
+    border-radius:16px; margin-bottom:1rem; overflow:hidden; transition:.2s;
+    backdrop-filter:blur(6px);
+    box-shadow:0 2px 12px rgba(108,99,255,.07);
+  }
+  .qa-card:hover { box-shadow:0 6px 24px rgba(108,99,255,.18); transform:translateY(-1px); }
+  .qa-header { display:flex; align-items:flex-start; gap:.8rem; padding:1rem 1.2rem; cursor:pointer; border-radius:16px 16px 0 0; }
+  .qa-header:hover { background:rgba(108,99,255,.07); }
+
+  .q-num {
+    background:linear-gradient(135deg,#6c63ff,#e91e8c);
+    color:#fff; border-radius:50%; width:32px; height:32px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.78rem; font-weight:800; flex-shrink:0; margin-top:.1rem;
+    font-family:var(--fb); box-shadow:0 2px 8px rgba(108,99,255,.4);
+  }
+  .q-text { flex:1; font-weight:700; font-size:1.12rem; line-height:1.55; font-family:var(--fh); color:#3a2e6e; }
+  .toggle-icon { font-size:.8rem; color:#888; transition:.25s; margin-top:.2rem; }
+  .qa-answer { display:none; padding:0 1.2rem 1.2rem 1.2rem; border-top:1.5px dashed rgba(108,99,255,.22); }
+  .qa-answer.open { display:block; }
+  .qa-answer p { margin:.9rem 0 0; line-height:1.85; font-size:1.08rem; color:#2d2d2d; font-family:var(--fh); white-space:pre-wrap; }
+  .qa-answer { border-left:4px solid; border-image:linear-gradient(180deg,#6c63ff,#e91e8c) 1; margin-left:.2rem; }
+
+  @media print { .top-bar,.toolbar { display:none; } .qa-answer { display:block !important; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1>&#128218; 3.Electricity circuits and its applications — NCERT Q&amp;A</h1>
+</div>
+
+<div class="content">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('intext')">&#128196; Intext Questions</button>
+    <button class="tab-btn" onclick="switchTab('exercises')">&#128218; Exercises</button>
+  </div>
+
+  <div class="toolbar">
+    <button class="tool-btn" onclick="revealAll()">&#128065; Reveal All</button>
+    <button class="tool-btn" onclick="hideAll()">&#128274; Hide All</button>
+    <div class="search-wrap"><input type="text" placeholder="&#128269; Search questions..." oninput="searchQA(this.value)"></div>
+    <button class="tool-btn" onclick="window.print()">&#128424; Print</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-intext">
+    
+          <div class="qa-card" id="in-0">
+            <div class="qa-header" onclick="toggleQ('in-0')">
+              <span class="q-num">Q1</span>
+              <span class="q-text">Can you help Nihal by adding some more uses to his lists? Also, suggest some other ways of grouping the uses of electricity.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Add more examples under the given headings.
+
+(A) Cooking
+1. Electric rice cooker
+2. Induction cooktop
+3. Electric chimney/exhaust
+4. Electric grill/sandwich maker
+
+(B) Lighting
+1. LED bulbs and tube lights
+2. Decorative/fairy lights
+3. Emergency light
+4. Traffic signals
+
+(C) Transportation
+1. Metro/Tram
+2. Electric bicycle
+3. Electric rickshaw (e-rickshaw)
+4. Electric charging stations for vehicles
+
+(D) Heating and Cooling
+1. Water cooler
+2. Electric iron
+3. Hair dryer
+4. Electric blanket
+
+(E) Entertainment
+1. Music system/speakers
+2. Video game console
+3. Projector
+4. Headphones
+
+(F) Communication
+1. Landline telephone
+2. Wi‑Fi router
+3. Radio transmitter/receiver
+4. Satellite communication equipment
+
+(G) Others
+1. Washing machine
+2. Vacuum cleaner
+3. Printer/photocopier
+4. Electric toothbrush
+
+Step 2: Suggest other ways to group the uses of electricity.
+1. By place of use: Home, School, Hospital, Factory, Farm, Public places.
+2. By purpose: Heating, Lighting, Motion (running motors), Sound, Communication, Safety/security.
+3. By type of device: Appliances with heating element (iron, geyser), appliances with motor (fan, pump), electronic devices (TV, phone, computer), lighting devices (bulb, LED).
+4. By source of supply: Battery-operated (torch, remote), mains-operated (iron, refrigerator), solar-powered (solar lamp, calculator).
+
+Step 3: Conclude: Electricity is used in many ways, so grouping helps us study it systematically.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-1">
+            <div class="qa-header" onclick="toggleQ('in-1')">
+              <span class="q-num">Q2</span>
+              <span class="q-text">Why does the torch lamp glow in one position of its switch?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Identify what the switch does.
+A switch either completes the electric circuit (ON position) or breaks it (OFF position).
+
+Step 2: Explain the ON position.
+When the switch is ON, it connects the cell/battery terminals to the lamp through wires/metal strips inside the torch.
+This makes a complete (closed) path for electric current.
+
+Step 3: Explain the OFF position.
+When the switch is OFF, it creates a gap in the path.
+The circuit becomes incomplete (open), so current cannot flow.
+
+Step 4: Link to the glow.
+The lamp glows only when current flows through its filament (or through LED circuitry). Hence it glows in the ON position and not in the OFF position.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-2">
+            <div class="qa-header" onclick="toggleQ('in-2')">
+              <span class="q-num">Q3</span>
+              <span class="q-text">What do you find inside a torchlight after opening it? Name the main parts related to the circuit.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Observe the cell compartment.
+Most torchlights contain two or more electric cells placed end-to-end.
+
+Step 2: Identify the lamp.
+At the front, there is a lamp (incandescent bulb or LED arrangement) which produces light.
+
+Step 3: Identify the switch.
+A switch is provided to turn the circuit ON or OFF.
+
+Step 4: Identify connecting parts.
+Inside the torch there are metal strips/springs and wires that connect:
+1. The cells/battery to the lamp
+2. The switch into the circuit so that it can open/close the circuit
+
+Step 5: Conclude.
+The main circuit-related parts are: cells (or battery), lamp, switch, and connecting conductors (metal strips/wires/springs).</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-3">
+            <div class="qa-header" onclick="toggleQ('in-3')">
+              <span class="q-num">Q4</span>
+              <span class="q-text">How can you identify the positive and negative terminals of an electric cell?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Look for symbols.
+The cell has (+) and (–) signs marked on its body.
+
+Step 2: Observe the ends of the cell.
+One end has a small protruding metal cap; the other end has a flat metal disc.
+
+Step 3: Match each end with the terminal.
+1. The protruding metal cap is the positive (+) terminal.
+2. The flat metal disc is the negative (–) terminal.
+
+Step 4: Conclude.
+Thus, by the sign marks and by the shape (cap and disc), we can identify the terminals correctly.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-4">
+            <div class="qa-header" onclick="toggleQ('in-4')">
+              <span class="q-num">Q5</span>
+              <span class="q-text">In a torch, why are two or more cells placed in a particular order? What happens if one cell is reversed?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: State how cells must be connected for a battery.
+In a battery, the positive terminal of one cell must connect to the negative terminal of the next cell (series connection).
+
+Step 2: Explain why a particular order is needed.
+This arrangement adds the effects of the cells, giving a higher potential difference (voltage) and allowing the lamp to get sufficient energy.
+
+Step 3: Explain what happens if one cell is reversed.
+If one cell is reversed, terminals may become like-to-like in the chain (positive to positive or negative to negative).
+This disturbs the series connection, reducing or cancelling the effective voltage.
+
+Step 4: Result in the circuit.
+With less or no effective voltage, current may not flow properly and the lamp may glow dimly or not glow at all.
+
+Step 5: Conclude.
+Hence, cells must be placed in the correct order so that positive of one touches negative of the next.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-5">
+            <div class="qa-header" onclick="toggleQ('in-5')">
+              <span class="q-num">Q6</span>
+              <span class="q-text">What is a battery? Explain using the arrangement of cells in a torch.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Start with the definition.
+A battery is a combination of two or more electric cells connected together.
+
+Step 2: Describe the torch arrangement.
+In a torch, cells are placed so that:
+1. The positive terminal of the first cell touches the negative terminal of the second cell.
+2. This pattern continues if more cells are used.
+
+Step 3: Explain the purpose.
+By combining cells, the battery can:
+1. Provide more energy to the circuit
+2. Run the device for a longer time and/or make it work properly
+
+Step 4: Conclude.
+Therefore, the set of cells connected in this manner inside a torch is called a battery.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-6">
+            <div class="qa-header" onclick="toggleQ('in-6')">
+              <span class="q-num">Q7</span>
+              <span class="q-text">In an incandescent lamp, which part glows and why? Describe its terminals.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Identify the glowing part.
+The thin wire inside the glass bulb glows when the lamp is switched on.
+
+Step 2: Name the glowing part.
+This thin wire is called the filament.
+
+Step 3: Explain why it glows.
+When electric current passes through the filament, it gets very hot due to resistance and produces light (incandescence).
+
+Step 4: Describe how the filament is connected.
+The filament is attached to two thicker supporting wires.
+
+Step 5: Identify the two terminals.
+1. One terminal is the metal case on the side of the lamp base.
+2. The other terminal is the metal tip at the centre of the base.
+
+Step 6: Important point.
+These terminals are fixed so that they do not touch each other; otherwise the circuit would not pass through the filament.
+
+Step 7: Conclude.
+Thus, the filament glows due to heating by current, and the two separate terminals allow current to enter and leave the filament.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="in-7">
+            <div class="qa-header" onclick="toggleQ('in-7')">
+              <span class="q-num">Q8</span>
+              <span class="q-text">How is an LED different from an incandescent lamp? How can you identify the LED terminals?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Compare internal construction.
+1. Incandescent lamp has a filament inside a glass bulb.
+2. LED (Light Emitting Diode) does not have a filament.
+
+Step 2: Compare working idea (basic level).
+1. Incandescent lamp produces light because the filament gets hot and glows.
+2. LED produces light without heating a filament (it is an electronic device).
+
+Step 3: Identify LED terminals.
+An LED has two terminals connected to two wires (leads):
+1. The longer lead is the positive (+) terminal.
+2. The shorter lead is the negative (–) terminal.
+
+Step 4: Conclude.
+LEDs are identified by the absence of filament and by unequal lead lengths for terminals.</p>
+            </div>
+          </div>
+  </div>
+  <div class="tab-panel" id="tab-exercises">
+    
+          <div class="qa-card" id="ex-0">
+            <div class="qa-header" onclick="toggleQ('ex-0')">
+              <span class="q-num">Q1</span>
+              <span class="q-text">Define an electric circuit. Differentiate between an open circuit and a closed circuit with suitable examples.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Define electric circuit.
+An electric circuit is a complete and continuous path through which electric current can flow from the source (cell/battery) through components (like lamp) and back to the source.
+
+Step 2: Explain a closed circuit.
+A closed circuit is a circuit in which the path is complete (no gap).
+Result: Current flows and the device works.
+Example: Torch switch ON → lamp glows.
+
+Step 3: Explain an open circuit.
+An open circuit is a circuit in which the path is broken due to a gap (for example, switch OFF, loose wire, or broken filament).
+Result: Current does not flow and the device does not work.
+Example: Torch switch OFF → lamp does not glow.
+
+Step 4: Write the difference clearly.
+1. Closed circuit: complete path; current flows; bulb glows.
+2. Open circuit: broken path; current stops; bulb does not glow.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-1">
+            <div class="qa-header" onclick="toggleQ('ex-1')">
+              <span class="q-num">Q2</span>
+              <span class="q-text">Draw and label a simple circuit using (i) one cell, (ii) a switch, and (iii) a lamp. Show the ON and OFF positions of the switch.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: What to include in the diagram.
+You must show: one cell with + and – terminals, a switch, a lamp, and connecting wires forming a loop.
+
+Step 2: ON position (closed switch).
+Draw the switch contacts touching each other to show the path is complete.
+Label: Cell (+, –), Switch (ON/closed), Lamp.
+Write below: ‘Current flows, lamp glows’.
+
+Step 3: OFF position (open switch).
+Draw the switch contacts separated (a gap).
+Label: Switch (OFF/open).
+Write below: ‘Current does not flow, lamp does not glow’.
+
+Step 4: Key labeling points.
+1. Mark + at the cell cap and – at the flat end.
+2. Ensure wires connect from one terminal of the cell → switch → lamp → back to the other terminal.
+
+Step 5: Final check.
+Your ON diagram must be a complete loop; your OFF diagram must have a visible break at the switch.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-2">
+            <div class="qa-header" onclick="toggleQ('ex-2')">
+              <span class="q-num">Q3</span>
+              <span class="q-text">Explain the structure of an electric cell. How are its terminals identified?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: State what an electric cell is.
+An electric cell is a portable source of electrical energy used in many devices.
+
+Step 2: Explain terminals.
+Every cell has two terminals:
+1. Positive terminal (+)
+2. Negative terminal (–)
+
+Step 3: Explain physical identification.
+1. The end with the small protruding metal cap is the positive terminal.
+2. The end with the flat metal disc is the negative terminal.
+
+Step 4: Explain symbol identification.
+The cell body usually has (+) and (–) signs printed to indicate terminals.
+
+Step 5: Conclude.
+Thus, by shape (cap/disc) and markings (+/–), the terminals of a cell can be identified correctly.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-3">
+            <div class="qa-header" onclick="toggleQ('ex-3')">
+              <span class="q-num">Q4</span>
+              <span class="q-text">What is a battery? Why do we use a battery instead of a single cell in many devices like a torch?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Define battery.
+A battery is a combination of two or more electric cells connected together, usually in series (positive of one to negative of the next).
+
+Step 2: Explain why a battery is used.
+Many devices need:
+1. More potential difference (voltage) to operate properly
+2. More energy so that the device can run for longer time
+
+Step 3: Connect to the torch example.
+A torch often needs two or more cells so that the lamp gets enough energy to glow brightly.
+
+Step 4: Conclude.
+Therefore, a battery is used instead of a single cell to provide sufficient energy/voltage and longer operation.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-4">
+            <div class="qa-header" onclick="toggleQ('ex-4')">
+              <span class="q-num">Q5</span>
+              <span class="q-text">A torch does not glow after new cells are inserted. List the possible mistakes related to cell placement and explain how to correct them.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Check cell orientation.
+Possible mistake: One or both cells inserted in reverse direction.
+Correction: Place cells so that the positive terminal of one touches the negative terminal of the next (as shown in the torch diagram).
+
+Step 2: Check series connection order.
+Possible mistake: Terminals not making proper end-to-end contact due to wrong arrangement.
+Correction: Ensure the protruding cap (+) of one cell is in contact with the flat end (–) of the other.
+
+Step 3: Check contact points.
+Possible mistake: Cells not touching the spring/metal strip properly.
+Correction: Press and place cells firmly so springs and metal strips touch the terminals.
+
+Step 4: Check for mixing old and new cells.
+Possible issue: One weak/old cell reduces effective output.
+Correction: Use cells of same type and similar condition (preferably new).
+
+Step 5: Conclude.
+Most torch failures after inserting cells are due to reversed terminals or poor contact; correct orientation and firm contact usually solves it.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-5">
+            <div class="qa-header" onclick="toggleQ('ex-5')">
+              <span class="q-num">Q6</span>
+              <span class="q-text">Describe an incandescent lamp used in a torch. How are its two terminals arranged so that they do not touch each other?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Identify main parts.
+An incandescent torch lamp has:
+1. A glass bulb
+2. A thin filament wire inside
+3. Two thicker supporting wires
+4. A metal base with two separate terminals
+
+Step 2: Explain filament connection.
+The filament is attached to two thicker wires that support it.
+
+Step 3: Explain the two terminals.
+1. One supporting wire connects to the metal case (outer metal shell) of the lamp base.
+2. The other supporting wire connects to the metal tip at the centre of the base.
+
+Step 4: Explain how they are kept separate.
+Insulating material is used between the metal case and the metal tip so that they do not touch.
+
+Step 5: Why separation is important.
+If the terminals touched, current would bypass the filament and the filament would not glow.
+
+Step 6: Conclude.
+Thus, separate terminals ensure current passes through the filament, heating it to produce light.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-6">
+            <div class="qa-header" onclick="toggleQ('ex-6')">
+              <span class="q-num">Q7</span>
+              <span class="q-text">Write any four differences between an LED lamp and an incandescent lamp (torch bulb).</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Difference in filament.
+Incandescent: Has a filament.
+LED: No filament.
+
+Step 2: Difference in how light is produced (school level).
+Incandescent: Filament gets hot and glows.
+LED: Produces light electronically without a glowing filament.
+
+Step 3: Difference in identification of terminals.
+Incandescent: Terminals are metal case and metal tip at base.
+LED: Terminals are two leads; longer lead is + and shorter is –.
+
+Step 4: Difference in energy use.
+Incandescent: Wastes more energy as heat.
+LED: Uses less electricity for same brightness (more efficient).
+
+Step 5: Difference in durability.
+Incandescent: Filament can break easily.
+LED: Generally lasts longer because there is no filament to break.
+
+Step 6: Conclude.
+These differences explain why many modern torches use LEDs instead of incandescent bulbs.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-7">
+            <div class="qa-header" onclick="toggleQ('ex-7')">
+              <span class="q-num">Q8</span>
+              <span class="q-text">Why is it dangerous to perform experiments using the mains power supply at home or school? What precautions are suggested in the chapter?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Explain why mains electricity is dangerous.
+Mains supply provides high voltage and can cause:
+1. Severe electric shock
+2. Burns
+3. Fire due to short circuit
+It can even be fatal if mishandled.
+
+Step 2: Mention danger signs.
+Danger signs on poles and appliances warn that electricity can be harmful if not handled carefully.
+
+Step 3: Give the chapter’s precautions.
+1. Never perform experiments with power supply from sockets at home or school.
+2. Even portable generators can be dangerous; avoid using them for student experiments.
+3. Use only batteries/cells (like those in torches, wall clocks, radios, remotes) for experiments.
+4. Perform activities with teacher/elder supervision, especially when opening devices like torches.
+
+Step 4: Conclude.
+Following these precautions keeps experiments safe and prevents accidents.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-8">
+            <div class="qa-header" onclick="toggleQ('ex-8')">
+              <span class="q-num">Q9</span>
+              <span class="q-text">Activity-based: You are given one cell, one bulb (incandescent), and two wires. Explain step-by-step how you will make the bulb glow.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Identify the terminals.
+1. Cell has + (metal cap) and – (flat disc).
+2. Bulb has two terminals: metal case and metal tip at the base.
+
+Step 2: Make the first connection.
+Connect one wire from the positive terminal of the cell to the metal tip (or metal case) of the bulb.
+
+Step 3: Make the second connection to complete the circuit.
+Connect the second wire from the negative terminal of the cell to the remaining terminal of the bulb (whichever was not connected in Step 2).
+
+Step 4: Ensure firm contact.
+Hold wires tightly on metal parts (not on glass or insulation) so that current can pass.
+
+Step 5: Observe.
+If the circuit is complete (closed), current flows and the filament glows, so the bulb lights up.
+
+Step 6: Troubleshooting if it does not glow.
+1. Check that wires touch only metal parts.
+2. Ensure bulb is not fused (filament not broken).
+3. Ensure cell is not exhausted.
+
+Step 7: Conclude.
+A bulb glows only when both its terminals are connected to the two terminals of the cell to form a closed circuit.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-9">
+            <div class="qa-header" onclick="toggleQ('ex-9')">
+              <span class="q-num">Q10</span>
+              <span class="q-text">What is the role of a switch in a circuit? Explain with a torch example.</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: Define the role.
+A switch is a device used to open or close an electric circuit.
+
+Step 2: Explain ‘switch ON’.
+When ON, the switch closes the circuit (completes the path), allowing current to flow.
+Torch example: ON → lamp glows.
+
+Step 3: Explain ‘switch OFF’.
+When OFF, the switch opens the circuit (creates a gap), stopping current.
+Torch example: OFF → lamp does not glow.
+
+Step 4: Conclude.
+Thus, a switch controls the flow of current by making or breaking the circuit.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-10">
+            <div class="qa-header" onclick="toggleQ('ex-10')">
+              <span class="q-num">Q11</span>
+              <span class="q-text">While connecting wires to make a circuit, why is about 1 cm plastic covering removed from wire ends? What happens if it is not removed?</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: State what the plastic covering is.
+The plastic covering is an insulator; it does not allow electric current to pass through it.
+
+Step 2: Explain why it is removed.
+Removing about 1 cm of plastic exposes the metal conductor inside the wire.
+This exposed metal can make direct contact with cell terminals and lamp terminals, allowing current to flow.
+
+Step 3: What happens if it is not removed.
+If the plastic is not removed, the wire end remains insulated.
+Result: No proper electrical contact → circuit remains open → bulb will not glow.
+
+Step 4: Conclude.
+Therefore, removing insulation at the ends is necessary to complete the circuit.</p>
+            </div>
+          </div>
+          <div class="qa-card" id="ex-11">
+            <div class="qa-header" onclick="toggleQ('ex-11')">
+              <span class="q-num">Q12</span>
+              <span class="q-text">Give examples of uses of electricity under the headings: Cooking, Lighting, Transportation, Heating/Cooling, Entertainment, Communication, Others (at least two examples each).</span>
+              <span class="toggle-icon">&#9660;</span>
+            </div>
+            <div class="qa-answer">
+              <p>Step 1: List examples under each heading.
+
+Cooking:
+1. Induction cooktop
+2. Microwave oven
+
+Lighting:
+1. LED bulb
+2. Street light
+
+Transportation:
+1. Metro train
+2. Electric car/e-rickshaw
+
+Heating/Cooling:
+1. Geyser
+2. Air conditioner
+
+Entertainment:
+1. Television
+2. Music system
+
+Communication:
+1. Mobile phone
+2. Wi‑Fi router/Internet modem
+
+Others:
+1. Water pump
+2. Washing machine
+
+Step 2: Conclude.
+These examples show that electricity is used widely for heat, light, motion, and information transfer.</p>
+            </div>
+          </div>
+  </div>
+</div>
+
+<script>
+function switchTab(t) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleQ(id) {
+  const card = document.getElementById(id);
+  const ans = card.querySelector('.qa-answer');
+  const icon = card.querySelector('.toggle-icon');
+  ans.classList.toggle('open');
+  icon.style.transform = ans.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+function revealAll() {
+  document.querySelectorAll('.qa-answer').forEach(a => a.classList.add('open'));
+  document.querySelectorAll('.toggle-icon').forEach(i => i.style.transform = 'rotate(180deg)');
+}
+
+function hideAll() {
+  document.querySelectorAll('.qa-answer').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.toggle-icon').forEach(i => i.style.transform = '');
+}
+
+function searchQA(q) {
+  const term = q.toLowerCase();
+  document.querySelectorAll('.qa-card').forEach(card => {
+    const text = card.querySelector('.q-text').textContent.toLowerCase();
+    card.style.display = (!term || text.includes(term)) ? '' : 'none';
+  });
+}
+
+try { localStorage.setItem('ngmc_prog_ncert_questions.html', 50); } catch(e) {}
+</script>
+</body>
+</html>

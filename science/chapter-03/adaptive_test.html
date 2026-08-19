@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adaptive Test — 3.Electricity circuits and its applications</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+  :root { --fh:'Kalam','Caveat',cursive; --fb:'Nunito',sans-serif; }
+  body {
+    background: linear-gradient(135deg,#fef6e4 0%,#f0f4ff 35%,#fce4f6 65%,#e8f8f0 100%);
+    background-attachment:fixed;
+    color:#2d2d2d; font-family:var(--fb); min-height:100vh; margin:0;
+    position:relative; overflow-x:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27320%27%20height%3D%27320%27%3E%0A%3Ccircle%20cx%3D%2760%27%20cy%3D%2760%27%20r%3D%278%27%20fill%3D%27%236c63ff%27/%3E%0A%3Cellipse%20cx%3D%2760%27%20cy%3D%2760%27%20rx%3D%2728%27%20ry%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%236c63ff%27%20stroke-width%3D%272%27/%3E%0A%3Cellipse%20cx%3D%2760%27%20cy%3D%2760%27%20rx%3D%2728%27%20ry%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%236c63ff%27%20stroke-width%3D%272%27%20transform%3D%27rotate%2860%2060%2060%29%27/%3E%0A%3Cellipse%20cx%3D%2760%27%20cy%3D%2760%27%20rx%3D%2728%27%20ry%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%236c63ff%27%20stroke-width%3D%272%27%20transform%3D%27rotate%28120%2060%2060%29%27/%3E%0A%3Cg%20transform%3D%27translate%28140%2C15%29%20rotate%2835%29%27%3E%0A%20%20%3Crect%20x%3D%270%27%20y%3D%270%27%20width%3D%2710%27%20height%3D%2746%27%20rx%3D%272%27%20fill%3D%27none%27%20stroke%3D%27%23e91e63%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cpolygon%20points%3D%270%2C46%2010%2C46%205%2C58%27%20fill%3D%27none%27%20stroke%3D%27%23e91e63%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Crect%20x%3D%270%27%20y%3D%270%27%20width%3D%2710%27%20height%3D%278%27%20fill%3D%27%23f8bbd0%27%20opacity%3D%27.6%27/%3E%0A%3C/g%3E%0A%3Cpath%20d%3D%27M215%2045%20C200%2030%20178%2032%20178%2050%20C178%2062%20195%2062%20213%2072%20C231%2062%20248%2062%20248%2050%20C248%2032%20226%2030%20211%2045%20Z%27%20fill%3D%27none%27%20stroke%3D%27%234caf50%27%20stroke-width%3D%272%27/%3E%0A%3Cline%20x1%3D%27213%27%20y1%3D%2745%27%20x2%3D%27213%27%20y2%3D%2772%27%20stroke%3D%27%234caf50%27%20stroke-width%3D%271.5%27/%3E%0A%3Ctext%20x%3D%2730%27%20y%3D%27160%27%20font-size%3D%2722%27%20fill%3D%27%23ffb300%27%3E%26%2310022%3B%3C/text%3E%0A%3Cg%20transform%3D%27translate%2865%2C205%29%27%3E%0A%20%20%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2716%27%20fill%3D%27none%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Crect%20x%3D%2710%27%20y%3D%2730%27%20width%3D%2712%27%20height%3D%278%27%20rx%3D%272%27%20fill%3D%27none%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cline%20x1%3D%2716%27%20y1%3D%270%27%20x2%3D%2716%27%20y2%3D%27-6%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cline%20x1%3D%272%27%20y1%3D%276%27%20x2%3D%27-3%27%20y2%3D%272%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%20%20%3Cline%20x1%3D%2730%27%20y1%3D%276%27%20x2%3D%2735%27%20y2%3D%272%27%20stroke%3D%27%23ff7043%27%20stroke-width%3D%272%27/%3E%0A%3C/g%3E%0A%3Ccircle%20cx%3D%27200%27%20cy%3D%27180%27%20r%3D%276%27%20fill%3D%27none%27%20stroke%3D%27%232196f3%27%20stroke-width%3D%271.5%27/%3E%0A%3Ccircle%20cx%3D%27215%27%20cy%3D%27165%27%20r%3D%274%27%20fill%3D%27none%27%20stroke%3D%27%232196f3%27%20stroke-width%3D%271.5%27/%3E%0A%3Ccircle%20cx%3D%27225%27%20cy%3D%27178%27%20r%3D%278%27%20fill%3D%27none%27%20stroke%3D%27%232196f3%27%20stroke-width%3D%271.5%27/%3E%0A%3Ccircle%20cx%3D%27270%27%20cy%3D%27190%27%20r%3D%2716%27%20fill%3D%27none%27%20stroke%3D%27%23795548%27%20stroke-width%3D%272%27/%3E%0A%3Cline%20x1%3D%27281%27%20y1%3D%27201%27%20x2%3D%27294%27%20y2%3D%27214%27%20stroke%3D%27%23795548%27%20stroke-width%3D%273%27%20stroke-linecap%3D%27round%27/%3E%0A%3Ctext%20x%3D%27150%27%20y%3D%27245%27%20font-size%3D%2716%27%20fill%3D%27%23607d8b%27%20font-family%3D%27serif%27%20font-weight%3D%27bold%27%3EA%2B%3C/text%3E%0A%3Ctext%20x%3D%27290%27%20y%3D%27100%27%20font-size%3D%2716%27%20fill%3D%27%23ab47bc%27%3E%26%2310023%3B%3C/text%3E%0A%3Ctext%20x%3D%2730%27%20y%3D%27300%27%20font-size%3D%2714%27%20fill%3D%27%23ab47bc%27%3E%26%2310022%3B%3C/text%3E%0A%3Ctext%20x%3D%27180%27%20y%3D%27310%27%20font-size%3D%2720%27%20fill%3D%27%23ffb300%27%3E%26%239733%3B%3C/text%3E%0A%3C/svg%3E");
+    background-size:320px 320px;
+  }
+  .top-bar {
+    background:linear-gradient(120deg,#6c63ff 0%,#e91e8c 60%,#ff7043 100%);
+    padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+    position:relative; z-index:10; box-shadow:0 4px 20px rgba(108,99,255,.35);
+  }
+  .top-bar h1 { color:#fff; margin:0; font-size:1.3rem; font-family:var(--fh); text-shadow:0 1px 4px rgba(0,0,0,.25); }
+  .back-btn { color:#fff; text-decoration:none; font-size:.9rem; opacity:.85; }
+
+  .content { max-width:760px; margin:2rem auto; padding:0 1.5rem 4rem; position:relative; z-index:2; }
+
+  .legend { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .leg-chip { font-size:.72rem; padding:.2rem .7rem; border-radius:12px; font-weight:700; font-family:var(--fb); }
+  .leg-scq { background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; }
+  .leg-inc { background:#fff3e0; color:#e65100; border:1px solid #ffcc80; }
+  .leg-cor { background:#e3f2fd; color:#1565c0; border:1px solid #90caf9; }
+  .leg-mat { background:#f3e5f5; color:#6a1b9a; border:1px solid #ce93d8; }
+  .leg-img { background:#fce4ec; color:#880e4f; border:1px solid #f48fb1; }
+  .leg-cas { background:#fff9c4; color:#f57f17; border:1px solid #fff176; }
+
+  .q-card[data-type="incorrect"] { border-left:5px solid #ff9800; }
+  .q-card[data-type="correct"]   { border-left:5px solid #2196f3; }
+  .q-card[data-type="matrix"]    { border-left:5px solid #9c27b0; }
+  .q-card[data-type="image"]     { border-left:5px solid #e91e63; }
+  .q-card[data-type="case"]      { border-left:5px solid #ff8f00; }
+  .q-card[data-type="mcq"]       { border-left:5px solid #4caf50; }
+
+  .type-chip { display:inline-block; font-size:.68rem; padding:.15rem .55rem; border-radius:10px; font-weight:700; font-family:var(--fb); margin-bottom:.3rem; }
+  .passage {
+    background:rgba(255,248,196,.7); border:1.5px solid #fdd835;
+    border-radius:12px; padding:.9rem 1.1rem; margin-bottom:1rem;
+    font-family:var(--fh); font-size:1rem; line-height:1.75; color:#3d2800;
+  }
+  .passage::before { content:'📖 Read the passage:'; display:block; font-size:.75rem; font-weight:800; color:#f57f17; margin-bottom:.4rem; font-family:var(--fb); }
+  .matrix-wrap { display:flex; gap:1rem; margin:.4rem 0 1rem; flex-wrap:wrap; }
+  .matrix-col { flex:1; min-width:140px; }
+  .matrix-col h4 { font-size:.78rem; font-weight:800; font-family:var(--fb); color:#6a1b9a; margin:0 0 .4rem; text-transform:uppercase; letter-spacing:.05em; }
+  .matrix-row { background:rgba(243,229,245,.6); border:1px solid #ce93d8; border-radius:8px; padding:.45rem .7rem; margin-bottom:.35rem; font-family:var(--fh); font-size:.95rem; }
+  .diagram-wrap { background:rgba(255,255,255,.9); border:1.5px dashed #d0c4f7; border-radius:14px; padding:.8rem; margin:.4rem 0 .9rem; display:flex; justify-content:center; overflow-x:auto; }
+  .diagram-wrap svg { max-width:100%; height:auto; }
+
+  .top-bar h1 { font-size:1.2rem; }
+
+  /* Start screen */
+  #start-screen { background:rgba(255,255,255,.82); backdrop-filter:blur(6px); border-radius:22px; padding:2rem; text-align:center; border:1.5px solid rgba(108,99,255,.18); box-shadow:0 8px 32px rgba(108,99,255,.12); }
+  #start-screen h2 { margin:0 0 .3rem; font-family:var(--fh); font-size:1.7rem; color:#3a2e6e; }
+  #start-screen p { color:#666; font-family:var(--fb); }
+  #resume-banner { background:linear-gradient(135deg,#ff6b6b1a,#ffd93d22); border:1.5px solid #ffd93d; border-radius:14px; padding:1rem; margin:1rem 0; text-align:left; display:none; font-family:var(--fb); font-size:.88rem; }
+  .set-select { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:1.5rem; }
+  .set-card { flex:1; min-width:220px; background:rgba(255,255,255,.7); border:2px solid rgba(108,99,255,.2); border-radius:18px; padding:1.3rem; cursor:pointer; transition:.2s; text-align:left; }
+  .set-card:hover { border-color:#6c63ff; transform:translateY(-2px); box-shadow:0 8px 24px rgba(108,99,255,.2); }
+  .set-card .tag { font-size:.72rem; color:#888; font-weight:700; font-family:var(--fb); text-transform:uppercase; letter-spacing:.05em; }
+  .set-card h3 { margin:.3rem 0; font-family:var(--fh); font-size:1.2rem; color:#3a2e6e; }
+  .set-card .go-btn { margin-top:.8rem; width:100%; background:linear-gradient(120deg,#6c63ff,#e91e8c); color:#fff; border:none; padding:.65rem; border-radius:20px; font-weight:800; cursor:pointer; font-family:var(--fb); }
+  .weak-btn-row { display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin-top:1rem; }
+  .mini-btn { padding:.5rem 1rem; border-radius:16px; border:1.5px solid #ff6b6b; background:rgba(255,107,107,.1); color:#c62828; font-size:.8rem; cursor:pointer; font-weight:700; font-family:var(--fb); }
+
+  /* Quiz */
+  #quiz-screen { display:none; }
+  .quiz-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:.5rem; }
+  .q-counter { font-size:.9rem; color:#666; font-weight:700; font-family:var(--fb); }
+  .timer-box { background:rgba(255,255,255,.85); border:1.5px solid #d0c4f7; border-radius:12px; padding:.4rem .9rem; font-weight:800; font-size:1rem; font-family:var(--fb); }
+  .timer-box.urgent { color:#ff6b6b; border-color:#ff6b6b; background:#ff6b6b15; }
+  .overall-progress { height:7px; background:rgba(108,99,255,.15); border-radius:4px; margin-bottom:1rem; overflow:hidden; }
+  .overall-fill { height:100%; background:linear-gradient(90deg,#6c63ff,#e91e8c); border-radius:4px; transition:.4s; }
+  #round-badge { font-size:.82rem; color:#888; text-align:center; margin-bottom:1rem; font-family:var(--fb); font-weight:700; }
+  .q-card { background:rgba(255,255,255,.85); border:1.5px solid rgba(108,99,255,.18); border-radius:18px; padding:1.5rem; backdrop-filter:blur(6px); box-shadow:0 2px 14px rgba(108,99,255,.08); }
+  .q-text { font-family:var(--fh); font-size:1.12rem; font-weight:700; margin:0 0 1.1rem; line-height:1.6; color:#2a2060; }
+  .options { display:flex; flex-direction:column; gap:.55rem; }
+  .opt-btn {
+    text-align:left; background:rgba(248,246,255,.8); border:1.5px solid #d0c4f7; border-radius:12px;
+    padding:.75rem 1rem; cursor:pointer; font-size:.95rem; color:#2d2d2d; transition:.2s; font-family:var(--fh);
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .opt-btn .opt-label { background:#ede9ff; color:#6c63ff; border-radius:6px; padding:.1rem .45rem; font-size:.75rem; font-weight:800; font-family:var(--fb); flex-shrink:0; }
+  .opt-btn:hover:not(.locked) { background:rgba(108,99,255,.1); border-color:#6c63ff; }
+  .opt-btn.correct { background:#e8f5e9; border-color:#4caf50; color:#1b5e20; font-weight:700; }
+  .opt-btn.correct .opt-label { background:#4caf50; color:#fff; }
+  .opt-btn.wrong { background:#fce4ec; border-color:#e91e63; color:#880e4f; }
+  .opt-btn.wrong .opt-label { background:#e91e63; color:#fff; }
+  .explanation {
+    display:none; margin-top:.9rem; background:rgba(108,99,255,.07); border-left:4px solid #6c63ff;
+    border-radius:0 12px 12px 0; padding:.8rem 1rem; font-size:.92rem; line-height:1.7; font-family:var(--fh); color:#1a1060;
+  }
+  .next-btn { background:linear-gradient(120deg,#6c63ff,#e91e8c); color:#fff; border:none; padding:.8rem 2.2rem; border-radius:25px; font-weight:800; cursor:pointer; font-size:.95rem; margin-top:1.2rem; display:none; font-family:var(--fb); box-shadow:0 4px 16px rgba(108,99,255,.3); }
+
+  /* Results */
+  #result-screen { display:none; background:rgba(255,255,255,.9); border-radius:22px; padding:2rem; border:1.5px solid rgba(108,99,255,.2); backdrop-filter:blur(8px); box-shadow:0 8px 32px rgba(108,99,255,.15); }
+  #result-screen h2 { margin:0 0 .3rem; text-align:center; font-family:var(--fh); font-size:1.6rem; color:#3a2e6e; }
+  .elapsed-time { font-size:.82rem; color:#888; text-align:center; margin-bottom:1rem; font-family:var(--fb); }
+  .trophy { font-size:3.6rem; display:block; text-align:center; animation:bounce 1s ease infinite; margin-bottom:.3rem; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  .tier-banner { border-radius:16px; padding:1rem; text-align:center; margin-bottom:1rem; font-weight:800; font-family:var(--fh); font-size:1.1rem; }
+  .tier-perfect { background:linear-gradient(135deg,#ffd93d40,#ff6b6b30); border:1.5px solid #ffd93d; color:#7a4a00; }
+  .tier-good { background:#4caf5022; border:1.5px solid #4caf50; color:#1b5e20; }
+  .tier-okay { background:#2196f322; border:1.5px solid #2196f3; color:#0d47a1; }
+  .tier-low { background:#ff6b6b22; border:1.5px solid #ff6b6b; color:#b71c1c; }
+  .stats-row { display:flex; gap:1rem; flex-wrap:wrap; margin:1rem 0; }
+  .stat-box { flex:1; min-width:80px; background:rgba(108,99,255,.06); border-radius:14px; padding:.9rem; text-align:center; }
+  .stat-box .num { font-size:1.7rem; font-weight:800; font-family:var(--fb); }
+  .stat-box .lbl { font-size:.72rem; color:#888; font-family:var(--fb); }
+  .weak-box { background:#ff6b6b12; border-left:4px solid #ff6b6b; border-radius:0 12px 12px 0; padding:.9rem 1.1rem; margin:1rem 0; font-size:.88rem; font-family:var(--fh); }
+  .weak-box h4 { margin:0 0 .5rem; font-family:var(--fb); font-size:.9rem; color:#c62828; }
+  .weak-box ul { margin:0; padding-left:1.2rem; }
+  .topic-analysis { margin:1.2rem 0; }
+  .topic-row { display:flex; align-items:center; gap:.8rem; padding:.5rem 0; border-bottom:1px solid rgba(108,99,255,.1); }
+  .topic-name { flex:1; font-size:.9rem; font-family:var(--fh); }
+  .topic-stars { color:#f9a825; font-size:1rem; letter-spacing:.1em; }
+  .topic-conf { font-size:.82rem; color:#888; font-family:var(--fb); }
+  .result-btns { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1.2rem; }
+  .result-btn { padding:.7rem 1.4rem; border-radius:20px; border:none; font-weight:800; cursor:pointer; font-size:.88rem; font-family:var(--fb); }
+  .btn-again { background:linear-gradient(120deg,#6c63ff,#e91e8c); color:#fff; box-shadow:0 3px 10px rgba(108,99,255,.3); }
+  .btn-weak { background:linear-gradient(120deg,#ff6b6b,#ff8a65); color:#fff; }
+  .btn-switch, .btn-share { background:rgba(255,255,255,.8); border:1.5px solid #d0c4f7; color:#5a52e0; }
+  .confetti-piece { position:fixed; top:-24px; font-size:1.5rem; animation:fall linear forwards; pointer-events:none; z-index:999; }
+  @keyframes fall { to { transform:translateY(112vh) rotate(360deg); opacity:.25; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1>&#127919; 3.Electricity circuits and its applications — Adaptive Test</h1>
+</div>
+
+<div class="content">
+
+  <div id="start-screen">
+    <h2>&#127919; Adaptive Test</h2>
+    <p>Two sets of 15 questions &bull; 30 seconds each &bull; mixed question types</p>
+    <div id="resume-banner">
+      <strong>&#128204; You have saved wrong answers!</strong><br>
+      <small>Use "Focus on Weak Topics" below to target your weak spots, or start a fresh set.</small>
+    </div>
+    <div class="set-select">
+      <div class="set-card" onclick="startTest('easy',false)">
+        <span class="tag">SET A</span>
+        <h3>&#127793; Easy &ndash; Moderate</h3>
+        <span class="tag">15 questions</span>
+        <button class="go-btn">&#9654; Start Set A</button>
+      </div>
+      <div class="set-card" onclick="startTest('hard',false)">
+        <span class="tag">SET B</span>
+        <h3>&#128293; Difficult</h3>
+        <span class="tag">15 questions</span>
+        <button class="go-btn">&#9654; Start Set B</button>
+      </div>
+    </div>
+    <div class="weak-btn-row" id="weak-btn-row"></div>
+  </div>
+
+  <div id="quiz-screen">
+    <div class="quiz-header">
+      <span class="q-counter" id="q-counter">Question 1 / 15</span>
+      <span class="timer-box" id="timer-box">&#9201; 30s</span>
+    </div>
+    <div class="overall-progress"><div class="overall-fill" id="overall-fill" style="width:0%"></div></div>
+    <div id="round-badge">Set A &bull; Easy &ndash; Moderate</div>
+    <div class="q-card">
+      <div id="type-badge" class="type-chip"></div>
+      <div id="passage-box" class="passage" style="display:none"></div>
+      <div id="img-box" class="diagram-wrap" style="display:none"></div>
+      <div id="matrix-box" style="display:none"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="options"></div>
+      <div class="explanation" id="explanation"></div>
+      <button class="next-btn" id="next-btn" onclick="nextQ()">Next &rarr;</button>
+    </div>
+  </div>
+
+  <div id="result-screen"></div>
+
+</div>
+
+<script>
+const POOL_EASY = [{"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "On an electric cell, which part is the positive terminal?", "options": ["The small protruding metal cap", "The flat metal disc", "The plastic outer casing", "The rubber seal"], "answer": 0, "explanation": "The metal cap of an electric cell is its positive (+ve) terminal; the flat metal disc is the negative (–ve) terminal.", "id": "E1"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "What do we call two or more electric cells connected together?", "options": ["A switch", "A battery", "An insulator", "A circuit diagram"], "answer": 1, "explanation": "A combination of two or more cells connected together is called a battery.", "id": "E2"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "Which part of an incandescent lamp actually glows and produces light?", "options": ["The glass bulb", "The filament", "The metal cap", "The insulator support"], "answer": 1, "explanation": "The thin wire inside the glass bulb, called the filament, heats up and glows when current passes through it.", "id": "E3"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "What does the abbreviation LED stand for?", "options": ["Light Emitting Diode", "Long Electric Device", "Low Energy Diode", "Light Electric Detector"], "answer": 0, "explanation": "LED stands for Light Emitting Diode — a lamp that glows without a hot filament.", "id": "E4"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "What is the main function of a switch in a circuit?", "options": ["It generates electric current", "It completes or breaks the circuit", "It stores electrical charge", "It converts AC to DC"], "answer": 1, "explanation": "A switch is a simple device that either completes a circuit (ON) or breaks it (OFF).", "id": "E5"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "In a circuit diagram, what does a plain straight line represent?", "options": ["A switch", "A wire", "A battery", "A lamp"], "answer": 1, "explanation": "A plain straight line is the standard circuit-diagram symbol for a connecting wire.", "id": "E6"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "Materials through which electric current passes easily are called:", "options": ["Insulators", "Conductors", "Filaments", "Diodes"], "answer": 1, "explanation": "Materials that allow current to flow easily through them are called good conductors of electricity.", "id": "E7"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "Which of these materials is an electrical insulator?", "options": ["Copper", "Iron", "Rubber", "Silver"], "answer": 2, "explanation": "Rubber does not allow electric current to pass through it, so it is used to insulate and protect wires.", "id": "E8"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "Electricity supplied by a cell or battery is known as:", "options": ["Alternating Current (AC)", "Direct Current (DC)", "Static current", "Induced current"], "answer": 1, "explanation": "Cells and batteries supply Direct Current (DC), which usually powers small portable devices.", "id": "E9"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "What device can be used to test whether a material conducts electricity?", "options": ["A thermometer", "A conduction tester", "A weighing scale", "A magnifying glass"], "answer": 1, "explanation": "A simple conduction tester — a cell and lamp with two free wire ends — lights up when touched to a conducting material.", "id": "E10"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "In the symbol for an electric cell, the short line represents:", "options": ["The positive terminal", "The negative terminal", "The filament", "The switch"], "answer": 1, "explanation": "In the symbol for an electric cell, the long line is the positive terminal and the short line is the negative terminal.", "id": "E11"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "A circuit is described as 'closed' when it:", "options": ["Has a gap that stops current flowing", "Provides a complete path for current to flow", "Has no cell connected", "Has no wires at all"], "answer": 1, "explanation": "A closed circuit provides an unbroken, complete path, allowing current to flow through it.", "id": "E12"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "Which of these commonly uses a cell or battery as a portable power source?", "options": ["A torchlight", "A ceiling fan", "A refrigerator", "A washing machine"], "answer": 0, "explanation": "A torchlight is a portable device that typically runs on one or more electric cells.", "id": "E13"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "What happens to an incandescent lamp when its filament breaks?", "options": ["It glows brighter than before", "It is said to be 'fused' and stops glowing", "It turns into an LED", "It becomes an insulator"], "answer": 1, "explanation": "A broken filament stops the flow of current, so we say the lamp has 'fused' and it no longer glows.", "id": "E14"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "easy", "question": "Which statement best describes an electrical circuit?", "options": ["A broken path that current cannot follow", "A complete path that allows current to flow", "A type of insulator", "A type of switch only"], "answer": 1, "explanation": "An electrical circuit is a complete path that lets electric current flow from the cell, through components, and back again.", "id": "E15"}];
+const POOL_HARD = [{"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "An LED does not glow even though it is connected to a working battery. What is the most likely reason?", "options": ["The LED's terminals are connected in reverse", "The battery has too much charge", "The connecting wire is too thick", "The LED is acting as an insulator"], "answer": 0, "explanation": "An LED only allows current in one direction. If its longer (positive) and shorter (negative) wires are swapped at the battery, it will not glow.", "id": "H1"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "Two lamps are connected one after another in a single loop with a cell. If the filament of one lamp breaks, what happens to the other lamp?", "options": ["It keeps glowing normally", "It also stops glowing, since the circuit is now broken", "It glows brighter than before", "It starts blinking on and off"], "answer": 1, "explanation": "In a single loop, both lamps share the same path for current. A broken filament in one lamp opens the entire circuit, so the other lamp also stops glowing.", "id": "H2"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "A student forgot to remove the insulating covering from the ends of the connecting wires. If the cell and lamp are both working properly, will the lamp glow?", "options": ["Yes, insulation does not affect the wire underneath", "No, because the insulation stops proper contact at the terminals", "Yes, but the lamp will be unusually dim", "No, because the cell will get damaged"], "answer": 1, "explanation": "Insulating covering left on the wire ends prevents metal-to-metal contact at the terminals, so the circuit cannot be completed and the lamp will not glow.", "id": "H3"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "In a circuit, current must pass through a switch S to reach a lamp L. If S is in the OFF position, what happens to L?", "options": ["L glows normally", "L does not glow, because the circuit is open", "L glows dimly", "L glows only if S breaks"], "answer": 1, "explanation": "When a switch is OFF, it creates a gap in the circuit. Since current cannot flow past that gap, the lamp does not glow.", "id": "H4"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "The '+' and '–' symbols on a battery have worn off and cannot be read. How could you identify its two terminals?", "options": ["Connect it in a simple lamp circuit — the arrangement that makes the lamp glow shows the correct terminal order", "Taste each terminal", "Weigh the battery on a scale", "Check the colour of its plastic casing"], "answer": 0, "explanation": "Since a lamp only glows when the cell's terminals are connected the correct way in a complete circuit, testing different arrangements with a working lamp can reveal which terminal is positive and which is negative.", "id": "H5"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "You are given six cells, A to F, and told some are working and some are not. What is the most reliable way to find out which are working?", "options": ["Compare their price tags", "Test each cell, one at a time, in a simple circuit with a lamp and see if it glows", "Shake each cell and listen for sound", "Check if each cell feels warm to the touch"], "answer": 1, "explanation": "Connecting each cell individually in a simple tester circuit with a lamp is the most reliable way to check whether it can supply current.", "id": "H6"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "An LED needs two cells connected together to glow properly. If only one cell is connected, what is most likely to happen?", "options": ["The LED glows at full brightness", "The LED may not glow, since one cell alone may not provide enough push for it", "The LED glows twice as bright", "The circuit short-circuits immediately"], "answer": 1, "explanation": "Some LEDs need a larger push (potential difference) than a single cell can provide, so connecting only one cell may leave the LED too dim to glow or not glowing at all.", "id": "H7"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "Which pair of materials would both make good conductors for electrical wires?", "options": ["Silver and copper", "Rubber and plastic", "Wood and glass", "Paper and cardboard"], "answer": 0, "explanation": "Silver and copper are both excellent electrical conductors; copper is preferred commercially due to its lower cost.", "id": "H8"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "Why are electric wires usually covered with plastic or rubber?", "options": ["To make the wires heavier", "To insulate them and protect people from electric shocks", "To help them conduct electricity better", "To make the wires cheaper to produce"], "answer": 1, "explanation": "Plastic and rubber are insulators. Covering wires with them prevents current from passing to anything (or anyone) touching the wire's outside.", "id": "H9"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "A device has its cells placed side by side rather than end to end. How are the cells most likely connected inside?", "options": ["They are not connected to each other at all", "A metal strip joins the positive terminal of one cell to the negative terminal of the next", "Both positive terminals are joined together", "This arrangement cannot work"], "answer": 1, "explanation": "Even when cells sit side by side, a thick wire or metal strip inside the compartment still connects the positive terminal of one cell to the negative terminal of the next, just like in an end-to-end battery.", "id": "H10"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "Electricity from a wall socket (AC) differs from cell/battery electricity (DC) mainly because:", "options": ["AC can run larger appliances, while DC mainly powers small portable devices", "AC is weaker than DC", "AC cannot travel through wires", "DC is generated only in large power plants"], "answer": 0, "explanation": "Direct Current (DC) from cells and batteries usually powers small devices, while Alternating Current (AC) from power plants can supply the larger appliances connected to wall sockets.", "id": "H11"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "In the circuit symbol for an LED, the triangle points in the direction of:", "options": ["The direction the connecting wire bends", "The direction the current is able to flow", "The direction of an external magnetic field", "The direction of the insulating cover"], "answer": 1, "explanation": "In an LED's circuit symbol, the triangle points in the direction current can flow through it, from positive to negative.", "id": "H12"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "A conduction tester (cell + lamp + two free wire ends) is touched to a metal spoon, and the lamp glows. What does this show about the spoon?", "options": ["It is an insulator", "It is a good conductor of electricity", "It has no effect on the circuit", "It is a broken component"], "answer": 1, "explanation": "The lamp glowing means current is passing through the spoon, so the metal spoon is a good conductor of electricity.", "id": "H13"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "Why is copper mainly used for electrical wires instead of silver, even though silver conducts slightly better?", "options": ["Copper is cheaper and much more abundantly available", "Copper conducts electricity better than silver", "Silver cannot be shaped into wires", "Copper does not conduct electricity at all"], "answer": 0, "explanation": "Silver, copper, and gold are all excellent conductors, but copper is used commercially because it is far cheaper and more abundant than silver or gold.", "id": "H14"}, {"type": "mcq", "topic": "3.Electricity c", "difficulty": "hard", "question": "A circuit has two lamps, each controlled by its own switch. If both switches are in the OFF position, what happens?", "options": ["Both lamps glow", "Neither lamp glows", "Only one lamp glows", "Both lamps blink on and off"], "answer": 1, "explanation": "With both switches open, both circuit paths are broken, so no current reaches either lamp and neither one glows.", "id": "H15"}];
+const SETS = { easy: POOL_EASY, hard: POOL_HARD };
+const SET_LABEL = { easy: "Set A &bull; Easy &ndash; Moderate", hard: "Set B &bull; Difficult" };
+const QTYPE_META = {"mcq": {"label": "Single Correct", "chip": "leg-scq", "emoji": "&#9989;"}, "incorrect": {"label": "Incorrect Statement", "chip": "leg-inc", "emoji": "&#9888;&#65039;"}, "correct": {"label": "Correct Statement", "chip": "leg-cor", "emoji": "&#128309;"}, "matrix": {"label": "Matrix Match", "chip": "leg-mat", "emoji": "&#128995;"}, "image": {"label": "Image Based", "chip": "leg-img", "emoji": "&#128444;&#65039;"}, "case": {"label": "Case Based", "chip": "leg-cas", "emoji": "&#128214;"}};
+const SLUG = '3.electricity_circui';
+const TIME_PER_Q = 30;
+
+function wrongKey(setKey) { return "ngmc_wrong_" + SLUG + "_" + setKey; }
+function loadWrong(setKey) { try { return JSON.parse(localStorage.getItem(wrongKey(setKey)) || "[]"); } catch(e) { return []; } }
+function saveWrong(setKey, ids) { try { localStorage.setItem(wrongKey(setKey), JSON.stringify(ids)); } catch(e) {} }
+
+function refreshResumeBanner() {
+  const anyWrong = Object.keys(SETS).some(k => loadWrong(k).length > 0);
+  document.getElementById("resume-banner").style.display = anyWrong ? "block" : "none";
+  const row = document.getElementById("weak-btn-row");
+  row.innerHTML = "";
+  Object.keys(SETS).forEach(k => {
+    if (loadWrong(k).length > 0) {
+      const btn = document.createElement("button");
+      btn.className = "mini-btn";
+      btn.innerHTML = "&#128204; Focus on weak topics — " + (k === "easy" ? "Set A" : "Set B");
+      btn.onclick = () => startTest(k, true);
+      row.appendChild(btn);
+    }
+  });
+}
+refreshResumeBanner();
+
+let currentSetKey = "easy";
+let questions = [], current = 0, timer = null, timeLeft = 0, startTime = 0, answered = false;
+let results = [], lastWrong = [], topicData = {};
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function cloneShuffled(q) {
+  const idx = shuffle(q.options.map((_, i) => i));
+  const clone = Object.assign({}, q);
+  clone.options = idx.map(i => q.options[i]);
+  clone.answer = idx.indexOf(q.answer);
+  return clone;
+}
+
+function playTone(freq, duration, type, vol) {
+  try {
+    const ctx = window._audioCtx || (window._audioCtx = new (window.AudioContext || window.webkitAudioContext)());
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.value = freq;
+    gain.gain.value = vol || 0.15;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration / 1000);
+    osc.stop(ctx.currentTime + duration / 1000);
+  } catch (e) {}
+}
+function playCorrect() { playTone(880, 120, "sine", 0.15); setTimeout(() => playTone(1175, 160, "sine", 0.15), 120); }
+function playWrong() { playTone(220, 260, "sawtooth", 0.12); }
+function playFanfare(perfect) {
+  const notes = perfect ? [523, 659, 784, 1046, 1318] : [523, 659, 784, 659];
+  notes.forEach((n, i) => setTimeout(() => playTone(n, 220, "triangle", 0.18), i * 170));
+}
+
+function spawnConfetti() {
+  const emojis = ["&#127881;", "&#127882;", "&#11088;", "&#127775;", "&#127942;"];
+  for (let i = 0; i < 24; i++) {
+    const span = document.createElement("span");
+    span.className = "confetti-piece";
+    span.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    span.style.left = Math.random() * 100 + "vw";
+    span.style.animationDuration = (2 + Math.random() * 1.5) + "s";
+    document.body.appendChild(span);
+    setTimeout(() => span.remove(), 4000);
+  }
+}
+
+function startTest(setKey, focusWrong) {
+  currentSetKey = setKey;
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  document.getElementById("result-screen").style.display = "none";
+  document.getElementById("round-badge").innerHTML = SET_LABEL[setKey];
+  results = []; lastWrong = []; topicData = {};
+  const pool = SETS[setKey];
+
+  let base;
+  if (focusWrong) {
+    const wrongIds = loadWrong(setKey);
+    const wrongPool = pool.filter(q => wrongIds.includes(q.id));
+    const rest = shuffle(pool.filter(q => !wrongIds.includes(q.id)));
+    base = shuffle([...wrongPool, ...rest]).slice(0, pool.length);
+  } else {
+    base = shuffle(pool);
+  }
+  questions = base.map(cloneShuffled);
+  current = 0;
+  startTime = Date.now();
+  showQ();
+}
+
+function showQ() {
+  document.getElementById("q-counter").textContent = "Question " + (current + 1) + " / " + questions.length;
+  document.getElementById("overall-fill").style.width = (current / questions.length * 100) + "%";
+  const q = questions[current];
+  const tm = QTYPE_META[q.type] || QTYPE_META["mcq"];
+
+  document.getElementById("type-badge").innerHTML = tm.emoji + " " + tm.label;
+
+  const passageBox = document.getElementById("passage-box");
+  if (q.passage) { passageBox.style.display = "block"; passageBox.textContent = q.passage; }
+  else { passageBox.style.display = "none"; passageBox.textContent = ""; }
+
+  const imgBox = document.getElementById("img-box");
+  if (q.svg) { imgBox.style.display = "flex"; imgBox.innerHTML = q.svg; }
+  else { imgBox.style.display = "none"; imgBox.innerHTML = ""; }
+
+  const matrixBox = document.getElementById("matrix-box");
+  if (q.type === "matrix" && q.colA) {
+    const colARows = q.colA.map(r => "<div class=\"matrix-row\">" + r + "</div>").join("");
+    const colBRows = (q.colB || []).map(r => "<div class=\"matrix-row\">" + r + "</div>").join("");
+    matrixBox.innerHTML = '<div class="matrix-wrap"><div class="matrix-col"><h4>Column A</h4>' + colARows + '</div><div class="matrix-col"><h4>Column B</h4>' + colBRows + "</div></div>";
+    matrixBox.style.display = "block";
+  } else {
+    matrixBox.style.display = "none"; matrixBox.innerHTML = "";
+  }
+
+  document.getElementById("q-text").textContent = q.question;
+  const opts = document.getElementById("options");
+  opts.innerHTML = q.options.map((o, i) => {
+    const label = String.fromCharCode(65 + i);
+    return '<button class="opt-btn" id="opt-' + i + '" onclick="pick(' + i + ')"><span class="opt-label">' + label + "</span>" + o + "</button>";
+  }).join("");
+  document.getElementById("explanation").style.display = "none";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("explanation").textContent = "";
+  answered = false;
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = TIME_PER_Q;
+  updateTimer();
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) { clearInterval(timer); autoFail(); }
+  }, 1000);
+}
+
+function updateTimer() {
+  const box = document.getElementById("timer-box");
+  box.textContent = "⏱ " + timeLeft + "s";
+  box.classList.toggle("urgent", timeLeft <= 10);
+}
+
+function autoFail() { pick(-1); }
+
+function pick(chosen) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timer);
+  const q = questions[current];
+  const isCorrect = chosen === q.answer;
+
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById("opt-" + i);
+    if (!btn) return;
+    btn.classList.add("locked");
+    if (i === q.answer) btn.classList.add("correct");
+    else if (i === chosen) btn.classList.add("wrong");
+  });
+
+  isCorrect ? playCorrect() : playWrong();
+
+  const exp = document.getElementById("explanation");
+  exp.textContent = (isCorrect ? "✅ Correct! " : "❌ Wrong. ") + q.explanation;
+  exp.style.display = "block";
+
+  results.push({ q, chosen, isCorrect });
+  if (!isCorrect) lastWrong.push(q.id);
+
+  const t = q.topic || "General";
+  if (!topicData[t]) topicData[t] = { correct: 0, total: 0 };
+  topicData[t].total++;
+  if (isCorrect) topicData[t].correct++;
+
+  document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function nextQ() {
+  current++;
+  if (current < questions.length) { showQ(); return; }
+  saveWrong(currentSetKey, lastWrong);
+  const correct = results.filter(r => r.isCorrect).length;
+  const total = results.length;
+  const pct = Math.round(correct / total * 100);
+  showResults(correct, total, pct);
+}
+
+function formatElapsed(ms) {
+  const s = Math.round(ms / 1000);
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  return m + "m " + (rem < 10 ? "0" : "") + rem + "s";
+}
+
+function showResults(correct, total, pct) {
+  document.getElementById("quiz-screen").style.display = "none";
+  const elapsed = formatElapsed(Date.now() - startTime);
+
+  let tierClass, tierMsg, showTrophy = false, isPerfect = correct === total;
+  if (isPerfect) { tierClass = "tier-perfect"; tierMsg = "&#127942; PERFECT SCORE! Congratulations!"; showTrophy = true; }
+  else if (correct >= 12) { tierClass = "tier-good"; tierMsg = "&#127881; Good job! Well done!"; }
+  else if (correct >= 10) { tierClass = "tier-okay"; tierMsg = "&#128578; Not bad — you can do better!"; }
+  else { tierClass = "tier-low"; tierMsg = "&#128170; Keep practising — you'll get there!"; }
+
+  let topicRows = "";
+  const weakTopics = [];
+  Object.entries(topicData).forEach(([name, st]) => {
+    const p = Math.round(st.correct / st.total * 100);
+    const filledStars = Math.round(p / 20);
+    const stars = "&#11088;".repeat(filledStars) + "&#9734;".repeat(5 - filledStars);
+    topicRows += '<div class="topic-row"><span class="topic-name">' + name + '</span><span class="topic-stars">' + stars + '</span><span class="topic-conf">' + p + '%</span></div>';
+    if (p < 60) weakTopics.push(name);
+  });
+
+  let weakBox = "";
+  if (weakTopics.length > 0) {
+    weakBox = '<div class="weak-box"><h4>&#128204; Weak Areas to Revise</h4><ul>' +
+      weakTopics.map(t => "<li>" + t + " — go back to this part of the chapter and re-read it</li>").join("") +
+      "</ul></div>";
+  }
+
+  const panel = document.getElementById("result-screen");
+  panel.innerHTML =
+    (showTrophy ? '<span class="trophy">&#127942;</span>' : "") +
+    "<h2>" + (SET_LABEL[currentSetKey]) + " — Result</h2>" +
+    '<div class="elapsed-time">Time taken: ' + elapsed + "</div>" +
+    '<div class="tier-banner ' + tierClass + '">' + tierMsg + "</div>" +
+    '<div class="stats-row">' +
+      '<div class="stat-box"><div class="num" style="color:#4caf50">' + correct + '</div><div class="lbl">Correct</div></div>' +
+      '<div class="stat-box"><div class="num" style="color:#e91e63">' + (total - correct) + '</div><div class="lbl">Wrong</div></div>' +
+      '<div class="stat-box"><div class="num">' + pct + '%</div><div class="lbl">Score</div></div>' +
+    "</div>" +
+    '<div class="topic-analysis"><h3 style="margin:0 0 .6rem;font-family:var(--fh)">Topic Confidence</h3>' + topicRows + "</div>" +
+    weakBox +
+    '<div class="result-btns">' +
+      '<button class="result-btn btn-again" onclick="startTest(\'' + currentSetKey + '\', false)">&#128260; Reattempt (Shuffled)</button>' +
+      (lastWrong.length > 0 ? '<button class="result-btn btn-weak" onclick="startTest(\'' + currentSetKey + '\', true)">&#127919; Focus on Weak Topics</button>' : "") +
+      '<button class="result-btn btn-switch" onclick="backToStart()">&#128260; Try Other Set</button>' +
+      '<button class="result-btn btn-share" onclick="shareResult(' + correct + ',' + total + ',' + pct + ')">&#128279; Share Result</button>' +
+    "</div>";
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth" });
+
+  try { localStorage.setItem('ngmc_prog_adaptive_test.html', pct); } catch(e) {}
+
+  playFanfare(isPerfect);
+  if (isPerfect) spawnConfetti();
+  refreshResumeBanner();
+}
+
+function backToStart() {
+  document.getElementById("result-screen").style.display = "none";
+  document.getElementById("start-screen").style.display = "block";
+  refreshResumeBanner();
+}
+
+function shareResult(correct, total, pct) {
+  const setName = currentSetKey === "easy" ? "Set A (Easy-Moderate)" : "Set B (Difficult)";
+  const trophy = correct === total ? " 🏆" : "";
+  const text = "I scored " + correct + "/" + total + " (" + pct + "%) on \"3.Electricity circuits and its applications\" — " + setName + "! 🎯" + trophy;
+  if (navigator.share) {
+    navigator.share({ title: "Adaptive Test Result", text: text }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!")).catch(() => alert(text));
+  }
+}
+</script>
+</body>
+</html>

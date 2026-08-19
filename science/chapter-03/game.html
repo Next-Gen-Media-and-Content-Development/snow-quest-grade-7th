@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electric Games Hub: Circuit Lab &amp; Wire Maze — 3.Electricity circuits and its applications</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root { --fh:'Kalam',cursive; --fb:'Nunito',sans-serif; }
+* { box-sizing:border-box; }
+body {
+  margin:0; min-height:100vh; font-family:var(--fb); color:#2d2d2d;
+  background:linear-gradient(150deg,#0f1130 0%,#241a4a 45%,#3a1e52 100%);
+  background-attachment:fixed;
+  position:relative;
+  overflow-x:hidden;
+}
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(108,99,255,.28), transparent 42%),
+    radial-gradient(circle at 82% 72%, rgba(233,30,140,.20), transparent 46%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 42px);
+  animation: bgDrift 20s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+  0%   { background-position:0 0, 0 0, 0 0, 0 0; }
+  100% { background-position:34px -24px, -24px 34px, 12px 12px, -12px -12px; }
+}
+
+.top-bar {
+  background:linear-gradient(120deg,#6c63ff 0%,#e91e8c 60%,#ff7043 100%);
+  padding:.9rem 1.6rem; display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:.5rem; box-shadow:0 4px 20px rgba(0,0,0,.35); position:relative; z-index:10;
+}
+.top-bar h1 { color:#fff; margin:0; font-size:1.1rem; font-family:var(--fh); text-shadow:0 1px 4px rgba(0,0,0,.3); }
+.back-btn { color:#fff; text-decoration:none; font-size:.88rem; opacity:.9; font-weight:700; }
+.mute-btn {
+  background:rgba(255,255,255,.16); border:1.5px solid rgba(255,255,255,.35); color:#fff;
+  border-radius:50%; width:36px; height:36px; font-size:1.05rem; cursor:pointer; line-height:1;
+  display:flex; align-items:center; justify-content:center; transition:.15s;
+}
+.mute-btn:hover { transform:scale(1.08); }
+
+.wrap { max-width:760px; margin:0 auto; padding:1.6rem 1.2rem 4rem; position:relative; z-index:1; }
+
+/* ---------------- Landing / mode select ---------------- */
+.hub-intro { text-align:center; color:#e6e0ff; margin-bottom:1.3rem; }
+.hub-intro h2 { font-family:var(--fh); font-size:1.5rem; color:#fff; margin:.2rem 0; }
+.hub-intro p { font-size:.9rem; color:#c9c2ee; margin:.2rem 0 0; }
+
+.landing-wrap { display:flex; flex-direction:column; gap:1.1rem; }
+.game-card {
+  background:rgba(255,255,255,.06); border:1.5px solid rgba(255,255,255,.14);
+  border-radius:24px; padding:1.4rem 1.5rem; backdrop-filter:blur(10px);
+  box-shadow:0 12px 40px rgba(0,0,0,.35); color:#f4f2ff;
+  display:flex; gap:1.1rem; align-items:center; transition:.2s;
+}
+.game-card:hover { transform:translateY(-2px); box-shadow:0 16px 46px rgba(0,0,0,.42); }
+.game-card-icon {
+  font-size:2.6rem; flex:0 0 auto; width:74px; height:74px; border-radius:20px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+}
+.game-card-body { flex:1; min-width:0; }
+.game-card-title { font-family:var(--fh); font-size:1.28rem; margin:0 0 .25rem; color:#fff; }
+.game-card-desc { font-size:.86rem; color:#cfc9ee; line-height:1.45; margin:0 0 .55rem; }
+.game-card-meta { font-size:.74rem; color:#a99ce0; margin-bottom:.65rem; min-height:1.1em; }
+.game-card-play {
+  background:linear-gradient(120deg,#22d3ee,#4ade80); color:#04231b; border:none;
+  padding:.55rem 1.3rem; border-radius:20px; font-weight:800; cursor:pointer; font-family:var(--fb);
+  font-size:.88rem; transition:.15s;
+}
+.game-card-play:hover { transform:translateY(-1px); filter:brightness(1.08); }
+@media (max-width:480px) {
+  .game-card { flex-direction:column; text-align:center; }
+}
+
+.game-subnav { margin-bottom:.9rem; }
+.game-subnav a { color:#d9d3ff; text-decoration:none; font-size:.85rem; font-weight:700; }
+.game-subnav a:hover { text-decoration:underline; }
+
+.progress-strip { display:flex; gap:.4rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+.lvl-dot {
+  flex:1; min-width:40px; height:9px; border-radius:6px; background:rgba(255,255,255,.15);
+  position:relative; overflow:hidden;
+}
+.lvl-dot.done { background:linear-gradient(90deg,#4ade80,#22d3ee); }
+.lvl-dot.active { background:rgba(255,255,255,.4); }
+
+.stage-card {
+  background:rgba(255,255,255,.06); border:1.5px solid rgba(255,255,255,.14);
+  border-radius:24px; padding:1.6rem; backdrop-filter:blur(10px);
+  box-shadow:0 12px 40px rgba(0,0,0,.35); color:#f4f2ff;
+}
+.stage-card.shake, .maze-wrap.shake { animation:shakeAnim .4s; }
+@keyframes shakeAnim {
+  10%,90% { transform:translateX(-1px); }
+  20%,80% { transform:translateX(2px); }
+  30%,50%,70% { transform:translateX(-5px); }
+  40%,60% { transform:translateX(5px); }
+}
+
+.stage-head { text-align:center; margin-bottom:1rem; }
+.stage-badge {
+  display:inline-block; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+  border-radius:20px; padding:.25rem 1rem; font-size:.75rem; font-weight:800; letter-spacing:.06em;
+  text-transform:uppercase; color:#c9c2ff; margin-bottom:.5rem;
+}
+.stage-title { font-family:var(--fh); font-size:1.5rem; margin:.1rem 0; color:#fff; }
+.stage-goal { font-size:.92rem; color:#cfc9ee; line-height:1.5; }
+
+.board-wrap { display:flex; justify-content:center; margin:1.3rem 0; }
+.board-wrap svg { max-width:100%; height:auto; }
+
+.node-term { cursor:pointer; transition:.15s; }
+.node-term:hover circle { filter:brightness(1.3); }
+.node-term.selected circle { stroke:#ffd54f; stroke-width:4; }
+.wire-line { stroke:#ffd54f; stroke-width:4; stroke-linecap:round; filter:drop-shadow(0 0 4px rgba(255,213,79,.7)); }
+.wire-ghost { stroke:rgba(255,255,255,.18); stroke-width:2; stroke-dasharray:5 6; }
+.wire-spark { fill:#fff8b0; filter:drop-shadow(0 0 7px #ffe066) drop-shadow(0 0 12px #ffd54f); }
+
+.bulb-glow { filter:drop-shadow(0 0 18px #ffee58) drop-shadow(0 0 34px #ffd54f); }
+.bulb-halo { opacity:0; transition:opacity .3s; transform-box:fill-box; transform-origin:center; }
+.bulb-halo.lit { opacity:1; animation:bulbPulse 1.5s ease-in-out infinite; }
+@keyframes bulbPulse {
+  0%,100% { transform:scale(1); opacity:.55; }
+  50%     { transform:scale(1.18); opacity:.92; }
+}
+
+.controls-row { display:flex; gap:.7rem; flex-wrap:wrap; justify-content:center; margin-top:.8rem; }
+.ctl-btn {
+  padding:.6rem 1.3rem; border-radius:20px; border:none; font-weight:800; cursor:pointer;
+  font-size:.88rem; font-family:var(--fb); transition:.15s;
+}
+.ctl-test { background:linear-gradient(120deg,#22d3ee,#4ade80); color:#04231b; }
+.ctl-reset { background:rgba(255,255,255,.14); color:#fff; border:1.5px solid rgba(255,255,255,.3); }
+.ctl-toggle { background:rgba(255,255,255,.14); color:#fff; border:1.5px solid rgba(255,255,255,.3); }
+.ctl-toggle.on { background:linear-gradient(120deg,#facc15,#fb923c); color:#3a2200; }
+.ctl-btn:hover { transform:translateY(-1px); filter:brightness(1.08); }
+
+.feedback {
+  margin-top:1rem; border-radius:14px; padding:.8rem 1rem; font-size:.92rem; font-family:var(--fh);
+  text-align:center; min-height:1.4em; display:none;
+}
+.feedback.show { display:block; }
+.feedback.win { background:rgba(74,222,128,.16); border:1.5px solid #4ade80; color:#bbf7d0; }
+.feedback.hint { background:rgba(250,204,21,.14); border:1.5px solid #facc15; color:#fef3c7; }
+
+.sort-zone { display:flex; flex-direction:column; gap:1rem; align-items:center; }
+.sort-items { display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; max-width:520px; }
+.sort-chip {
+  background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.25); border-radius:16px;
+  padding:.55rem 1rem; font-family:var(--fh); font-size:1rem; color:#fff; cursor:pointer; transition:.15s;
+}
+.sort-chip:hover { background:rgba(255,255,255,.22); }
+.sort-chip.selected { background:linear-gradient(120deg,#6c63ff,#e91e8c); border-color:transparent; }
+.sort-chip.placed { opacity:0; transform:scale(.5); pointer-events:none; }
+.bins-row { display:flex; gap:1rem; width:100%; max-width:480px; }
+.bin {
+  flex:1; border-radius:18px; padding:1.1rem .8rem; text-align:center; cursor:pointer;
+  border:2px dashed rgba(255,255,255,.3); font-family:var(--fh); font-size:1.05rem; color:#fff;
+  min-height:70px; display:flex; align-items:center; justify-content:center; transition:.15s;
+}
+.bin.conductor { background:rgba(96,165,250,.14); }
+.bin.insulator { background:rgba(251,146,60,.14); }
+.bin:hover { filter:brightness(1.15); }
+.bin-count { font-size:.75rem; opacity:.8; margin-left:.4rem; }
+
+.match-row { display:flex; gap:1rem; width:100%; justify-content:center; }
+.match-col { display:flex; flex-direction:column; gap:.55rem; flex:1; max-width:230px; }
+.match-chip {
+  background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.25); border-radius:14px;
+  padding:.6rem .9rem; font-family:var(--fh); font-size:.95rem; color:#fff; cursor:pointer; text-align:center;
+  transition:.15s;
+}
+.match-chip.selected { background:linear-gradient(120deg,#6c63ff,#e91e8c); border-color:transparent; }
+.match-chip.matched { background:rgba(74,222,128,.25); border-color:#4ade80; opacity:.6; cursor:default; }
+.match-chip.wrongflash { background:rgba(239,68,68,.3); border-color:#ef4444; }
+
+#end-panel, #maze-end-panel { display:none; text-align:center; }
+#end-panel .big-emoji, #maze-end-panel .big-emoji { font-size:3rem; margin-bottom:.3rem; }
+#end-panel h2, #maze-end-panel h2 { font-family:var(--fh); font-size:1.7rem; color:#fff; margin:.2rem 0; }
+.stars-row { font-size:2rem; letter-spacing:.15em; margin:.6rem 0 1rem; }
+.end-stats { display:flex; gap:1rem; justify-content:center; margin-bottom:1.4rem; flex-wrap:wrap; }
+.end-stat { background:rgba(255,255,255,.08); border-radius:14px; padding:.8rem 1.2rem; min-width:90px; }
+.end-stat .num { font-size:1.5rem; font-weight:800; }
+.end-stat .lbl { font-size:.7rem; opacity:.8; }
+
+.mode-btns { display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap; }
+.mode-btn { padding:.7rem 1.5rem; border-radius:22px; border:none; font-weight:800; cursor:pointer; font-size:.92rem; font-family:var(--fb); }
+.btn-again { background:linear-gradient(120deg,#6c63ff,#e91e8c); color:#fff; }
+.btn-hub { background:rgba(255,255,255,.14); color:#fff; border:1.5px solid rgba(255,255,255,.3); text-decoration:none; display:inline-block; }
+
+.hint-strip { text-align:center; font-size:.78rem; color:#a99ce0; margin-top:1rem; }
+
+/* ---------------- Maze game ---------------- */
+.maze-stats-row {
+  display:flex; gap:.7rem; justify-content:center; margin:.6rem 0 .2rem; flex-wrap:wrap;
+  font-family:var(--fh); font-size:.95rem; color:#e8e2ff;
+}
+.maze-stat { background:rgba(255,255,255,.08); border-radius:12px; padding:.35rem .85rem; }
+.maze-wrap svg { background:#170e2c; border-radius:14px; border:1px solid rgba(255,255,255,.1); }
+.cell-wall { fill:#120a24; }
+.cell-path { fill:#2c2354; stroke:rgba(255,255,255,.05); stroke-width:1; cursor:pointer; transition:fill .25s; }
+.cell-path:hover { fill:#3a2f70; }
+.cell-path.cell-lit { fill:#d4af37; filter:drop-shadow(0 0 3px rgba(212,175,55,.7)); }
+.player-spark-g { transition:transform .16s ease-out; }
+.player-halo { fill:rgba(255,224,102,.35); transform-box:fill-box; transform-origin:center; animation:playerPulse 1.2s ease-in-out infinite; }
+.player-core { fill:#fff8b0; filter:drop-shadow(0 0 6px #ffe066) drop-shadow(0 0 14px #ffd54f); }
+@keyframes playerPulse {
+  0%,100% { opacity:.28; transform:scale(1); }
+  50%     { opacity:.55; transform:scale(1.3); }
+}
+.dpad { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin-top:1.1rem; }
+.dpad-mid { display:flex; gap:2.4rem; }
+.dpad-btn { width:54px; height:46px; font-size:1.15rem; padding:0; background:rgba(255,255,255,.14); color:#fff; border:1.5px solid rgba(255,255,255,.3); }
+
+/* ---------------- Confetti ---------------- */
+#confetti-layer { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:80; }
+.confetti-piece {
+  position:absolute; top:-12px; width:8px; height:8px; border-radius:2px;
+  animation:confettiFall 1.5s ease-in forwards;
+}
+@keyframes confettiFall {
+  0%   { transform:translateY(0) translateX(0) rotate(0deg); opacity:1; }
+  100% { transform:translateY(100vh) translateX(calc(var(--dx,0) * 140px)) rotate(var(--rot,220deg)); opacity:0; }
+}
+
+@media (max-width:520px) {
+  .bins-row, .match-row { flex-direction:column; }
+  .match-col { max-width:100%; }
+}
+</style>
+</head>
+<body>
+
+<div id="confetti-layer"></div>
+
+<div class="top-bar">
+  <a class="back-btn" href="index.html">&#8592; Chapter Hub</a>
+  <h1 id="top-title">&#9889; Electric Games Hub</h1>
+  <button class="mute-btn" id="mute-btn" onclick="toggleMute()" title="Toggle sound">&#128266;</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ==================== LANDING VIEW ==================== -->
+  <div id="landing-view">
+    <div class="hub-intro">
+      <h2>Pick a Game</h2>
+      <p>Two ways to play with what you just learned about circuits!</p>
+    </div>
+    <div class="landing-wrap">
+      <div class="game-card">
+        <div class="game-card-icon">&#9889;</div>
+        <div class="game-card-body">
+          <div class="game-card-title">Circuit Lab: Light It Up!</div>
+          <div class="game-card-desc">Wire real circuits — light a bulb, add a switch, get an LED's polarity right, sort conductors from insulators, and match AC/DC sources.</div>
+          <div class="game-card-meta" id="circuit-card-meta">5 stages &middot; wiring, switches, LEDs, sorting &amp; AC/DC</div>
+          <button class="game-card-play" onclick="startCircuitGame()">&#9654; Play Circuit Lab</button>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-card-icon">&#129517;</div>
+        <div class="game-card-body">
+          <div class="game-card-title">Find My Way: Wire Maze</div>
+          <div class="game-card-desc">Guide a little spark of current from the battery to the bulb through a maze of wires. Fewer moves and less time earn more stars!</div>
+          <div class="game-card-meta" id="maze-card-meta">3 mazes &middot; guide the spark from battery to bulb</div>
+          <button class="game-card-play" onclick="startMazeGame()">&#9654; Play Find My Way</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CIRCUIT LAB VIEW ==================== -->
+  <div id="circuit-view" style="display:none;">
+    <div class="game-subnav"><a href="#" onclick="showLanding();return false;">&#8592; All Games</a></div>
+    <div class="progress-strip" id="progress-strip"></div>
+    <div class="stage-card" id="stage-card"></div>
+    <div class="stage-card" id="end-panel">
+      <div class="big-emoji" id="end-emoji">&#127881;</div>
+      <h2 id="end-title">Lab Complete!</h2>
+      <div class="stars-row" id="end-stars"></div>
+      <div class="end-stats">
+        <div class="end-stat"><div class="num" id="end-correct">0</div><div class="lbl">First-Try Wins</div></div>
+        <div class="end-stat"><div class="num" id="end-attempts">0</div><div class="lbl">Total Attempts</div></div>
+        <div class="end-stat"><div class="num" id="end-pct">0%</div><div class="lbl">Score</div></div>
+      </div>
+      <div class="mode-btns">
+        <button class="mode-btn btn-again" onclick="restartGame()">&#128260; Play Again</button>
+        <a class="mode-btn btn-hub" href="#" onclick="showLanding();return false;">&#128193; All Games</a>
+      </div>
+    </div>
+    <p class="hint-strip">Tap terminals to wire the circuit, then hit Test. 5 stages — build, switch, and sort your way through!</p>
+  </div>
+
+  <!-- ==================== FIND MY WAY (MAZE) VIEW ==================== -->
+  <div id="maze-view" style="display:none;">
+    <div class="game-subnav"><a href="#" onclick="showLanding();return false;">&#8592; All Games</a></div>
+    <div class="stage-card" id="maze-stage-card"></div>
+    <div class="stage-card" id="maze-end-panel">
+      <div class="big-emoji">&#127942;</div>
+      <h2>All Mazes Solved!</h2>
+      <div class="stars-row" id="maze-end-stars"></div>
+      <p style="color:#cfc9ee;font-size:.88rem;">You guided the spark home through every maze. Great work tracing the path of current!</p>
+      <div class="mode-btns">
+        <button class="mode-btn btn-again" onclick="restartMazeGame()">&#128260; Play Again</button>
+        <a class="mode-btn btn-hub" href="#" onclick="showLanding();return false;">&#128193; All Games</a>
+      </div>
+    </div>
+    <p class="hint-strip">Use the arrow buttons or your keyboard's arrow/WASD keys to move the spark. Reach the bulb with the fewest moves for 3 stars!</p>
+  </div>
+
+</div>
+
+<script>
+const SLUG = '3.electricity_circui';
+let currentView = 'landing';
+let muted = false;
+let actx = null;
+
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+function lsGet(k, fallback) { try { const v = localStorage.getItem(k); return v === null ? fallback : JSON.parse(v); } catch(e) { return fallback; } }
+
+// ---------------------------------------------------------------
+// SOUND EFFECTS (Web Audio API — no external files needed)
+// ---------------------------------------------------------------
+function ensureAudio() {
+  if (!actx) {
+    try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { actx = null; }
+  }
+  return actx;
+}
+function beep(freq, dur, type, vol, delay) {
+  if (muted) return;
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  type = type || 'sine'; vol = vol === undefined ? 0.16 : vol; delay = delay || 0;
+  const t0 = ctx.currentTime + delay;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(0, t0);
+  gain.gain.linearRampToValueAtTime(vol, t0 + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(t0); osc.stop(t0 + dur + 0.03);
+}
+function sfxClick()   { beep(740, 0.06, 'square', 0.10); }
+function sfxConnect() { beep(520, 0.09, 'triangle', 0.15); beep(780, 0.09, 'triangle', 0.10, 0.04); }
+function sfxDing()    { beep(880, 0.10, 'sine', 0.15); }
+function sfxMove()    { beep(320, 0.05, 'square', 0.07); }
+function sfxBump()    { beep(120, 0.12, 'sawtooth', 0.14); }
+function sfxError()   { beep(180, 0.18, 'sawtooth', 0.17); beep(120, 0.22, 'sawtooth', 0.13, 0.05); }
+function sfxWin()     { beep(523, 0.12, 'sine', 0.17); beep(659, 0.12, 'sine', 0.15, 0.1); beep(784, 0.18, 'sine', 0.15, 0.2); }
+function sfxFanfare() { [523, 659, 784, 1046].forEach((f, i) => beep(f, 0.22, 'sine', 0.17, i * 0.13)); }
+
+function toggleMute() {
+  muted = !muted;
+  document.getElementById('mute-btn').innerHTML = muted ? '&#128263;' : '&#128266;';
+}
+
+// ---------------------------------------------------------------
+// CONFETTI
+// ---------------------------------------------------------------
+function confettiBurst(count) {
+  count = count || 26;
+  const layer = document.getElementById('confetti-layer');
+  const colors = ['#ffd54f', '#4ade80', '#22d3ee', '#e91e8c', '#6c63ff', '#ff7043'];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = (10 + Math.random() * 80) + '%';
+    el.style.background = colors[i % colors.length];
+    el.style.setProperty('--dx', (Math.random() * 2 - 1).toFixed(2));
+    el.style.setProperty('--rot', Math.floor(Math.random() * 360) + 'deg');
+    el.style.animationDelay = (Math.random() * 0.2) + 's';
+    layer.appendChild(el);
+    setTimeout(() => el.remove(), 1900);
+  }
+}
+
+function shakeEl(el) {
+  if (!el) return;
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+}
+
+// ---------------------------------------------------------------
+// VIEW SWITCHING + LANDING
+// ---------------------------------------------------------------
+function updateOverallProgress() {
+  const circuitDone = !!lsGet('ngmc_game_circuit_done', false);
+  const mazeDone = !!lsGet('ngmc_game_maze_done', false);
+  const pct = (circuitDone ? 50 : 0) + (mazeDone ? 50 : 0);
+  lsSet('ngmc_prog_game.html', pct);
+}
+
+function renderLanding() {
+  const circuitDone = !!lsGet('ngmc_game_circuit_done', false);
+  const mazeStars = lsGet('ngmc_maze_stars', null);
+  document.getElementById('circuit-card-meta').textContent = circuitDone
+    ? '✅ Completed — play again anytime'
+    : '5 stages · wiring, switches, LEDs, sorting & AC/DC';
+  document.getElementById('maze-card-meta').textContent = (mazeStars && mazeStars.length === MAZES.length)
+    ? '✅ Completed — ' + mazeStars.map(s => '⭐'.repeat(s)).join('  ')
+    : '3 mazes · guide the spark from battery to bulb';
+}
+
+function showLanding() {
+  currentView = 'landing';
+  stopMazeTimer();
+  document.getElementById('landing-view').style.display = 'block';
+  document.getElementById('circuit-view').style.display = 'none';
+  document.getElementById('maze-view').style.display = 'none';
+  document.getElementById('top-title').innerHTML = '&#9889; Electric Games Hub';
+  renderLanding();
+}
+
+function startCircuitGame() {
+  currentView = 'circuit';
+  document.getElementById('landing-view').style.display = 'none';
+  document.getElementById('circuit-view').style.display = 'block';
+  document.getElementById('maze-view').style.display = 'none';
+  document.getElementById('top-title').innerHTML = '&#9889; Circuit Lab: Light It Up!';
+  restartGame();
+}
+
+function startMazeGame() {
+  currentView = 'maze';
+  document.getElementById('landing-view').style.display = 'none';
+  document.getElementById('circuit-view').style.display = 'none';
+  document.getElementById('maze-view').style.display = 'block';
+  document.getElementById('top-title').innerHTML = '&#129517; Find My Way: Wire Maze';
+  restartMazeGame();
+}
+
+// ---------------------------------------------------------------
+// STAGE DEFINITIONS (Circuit Lab)
+// ---------------------------------------------------------------
+let stageIdx = 0;
+let mistakes = 0;
+let firstTryWins = 0;
+
+const STAGES = [
+  { key:'basic', label:'Stage 1', title:'Light the Bulb', type:'circuit' },
+  { key:'switch', label:'Stage 2', title:'Add a Switch', type:'circuit' },
+  { key:'led', label:'Stage 3', title:'LED Polarity Puzzle', type:'circuit' },
+  { key:'sort', label:'Stage 4', title:'Conductor or Insulator?', type:'sort' },
+  { key:'acdc', label:'Stage 5', title:'Power Source Match', type:'match' },
+];
+
+function renderProgressStrip() {
+  const c = document.getElementById('progress-strip');
+  c.innerHTML = STAGES.map((s,i) => {
+    let cls = 'lvl-dot';
+    if (i < stageIdx) cls += ' done';
+    else if (i === stageIdx) cls += ' active';
+    return `<div class="${cls}" title="${s.title}"></div>`;
+  }).join('');
+}
+
+// ---------------------------------------------------------------
+// CIRCUIT STAGES (click-to-wire terminals)
+// ---------------------------------------------------------------
+function circuitConfig(key) {
+  if (key === 'basic') {
+    return {
+      nodes: [
+        {id:'cp', x:70,  y:150, label:'+'},
+        {id:'cn', x:70,  y:230, label:'−'},
+        {id:'la', x:330, y:150, label:'A'},
+        {id:'lb', x:330, y:230, label:'B'},
+      ],
+      cellBody: {x:40, y:150, w:60, h:80, label:'CELL'},
+      bulb: {x:400, y:190},
+      required: [['cp','la'],['cn','lb']],
+      needSwitchOn: false,
+      instructions: 'Tap the cell’s (+) terminal, then tap bulb terminal A. Then connect (−) to terminal B. Close the loop to make it glow!'
+    };
+  }
+  if (key === 'switch') {
+    return {
+      nodes: [
+        {id:'cp', x:55,  y:150, label:'+'},
+        {id:'cn', x:55,  y:230, label:'−'},
+        {id:'sa', x:230, y:230, label:'S1'},
+        {id:'sb', x:310, y:230, label:'S2'},
+        {id:'la', x:410, y:150, label:'A'},
+        {id:'lb', x:410, y:230, label:'B'},
+      ],
+      cellBody: {x:25, y:150, w:60, h:80, label:'CELL'},
+      switchNodes: ['sa','sb'],
+      bulb: {x:470, y:190},
+      required: [['cp','la'],['sa','sb'],['sb','lb'],['cn','sa']],
+      needSwitchOn: true,
+      instructions: 'Wire the cell to the bulb through the switch. Then flip the switch to ON — an open switch always breaks the circuit!'
+    };
+  }
+  if (key === 'led') {
+    return {
+      nodes: [
+        {id:'cp', x:70,  y:150, label:'+'},
+        {id:'cn', x:70,  y:230, label:'−'},
+        {id:'lp', x:330, y:150, label:'+ (long)'},
+        {id:'ln', x:330, y:230, label:'− (short)'},
+      ],
+      cellBody: {x:40, y:150, w:60, h:80, label:'CELL'},
+      bulb: {x:400, y:190, isLed:true},
+      required: [['cp','lp'],['cn','ln']],
+      reversedPair: [['cp','ln'],['cn','lp']],
+      needSwitchOn: false,
+      instructions: 'An LED only glows one way round. Connect (+) to the LED’s longer wire and (−) to its shorter wire.'
+    };
+  }
+}
+
+let circuitState = { selected:null, edges:[], switchOn:false };
+
+function svgLine(a,b,cls) {
+  return `<line class="${cls}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
+}
+
+function pairKey(a,b) { return [a,b].sort().join('-'); }
+
+function renderCircuitStage(cfg) {
+  circuitState = { selected:null, edges:[], switchOn:false };
+  const nodeById = {};
+  cfg.nodes.forEach(n => nodeById[n.id] = n);
+
+  const card = document.getElementById('stage-card');
+  card.classList.remove('shake');
+  card.innerHTML = `
+    <div class="stage-head">
+      <div class="stage-badge">${STAGES[stageIdx].label} of ${STAGES.length}</div>
+      <div class="stage-title">${STAGES[stageIdx].title}</div>
+      <div class="stage-goal">${cfg.instructions}</div>
+    </div>
+    <div class="board-wrap">
+      <svg id="circuit-svg" viewBox="0 0 520 330" width="520" height="330">
+        <rect x="${cfg.cellBody.x}" y="${cfg.cellBody.y-10}" width="${cfg.cellBody.w}" height="${cfg.cellBody.h+20}" rx="10"
+          fill="#8b1e2b" stroke="#ffd54f" stroke-width="2"/>
+        <text x="${cfg.cellBody.x+cfg.cellBody.w/2}" y="${cfg.cellBody.y+cfg.cellBody.h/2+5}" text-anchor="middle"
+          font-size="12" fill="#ffe" font-family="Nunito" font-weight="800">${cfg.cellBody.label}</text>
+        ${cfg.switchNodes ? `<rect x="${nodeById[cfg.switchNodes[0]].x-15}" y="${nodeById[cfg.switchNodes[0]].y-28}" width="${nodeById[cfg.switchNodes[1]].x-nodeById[cfg.switchNodes[0]].x+30}" height="20" rx="8" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.3)"/>` : ''}
+        <g id="edge-layer"></g>
+        ${cfg.nodes.map(n => `
+          <g class="node-term" data-id="${n.id}" onclick="tapNode('${n.id}')">
+            <circle cx="${n.x}" cy="${n.y}" r="13" fill="#3a3060" stroke="#a99ce0" stroke-width="2.5"/>
+            <text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="9" fill="#fff" font-family="Nunito" font-weight="700">${n.label}</text>
+          </g>`).join('')}
+        <circle id="bulb-halo" class="bulb-halo" cx="${cfg.bulb.x}" cy="${cfg.bulb.y}" r="30" fill="#ffee58"/>
+        <g id="bulb-layer"></g>
+      </svg>
+    </div>
+    <div class="controls-row">
+      ${cfg.switchNodes ? `<button class="ctl-btn ctl-toggle" id="switch-toggle" onclick="toggleSwitch()">Switch: OFF</button>` : ''}
+      <button class="ctl-btn ctl-test" onclick="testCircuit()">&#9889; Test Circuit</button>
+      <button class="ctl-btn ctl-reset" onclick="resetCircuit()">&#8635; Reset Wires</button>
+    </div>
+    <div class="feedback" id="stage-feedback"></div>
+  `;
+  window._cfg = cfg;
+  window._nodeById = nodeById;
+  drawBulb(false, cfg);
+}
+
+function drawBulb(lit, cfg) {
+  const layer = document.getElementById('bulb-layer');
+  const halo = document.getElementById('bulb-halo');
+  if (halo) halo.classList.toggle('lit', lit);
+  const bx = cfg.bulb.x, by = cfg.bulb.y;
+  const color = lit ? '#fff59d' : 'rgba(255,255,255,.12)';
+  const stroke = lit ? '#ffd54f' : 'rgba(255,255,255,.35)';
+  let shape;
+  if (cfg.bulb.isLed) {
+    shape = `<polygon points="${bx-16},${by-16} ${bx-16},${by+16} ${bx+14},${by}" fill="${color}" stroke="${stroke}" stroke-width="2.5"/>
+              <line x1="${bx+14}" y1="${by-16}" x2="${bx+14}" y2="${by+16}" stroke="${stroke}" stroke-width="3"/>`;
+  } else {
+    shape = `<circle cx="${bx}" cy="${by}" r="22" fill="${color}" stroke="${stroke}" stroke-width="2.5"/>
+             <line x1="${bx-11}" y1="${by-11}" x2="${bx+11}" y2="${by+11}" stroke="${stroke}" stroke-width="2"/>
+             <line x1="${bx+11}" y1="${by-11}" x2="${bx-11}" y2="${by+11}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+  layer.innerHTML = `<g class="${lit ? 'bulb-glow' : ''}">${shape}</g>`;
+}
+
+function tapNode(id) {
+  sfxClick();
+  if (!circuitState.selected) {
+    circuitState.selected = id;
+  } else if (circuitState.selected === id) {
+    circuitState.selected = null;
+  } else {
+    const key = pairKey(circuitState.selected, id);
+    const idx = circuitState.edges.findIndex(e => pairKey(e[0],e[1]) === key);
+    if (idx >= 0) {
+      circuitState.edges.splice(idx,1); // toggle off if already wired
+    } else {
+      circuitState.edges.push([circuitState.selected, id]);
+      sfxConnect();
+      animateSpark(circuitState.selected, id);
+    }
+    circuitState.selected = null;
+  }
+  redrawEdges();
+}
+
+function animateSpark(aId, bId) {
+  const nodeById = window._nodeById;
+  const svg = document.getElementById('circuit-svg');
+  const a = nodeById[aId], b = nodeById[bId];
+  if (!svg || !a || !b) return;
+  const spark = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  spark.setAttribute('r', '5');
+  spark.setAttribute('class', 'wire-spark');
+  spark.setAttribute('cx', a.x);
+  spark.setAttribute('cy', a.y);
+  svg.appendChild(spark);
+  requestAnimationFrame(() => {
+    spark.style.transition = 'cx .35s linear, cy .35s linear';
+    spark.setAttribute('cx', b.x);
+    spark.setAttribute('cy', b.y);
+  });
+  setTimeout(() => spark.remove(), 430);
+}
+
+function redrawEdges() {
+  const cfg = window._cfg, nodeById = window._nodeById;
+  const layer = document.getElementById('edge-layer');
+  layer.innerHTML = circuitState.edges.map(([a,b]) =>
+    svgLine(nodeById[a], nodeById[b], 'wire-line')).join('');
+  document.querySelectorAll('.node-term').forEach(g => {
+    g.classList.toggle('selected', g.dataset.id === circuitState.selected);
+  });
+}
+
+function toggleSwitch() {
+  sfxClick();
+  circuitState.switchOn = !circuitState.switchOn;
+  const btn = document.getElementById('switch-toggle');
+  btn.textContent = 'Switch: ' + (circuitState.switchOn ? 'ON' : 'OFF');
+  btn.classList.toggle('on', circuitState.switchOn);
+}
+
+function hasEdge(edges, a, b) {
+  const key = pairKey(a,b);
+  return edges.some(e => pairKey(e[0],e[1]) === key);
+}
+
+function resetCircuit() {
+  circuitState.edges = [];
+  circuitState.selected = null;
+  redrawEdges();
+  drawBulb(false, window._cfg);
+  const fb = document.getElementById('stage-feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+}
+
+function testCircuit() {
+  const cfg = window._cfg;
+  const fb = document.getElementById('stage-feedback');
+  const requiredMet = cfg.required.every(([a,b]) => hasEdge(circuitState.edges, a, b));
+  const switchOk = !cfg.needSwitchOn || circuitState.switchOn;
+
+  if (requiredMet && switchOk) {
+    drawBulb(true, cfg);
+    fb.className = 'feedback show win';
+    fb.textContent = cfg.bulb.isLed ? '✅ The LED glows! Current flows the right way through it.' : '✅ It glows! You completed the circuit.';
+    completeStage(!window._stageAttemptFailed);
+    return;
+  }
+
+  mistakes++;
+  window._stageAttemptFailed = true;
+  sfxError();
+  shakeEl(document.getElementById('stage-card'));
+  drawBulb(false, cfg);
+  fb.className = 'feedback show hint';
+  if (cfg.reversedPair && cfg.reversedPair.every(([a,b]) => hasEdge(circuitState.edges,a,b))) {
+    fb.textContent = '⚠️ Wired up, but backwards — current can only pass one way through an LED. Try swapping the connections!';
+  } else if (cfg.needSwitchOn && requiredMet && !circuitState.switchOn) {
+    fb.textContent = '⚠️ Wiring looks right, but the switch is OFF — flip it to ON to close the circuit!';
+  } else {
+    fb.textContent = '⚠️ Not glowing yet — the circuit isn’t complete. Check that every terminal is connected in one loop.';
+  }
+}
+
+// ---------------------------------------------------------------
+// SORT STAGE (conductors vs insulators)
+// ---------------------------------------------------------------
+const SORT_ITEMS = [
+  {name:'Copper wire', bin:'conductor'},
+  {name:'Iron key', bin:'conductor'},
+  {name:'Metal spoon', bin:'conductor'},
+  {name:'Coin', bin:'conductor'},
+  {name:'Rubber band', bin:'insulator'},
+  {name:'Plastic scale', bin:'insulator'},
+  {name:'Eraser', bin:'insulator'},
+  {name:'Wooden pencil', bin:'insulator'},
+];
+let sortState = { selected:null, placed:0, order:[] };
+
+function renderSortStage() {
+  sortState = { selected:null, placed:0, order:[...SORT_ITEMS.keys()].sort(()=>Math.random()-0.5) };
+  const card = document.getElementById('stage-card');
+  card.classList.remove('shake');
+  card.innerHTML = `
+    <div class="stage-head">
+      <div class="stage-badge">${STAGES[stageIdx].label} of ${STAGES.length}</div>
+      <div class="stage-title">${STAGES[stageIdx].title}</div>
+      <div class="stage-goal">Tap an item, then tap the bin it belongs in — Conductor or Insulator.</div>
+    </div>
+    <div class="sort-zone">
+      <div class="sort-items" id="sort-items">
+        ${sortState.order.map(i => `<div class="sort-chip" data-i="${i}" onclick="selectSortItem(${i})">${SORT_ITEMS[i].name}</div>`).join('')}
+      </div>
+      <div class="bins-row" id="bins-row">
+        <div class="bin conductor" onclick="dropInBin('conductor')">⚡ Conductor <span class="bin-count" id="cnt-conductor">(0)</span></div>
+        <div class="bin insulator" onclick="dropInBin('insulator')">🛡️ Insulator <span class="bin-count" id="cnt-insulator">(0)</span></div>
+      </div>
+    </div>
+    <div class="feedback" id="stage-feedback"></div>
+  `;
+}
+
+function selectSortItem(i) {
+  sfxClick();
+  sortState.selected = i;
+  document.querySelectorAll('.sort-chip').forEach(c => c.classList.toggle('selected', Number(c.dataset.i) === i));
+}
+
+function dropInBin(binName) {
+  if (sortState.selected === null) return;
+  const item = SORT_ITEMS[sortState.selected];
+  const chip = document.querySelector(`.sort-chip[data-i="${sortState.selected}"]`);
+  const fb = document.getElementById('stage-feedback');
+
+  if (item.bin === binName) {
+    sfxDing();
+    chip.classList.add('placed');
+    sortState.placed++;
+    const counter = document.getElementById('cnt-' + binName);
+    counter.textContent = '(' + (Number(counter.textContent.replace(/\D/g,''))+1) + ')';
+    fb.className = 'feedback show win';
+    fb.textContent = '✅ Correct! ' + item.name + ' is a good ' + binName + '.';
+    sortState.selected = null;
+    if (sortState.placed === SORT_ITEMS.length) {
+      completeStage(!window._stageAttemptFailed);
+    }
+  } else {
+    mistakes++;
+    window._stageAttemptFailed = true;
+    sfxError();
+    shakeEl(document.getElementById('bins-row'));
+    fb.className = 'feedback show hint';
+    fb.textContent = '⚠️ Not quite — ' + item.name + ' is actually ' + (item.bin === 'conductor' ? 'a conductor' : 'an insulator') + '. Try again!';
+  }
+}
+
+// ---------------------------------------------------------------
+// MATCH STAGE (AC vs DC sources)
+// ---------------------------------------------------------------
+const MATCH_PAIRS = [
+  {source:'Torchlight cell', type:'DC'},
+  {source:'Remote-control battery', type:'DC'},
+  {source:'Wall power socket', type:'AC'},
+  {source:'Power plant supply line', type:'AC'},
+];
+let matchState = { selectedSource:null, matched:new Set() };
+
+function renderMatchStage() {
+  matchState = { selectedSource:null, matched:new Set() };
+  const card = document.getElementById('stage-card');
+  card.classList.remove('shake');
+  const sources = [...MATCH_PAIRS.keys()];
+  card.innerHTML = `
+    <div class="stage-head">
+      <div class="stage-badge">${STAGES[stageIdx].label} of ${STAGES.length}</div>
+      <div class="stage-title">${STAGES[stageIdx].title}</div>
+      <div class="stage-goal">Tap a power source on the left, then tap whether it supplies AC or DC.</div>
+    </div>
+    <div class="match-row">
+      <div class="match-col">
+        ${sources.map(i => `<div class="match-chip" id="src-${i}" data-i="${i}" onclick="selectSource(${i})">${MATCH_PAIRS[i].source}</div>`).join('')}
+      </div>
+      <div class="match-col">
+        <div class="match-chip" id="type-DC" onclick="selectType('DC')">Direct Current (DC)</div>
+        <div class="match-chip" id="type-AC" onclick="selectType('AC')">Alternating Current (AC)</div>
+      </div>
+    </div>
+    <div class="feedback" id="stage-feedback"></div>
+  `;
+}
+
+function selectSource(i) {
+  if (matchState.matched.has(i)) return;
+  sfxClick();
+  matchState.selectedSource = i;
+  document.querySelectorAll('.match-chip[id^="src-"]').forEach(c => {
+    if (!matchState.matched.has(Number(c.dataset.i))) c.classList.toggle('selected', Number(c.dataset.i) === i);
+  });
+}
+
+function selectType(type) {
+  if (matchState.selectedSource === null) return;
+  const i = matchState.selectedSource;
+  const pair = MATCH_PAIRS[i];
+  const fb = document.getElementById('stage-feedback');
+
+  if (pair.type === type) {
+    sfxDing();
+    document.getElementById('src-'+i).classList.add('matched');
+    document.getElementById('src-'+i).classList.remove('selected');
+    matchState.matched.add(i);
+    matchState.selectedSource = null;
+    fb.className = 'feedback show win';
+    fb.textContent = '✅ Correct! ' + pair.source + ' supplies ' + type + '.';
+    if (matchState.matched.size === MATCH_PAIRS.length) {
+      completeStage(!window._stageAttemptFailed);
+    }
+  } else {
+    mistakes++;
+    window._stageAttemptFailed = true;
+    sfxError();
+    const chip = document.getElementById('type-'+type);
+    chip.classList.add('wrongflash');
+    shakeEl(chip);
+    setTimeout(() => chip.classList.remove('wrongflash'), 500);
+    fb.className = 'feedback show hint';
+    fb.textContent = '⚠️ Not quite — try again!';
+  }
+}
+
+// ---------------------------------------------------------------
+// CIRCUIT LAB — STAGE FLOW
+// ---------------------------------------------------------------
+function completeStage(wasFirstTry) {
+  if (wasFirstTry) firstTryWins++;
+  sfxWin();
+  confettiBurst(16);
+  renderProgressStrip();
+  document.querySelectorAll('.lvl-dot')[stageIdx].classList.add('done');
+  setTimeout(() => {
+    stageIdx++;
+    if (stageIdx >= STAGES.length) {
+      showEndPanel();
+    } else {
+      window._stageAttemptFailed = false;
+      loadStage();
+    }
+  }, 1100);
+}
+
+function loadStage() {
+  renderProgressStrip();
+  const s = STAGES[stageIdx];
+  if (s.type === 'circuit') renderCircuitStage(circuitConfig(s.key));
+  else if (s.type === 'sort') renderSortStage();
+  else if (s.type === 'match') renderMatchStage();
+}
+
+function showEndPanel() {
+  document.getElementById('stage-card').style.display = 'none';
+  const panel = document.getElementById('end-panel');
+  panel.style.display = 'block';
+  const pct = Math.round((firstTryWins / STAGES.length) * 100);
+  const starCount = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
+  document.getElementById('end-emoji').textContent = starCount === 3 ? '🏆' : starCount === 2 ? '🎉' : '💡';
+  document.getElementById('end-title').textContent = starCount === 3 ? 'Perfect Circuit Master!' : 'Lab Complete!';
+  document.getElementById('end-stars').textContent = '⭐'.repeat(starCount) + '☆'.repeat(3-starCount);
+  document.getElementById('end-correct').textContent = firstTryWins;
+  document.getElementById('end-attempts').textContent = STAGES.length + mistakes;
+  document.getElementById('end-pct').textContent = pct + '%';
+
+  lsSet('ngmc_game_circuit_done', true);
+  updateOverallProgress();
+  confettiBurst(50);
+  sfxFanfare();
+}
+
+function restartGame() {
+  stageIdx = 0; mistakes = 0; firstTryWins = 0; window._stageAttemptFailed = false;
+  document.getElementById('end-panel').style.display = 'none';
+  document.getElementById('stage-card').style.display = 'block';
+  loadStage();
+}
+
+// ---------------------------------------------------------------
+// FIND MY WAY — WIRE MAZE
+// ---------------------------------------------------------------
+const MAZES = [
+  {"name": "Spark Alley", "grid": ["###########","#S..#.....#","###.#####.#","#.#.#...#.#","#.#.#.#.#.#","#.#...#...#","#.#######.#","#.......#.#","#.#.#####.#","#.#......E#","###########"], "optimal": 20},
+  {"name": "Wire Works", "grid": ["#############","#S#.......#.#","#.#####.#.#.#","#...#...#.#.#","###.#.###.#.#","#.#...#...#.#","#.#####.###.#","#.#...#...#.#","#.#.#.###.#.#","#...#...#.#.#","#.#####.#.#.#","#.....#....E#","#############"], "optimal": 32},
+  {"name": "Grand Circuit", "grid": ["###############","#S..#.........#","###.#.#####.###","#...#.....#...#","#.#########.#.#","#.........#.#.#","#########.###.#","#...#.....#...#","#.#.#.#####.###","#.#...#.......#","#.#####.#####.#","#.....#.#.....#","#####.###.###.#","#.........#..E#","###############"], "optimal": 52}
+];
+
+let mazeIdx = 0;
+let mazeGrid = [], mazeRows = 0, mazeCols = 0;
+let mazeStartRC = {r:0,c:0}, mazeEndRC = {r:0,c:0};
+let playerRC = {r:0,c:0};
+let mazeVisited = new Set();
+let mazeMoves = 0;
+let mazeTimerStart = 0;
+let mazeTimerHandle = null;
+let mazeStarsResult = [];
+
+function mazeKey(r,c) { return r + ',' + c; }
+
+function parseMaze(idx) {
+  const m = MAZES[idx];
+  mazeGrid = m.grid;
+  mazeRows = mazeGrid.length;
+  mazeCols = mazeGrid[0].length;
+  for (let r = 0; r < mazeRows; r++) {
+    for (let c = 0; c < mazeCols; c++) {
+      if (mazeGrid[r][c] === 'S') mazeStartRC = {r,c};
+      if (mazeGrid[r][c] === 'E') mazeEndRC = {r,c};
+    }
+  }
+}
+
+function buildMazeBoardSVG() {
+  const unit = 28;
+  const W = mazeCols * unit, H = mazeRows * unit;
+  let rects = '';
+  for (let r = 0; r < mazeRows; r++) {
+    for (let c = 0; c < mazeCols; c++) {
+      const ch = mazeGrid[r][c];
+      const isWall = ch === '#';
+      const cls = isWall ? 'cell-wall' : 'cell-path';
+      rects += `<rect id="cell-${r}-${c}" class="${cls}" data-r="${r}" data-c="${c}" x="${c*unit}" y="${r*unit}" width="${unit}" height="${unit}" rx="${isWall?0:4}"/>`;
+      if (ch === 'S') rects += `<text x="${c*unit+unit/2}" y="${r*unit+unit/2+unit*0.2}" text-anchor="middle" font-size="${unit*0.55}" pointer-events="none">🔋</text>`;
+      if (ch === 'E') rects += `<text x="${c*unit+unit/2}" y="${r*unit+unit/2+unit*0.2}" text-anchor="middle" font-size="${unit*0.55}" pointer-events="none">💡</text>`;
+    }
+  }
+  return { unit, W, H, rects };
+}
+
+function renderMazeStage() {
+  parseMaze(mazeIdx);
+  playerRC = {r:mazeStartRC.r, c:mazeStartRC.c};
+  mazeVisited = new Set([mazeKey(playerRC.r, playerRC.c)]);
+  mazeMoves = 0;
+
+  const { unit, W, H, rects } = buildMazeBoardSVG();
+  window._mazeUnit = unit;
+
+  const card = document.getElementById('maze-stage-card');
+  card.classList.remove('shake');
+  card.innerHTML = `
+    <div class="stage-head">
+      <div class="stage-badge">Maze ${mazeIdx+1} of ${MAZES.length} — ${MAZES[mazeIdx].name}</div>
+      <div class="stage-title">Guide the Spark Home</div>
+      <div class="stage-goal">Move the spark ⚡ from the battery 🔋 to the bulb 💡. Tap an adjacent glowing tile, use the arrows below, or your keyboard!</div>
+    </div>
+    <div class="maze-stats-row">
+      <div class="maze-stat">⏱ <span id="maze-timer">0:00</span></div>
+      <div class="maze-stat">👣 <span id="maze-moves">0</span> moves</div>
+      <div class="maze-stat">🎯 best: ${MAZES[mazeIdx].optimal}</div>
+    </div>
+    <div class="board-wrap maze-wrap" id="maze-wrap">
+      <svg id="maze-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" onclick="mazeCellClick(event)">
+        ${rects}
+        <g id="maze-player" class="player-spark-g"></g>
+      </svg>
+    </div>
+    <div class="dpad">
+      <button class="ctl-btn dpad-btn dpad-up" onclick="attemptMove(-1,0)">&#9650;</button>
+      <div class="dpad-mid">
+        <button class="ctl-btn dpad-btn dpad-left" onclick="attemptMove(0,-1)">&#9664;</button>
+        <button class="ctl-btn dpad-btn dpad-right" onclick="attemptMove(0,1)">&#9654;</button>
+      </div>
+      <button class="ctl-btn dpad-btn dpad-down" onclick="attemptMove(1,0)">&#9660;</button>
+    </div>
+    <div class="feedback" id="maze-feedback"></div>
+  `;
+  positionMazePlayer();
+  startMazeTimer();
+}
+
+function positionMazePlayer() {
+  const unit = window._mazeUnit;
+  const g = document.getElementById('maze-player');
+  if (!g) return;
+  const cx = playerRC.c * unit + unit/2, cy = playerRC.r * unit + unit/2;
+  g.setAttribute('transform', `translate(${cx},${cy})`);
+  g.innerHTML = `<circle class="player-halo" r="${unit*0.42}"></circle><circle class="player-core" r="${unit*0.24}"></circle>`;
+}
+
+function mazeCellClick(evt) {
+  if (currentView !== 'maze') return;
+  const t = evt.target.closest('[data-r]');
+  if (!t) return;
+  const r = Number(t.dataset.r), c = Number(t.dataset.c);
+  const dr = r - playerRC.r, dc = c - playerRC.c;
+  if (Math.abs(dr) + Math.abs(dc) === 1) attemptMove(dr, dc);
+}
+
+function attemptMove(dr, dc) {
+  if (currentView !== 'maze') return;
+  const nr = playerRC.r + dr, nc = playerRC.c + dc;
+  if (nr < 0 || nr >= mazeRows || nc < 0 || nc >= mazeCols || mazeGrid[nr][nc] === '#') {
+    sfxBump();
+    shakeEl(document.getElementById('maze-wrap'));
+    return;
+  }
+  playerRC = {r:nr, c:nc};
+  mazeMoves++;
+  const movesEl = document.getElementById('maze-moves');
+  if (movesEl) movesEl.textContent = mazeMoves;
+  const k = mazeKey(nr, nc);
+  if (!mazeVisited.has(k)) {
+    mazeVisited.add(k);
+    const cellEl = document.getElementById(`cell-${nr}-${nc}`);
+    if (cellEl) cellEl.classList.add('cell-lit');
+  }
+  positionMazePlayer();
+  if (mazeGrid[nr][nc] === 'E') {
+    mazeWin();
+  } else {
+    sfxMove();
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (currentView !== 'maze') return;
+  const map = {
+    ArrowUp:[-1,0], ArrowDown:[1,0], ArrowLeft:[0,-1], ArrowRight:[0,1],
+    w:[-1,0], s:[1,0], a:[0,-1], d:[0,1], W:[-1,0], S:[1,0], A:[0,-1], D:[0,1]
+  };
+  if (map[e.key]) {
+    e.preventDefault();
+    attemptMove(map[e.key][0], map[e.key][1]);
+  }
+});
+
+function startMazeTimer() {
+  stopMazeTimer();
+  mazeTimerStart = Date.now();
+  mazeTimerHandle = setInterval(updateMazeTimerDisplay, 500);
+  updateMazeTimerDisplay();
+}
+function stopMazeTimer() {
+  if (mazeTimerHandle) clearInterval(mazeTimerHandle);
+  mazeTimerHandle = null;
+}
+function updateMazeTimerDisplay() {
+  const el = document.getElementById('maze-timer');
+  if (!el) { stopMazeTimer(); return; }
+  const secs = Math.floor((Date.now() - mazeTimerStart) / 1000);
+  const m = Math.floor(secs / 60), s = secs % 60;
+  el.textContent = m + ':' + String(s).padStart(2, '0');
+}
+
+function mazeWin() {
+  stopMazeTimer();
+  sfxWin();
+  setTimeout(sfxFanfare, 200);
+  confettiBurst(36);
+  const elapsedSecs = Math.floor((Date.now() - mazeTimerStart) / 1000);
+  const optimal = MAZES[mazeIdx].optimal;
+  const stars = mazeMoves <= optimal + 4 ? 3 : mazeMoves <= Math.round(optimal * 1.6) ? 2 : 1;
+  mazeStarsResult[mazeIdx] = stars;
+  lsSet('ngmc_maze_stars', mazeStarsResult);
+  showMazeStageResult(elapsedSecs, stars, optimal);
+}
+
+function showMazeStageResult(elapsed, stars, optimal) {
+  const isLast = mazeIdx === MAZES.length - 1;
+  const card = document.getElementById('maze-stage-card');
+  const mm = Math.floor(elapsed / 60), ss = elapsed % 60;
+  card.innerHTML = `
+    <div class="stage-head">
+      <div class="big-emoji">${stars===3?'🏆':stars===2?'🎉':'💡'}</div>
+      <h2 class="stage-title">${MAZES[mazeIdx].name} Solved!</h2>
+      <div class="stars-row">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+    </div>
+    <div class="end-stats">
+      <div class="end-stat"><div class="num">${mazeMoves}</div><div class="lbl">Your Moves</div></div>
+      <div class="end-stat"><div class="num">${optimal}</div><div class="lbl">Shortest Path</div></div>
+      <div class="end-stat"><div class="num">${mm}:${String(ss).padStart(2,'0')}</div><div class="lbl">Time</div></div>
+    </div>
+    <div class="mode-btns">
+      ${isLast
+        ? `<button class="mode-btn btn-again" onclick="finishMazeGame()">&#127937; See Final Results</button>`
+        : `<button class="mode-btn btn-again" onclick="nextMaze()">&#10145;&#65039; Next Maze</button>`}
+      <a class="mode-btn btn-hub" href="#" onclick="showLanding();return false;">&#128193; All Games</a>
+    </div>
+  `;
+}
+
+function nextMaze() {
+  mazeIdx++;
+  renderMazeStage();
+}
+
+function finishMazeGame() {
+  lsSet('ngmc_game_maze_done', true);
+  updateOverallProgress();
+  const totalStars = mazeStarsResult.reduce((a,b) => a + (b||0), 0);
+  const maxStars = MAZES.length * 3;
+  document.getElementById('maze-stage-card').style.display = 'none';
+  const panel = document.getElementById('maze-end-panel');
+  panel.style.display = 'block';
+  document.getElementById('maze-end-stars').textContent = '⭐'.repeat(totalStars) + ' (' + totalStars + ' / ' + maxStars + ')';
+  confettiBurst(50);
+  sfxFanfare();
+}
+
+function restartMazeGame() {
+  mazeIdx = 0;
+  mazeStarsResult = [];
+  document.getElementById('maze-end-panel').style.display = 'none';
+  document.getElementById('maze-stage-card').style.display = 'block';
+  renderMazeStage();
+}
+
+// init
+showLanding();
+</script>
+</body>
+</html>

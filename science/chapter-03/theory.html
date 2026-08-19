@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theory — 3.Electricity circuits and its applications</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Baloo+2:wght@600;700&display=swap');
+
+:root { --tf:'Baloo 2',cursive; --tb:'Quicksand',sans-serif; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:var(--tb); min-height:100vh; color:#3f3350; position:relative; overflow-x:hidden;
+  background:linear-gradient(160deg,#fdf6ff 0%,#f5f8ff 45%,#fff8f0 100%); }
+
+/* Artistic blurred blob background */
+.blob { position:fixed; border-radius:50%; filter:blur(70px); opacity:.55; z-index:0; pointer-events:none; }
+.blob-1 { width:420px; height:420px; top:-120px; left:-100px; background:#ffd6e8; }
+.blob-2 { width:380px; height:380px; top:20%; right:-140px; background:#c9e7ff; }
+.blob-3 { width:360px; height:360px; bottom:-100px; left:15%; background:#fff3c4; }
+.blob-4 { width:300px; height:300px; bottom:10%; right:10%; background:#d9f7e6; }
+
+/* Top bar */
+.th-top { position:sticky; top:0; z-index:50; background:rgba(255,255,255,.72); backdrop-filter:blur(10px);
+  border-bottom:1px solid #eee0f5; padding:.8rem 1.4rem; display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:.6rem; }
+.th-top a.back { color:#8b5cf6; text-decoration:none; font-weight:700; font-size:.85rem; }
+.th-top h1 { font-family:var(--tf); font-size:1.05rem; margin:0; color:#5b21b6; text-align:center; flex:1; }
+.th-toc select { border:1.5px solid #e4d3f5; background:#fff; border-radius:14px; padding:.4rem .8rem;
+  font-family:var(--tb); font-weight:600; font-size:.8rem; color:#5b21b6; max-width:200px; }
+
+.th-wrap { max-width:820px; margin:0 auto; padding:1.6rem 1.2rem 4rem; position:relative; z-index:1; }
+
+.th-hero { text-align:center; margin-bottom:1.8rem; }
+.th-hero .badge { display:inline-block; background:#fff; border:1px solid #eadcf9; border-radius:20px;
+  padding:.3rem 1rem; font-size:.78rem; font-weight:700; color:#8b5cf6; margin-bottom:.6rem; }
+.th-hero h2 { font-family:var(--tf); font-size:2rem; margin:.2rem 0; color:#3f3350; }
+.th-hero p { color:#7a6f8c; font-size:.95rem; }
+
+/* Topic block */
+.topic-block { background:var(--tbg); border:1px solid var(--tbrd); border-radius:26px; padding:1.6rem 1.7rem;
+  margin:1.6rem 0; box-shadow:0 10px 30px -12px rgba(80,50,120,.15); position:relative; }
+.topic-head { display:flex; align-items:center; gap:.7rem; margin-bottom:.5rem; }
+.topic-emoji { font-size:2rem; }
+.topic-head h3 { font-family:var(--tf); font-size:1.35rem; margin:0; color:var(--thd); }
+.topic-hook { font-style:italic; color:var(--thd); opacity:.85; margin:.2rem 0 .9rem; font-size:.95rem; }
+.topic-theory p { line-height:1.75; margin:0 0 .8rem; font-size:.97rem; color:#3f3350; }
+.key-points { display:flex; flex-wrap:wrap; gap:.5rem; margin:.8rem 0; }
+.key-points span { background:var(--tchip); color:var(--thd); border-radius:14px; padding:.35rem .85rem;
+  font-size:.82rem; font-weight:600; }
+.real-life { background:rgba(255,255,255,.65); border-left:4px solid var(--tbrd); border-radius:14px;
+  padding:.8rem 1rem; margin:1rem 0; font-size:.9rem; }
+.real-life b { color:var(--thd); }
+.topic-illus-wrap { margin:1rem 0; text-align:center; }
+.topic-illus { max-width:420px; max-height:340px; width:auto; height:auto; border-radius:18px; display:inline-block; box-shadow:0 8px 24px -10px rgba(80,50,120,.25); }
+.topic-illus-cap { font-size:.82rem; color:var(--thd); opacity:.75; margin-top:.5rem; font-style:italic; }
+
+/* Practice zone */
+.practice-zone { margin-top:1.3rem; background:rgba(255,255,255,.55); border:1.5px dashed var(--tbrd);
+  border-radius:20px; padding:1.1rem 1.2rem; }
+.practice-zone h4 { font-family:var(--tf); margin:0 0 .8rem; color:var(--thd); font-size:1.05rem; }
+.pq-grid { display:grid; gap:.7rem; }
+.pq-card { background:#fff; border:1px solid var(--tchip); border-radius:14px; padding:.7rem .9rem; }
+.pq-card .pq-q { font-weight:700; font-size:.88rem; color:#3f3350; margin-bottom:.4rem; }
+.pq-reveal { background:var(--taccent); color:#fff; border:none; border-radius:12px; padding:.32rem .8rem;
+  font-size:.75rem; font-weight:700; cursor:pointer; font-family:var(--tb); }
+.pq-answer { display:none; margin-top:.5rem; font-size:.85rem; border-radius:10px; padding:.5rem .7rem; }
+.pq-answer.show { display:block; }
+
+/* Game panel */
+.game-panel { background:#fff; border-radius:28px; padding:1.6rem; margin:2.2rem 0; box-shadow:0 14px 40px -14px rgba(80,50,120,.22);
+  border:2px solid #f3e6ff; position:relative; z-index:1; }
+.game-panel h3 { font-family:var(--tf); text-align:center; font-size:1.4rem; margin:0 0 .3rem; color:#7e22ce; }
+.game-panel .game-sub { text-align:center; color:#8a7d9c; font-size:.85rem; margin-bottom:1.1rem; }
+
+/* Crossword */
+.xw-area { display:flex; gap:1.4rem; flex-wrap:wrap; justify-content:center; }
+.xw-grid-wrap { overflow:auto; max-width:100%; }
+.xw-grid { display:grid; gap:2px; }
+.xw-cell { width:32px; height:32px; position:relative; }
+.xw-cell.blank { background:transparent; }
+.xw-cell.fill { background:#fdf6ff; border:1.5px solid #d8b9f2; border-radius:4px; }
+.xw-cell input { width:100%; height:100%; border:none; background:transparent; text-align:center; text-transform:uppercase;
+  font-weight:800; font-size:.95rem; color:#5b21b6; border-radius:4px; font-family:var(--tb); padding:0; }
+.xw-cell input:focus { outline:2px solid #a855f7; background:#f3e8ff; }
+.xw-cell.correct input { background:#dcfce7; color:#15803d; }
+.xw-cell.wrong input { background:#fee2e2; color:#b91c1c; }
+.xw-num { position:absolute; top:0; left:2px; font-size:.55rem; color:#a855f7; font-weight:700; }
+.xw-clues { min-width:200px; max-width:280px; font-size:.82rem; }
+.xw-clues h5 { margin:.2rem 0 .4rem; color:#7e22ce; font-family:var(--tf); font-size:.95rem; }
+.xw-clues ol { margin:0 0 1rem; padding:0; list-style:none; }
+.xw-clues li { margin-bottom:.35rem; color:#4b3f5e; }
+.xw-btn { display:block; margin:1.2rem auto 0; background:linear-gradient(135deg,#a855f7,#ec4899); color:#fff;
+  border:none; border-radius:20px; padding:.6rem 1.6rem; font-weight:700; cursor:pointer; font-family:var(--tb); font-size:.9rem; }
+.xw-msg { text-align:center; margin-top:.8rem; font-weight:700; font-family:var(--tf); font-size:1.1rem; min-height:1.4rem; color:#7e22ce; }
+
+/* Word search */
+.ws-area { display:flex; gap:1.4rem; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+.ws-grid-wrap { overflow:auto; max-width:100%; }
+.ws-grid { display:grid; gap:1px; user-select:none; touch-action:none; }
+.ws-cell { width:26px; height:26px; display:flex; align-items:center; justify-content:center; background:#fdf6ff;
+  border:1px solid #ecdbfb; font-weight:700; font-size:.72rem; color:#5b21b6; cursor:pointer; border-radius:3px; }
+.ws-cell.selected { background:#e9d5ff; }
+.ws-cell.found { background:#bbf7d0; color:#15803d; }
+.ws-words { min-width:180px; font-size:.85rem; }
+.ws-words h5 { margin:.2rem 0 .5rem; color:#7e22ce; font-family:var(--tf); font-size:.95rem; }
+.ws-words ul { list-style:none; margin:0; padding:0; }
+.ws-words li { padding:.3rem .6rem; border-radius:10px; margin-bottom:.35rem; background:#fdf6ff; font-weight:600; color:#4b3f5e; }
+.ws-words li.done { background:#dcfce7; color:#15803d; text-decoration:line-through; opacity:.7; }
+.ws-progress { text-align:center; font-weight:700; color:#7e22ce; margin-top:.8rem; font-family:var(--tf); }
+.ws-msg { text-align:center; margin-top:.6rem; font-weight:700; font-family:var(--tf); font-size:1.1rem; min-height:1.4rem; color:#7e22ce; }
+
+.th-end { text-align:center; margin-top:2.5rem; padding:2rem; background:linear-gradient(135deg,#fef3ff,#eef2ff);
+  border-radius:24px; }
+.th-end h2 { font-family:var(--tf); color:#7e22ce; font-size:1.6rem; margin:0 0 .5rem; }
+.th-end a { display:inline-block; margin-top:.8rem; background:#7e22ce; color:#fff; text-decoration:none;
+  padding:.7rem 1.6rem; border-radius:22px; font-weight:700; }
+
+@media (max-width:640px) {
+  .th-hero h2 { font-size:1.5rem; }
+  .xw-cell { width:26px; height:26px; }
+  .ws-cell { width:22px; height:22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="blob blob-4"></div>
+
+<div class="th-top">
+  <a class="back" href="index.html">&#8592; Chapter Hub</a>
+  <h1>📘 3.Electricity circuits and its applications — Theory</h1>
+  <div class="th-toc">
+    <select id="th-jump" onchange="document.getElementById(this.value).scrollIntoView({behavior:'smooth'})">
+      <option value="">Jump to topic…</option>
+      <option value="topic-0">⚡ Electricity and circuits: a quick start</option><option value="topic-1">🔋 Cells and batteries: the power source</option><option value="topic-2">💡 Electric lamps: incandescent bulb and LED</option><option value="topic-3">🎛️ Switches and making a simple on off control</option><option value="topic-4">🧩 Circuit diagrams and standard symbols</option><option value="topic-5">🧵 Wires, conductors and insulators</option>
+    </select>
+  </div>
+</div>
+
+<div class="th-wrap">
+  <div class="th-hero">
+    <span class="badge">Grade 7 &middot; Science</span>
+    <h2>3.Electricity circuits and its applications</h2>
+    <p>Your complete illustrated lesson — read, practise, and play as you go.</p>
+  </div>
+
+  
+<section class="topic-block" id="topic-0" style="--tbg:#FFF7ED;--tbrd:#F97316;--thd:#C2410C;--tchip:#FFEDD5;--taccent:#FB923C">
+  <div class="topic-head">
+    <span class="topic-emoji">⚡</span>
+    <h3>Electricity and circuits: a quick start</h3>
+  </div>
+  <p class="topic-hook">Electricity becomes useful when it travels in a complete path called a circuit!</p>
+  <div class="topic-theory"><p>Electricity is the flow of electric charge, and an electric circuit is a closed loop that allows this charge to move from a source, through components, and back again. If the path is broken anywhere, the circuit is open and current cannot flow.</p><p>In real life, big power stations (like hydroelectric plants) generate electricity, but inside our homes and gadgets the same basic idea works: a source provides energy, wires provide a path, and devices (like bulbs or buzzers) use that energy to do a job.</p><p>So, to make any circuit work you need a source, a conducting path, and a component that uses electricity—plus a closed loop.</p></div>
+  <div class="topic-illus-wrap"><img class="topic-illus" src="images/img_001.webp" alt="Electricity and circuits: a quick start"><div class="topic-illus-cap">Electricity and circuits: a quick start</div></div>
+  <div class="key-points"><span style="background:#FFEDD5;color:#C2410C">A circuit must be closed for current to flow</span><span style="background:#FFEDD5;color:#C2410C">Electric current needs a source and a conducting path</span><span style="background:#FFEDD5;color:#C2410C">Components use electrical energy to do work</span></div>
+  <div class="real-life" style="border-left-color:#F97316"><b>💡 Real-life connection:</b> A hydroelectric dam sends electricity through long transmission lines, but your torch uses the same circuit idea in a tiny, hand-held form.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What is an electric circuit?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ A complete closed path through which electric current flows.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. What happens in an open circuit?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Current stops because the path is broken.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. Name any two basic parts of a simple circuit.</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Cell (source) and wires (conducting path).</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Why does a bulb glow only in a closed circuit?</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Because current can flow through its filament only when the loop is complete.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. Give one example of a device that uses an electric circuit.</div>
+  <button class="pq-reveal" style="background:#FB923C" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FFEDD5;color:#C2410C">✅ Torchlight.</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-1" style="--tbg:#EFF6FF;--tbrd:#3B82F6;--thd:#1D4ED8;--tchip:#DBEAFE;--taccent:#60A5FA">
+  <div class="topic-head">
+    <span class="topic-emoji">🔋</span>
+    <h3>Cells and batteries: the power source</h3>
+  </div>
+  <p class="topic-hook">A tiny cell can start a whole chain of energy changes in a circuit!</p>
+  <div class="topic-theory"><p>An electric cell provides the push (potential difference) that makes charges move. It has two terminals: positive (+) and negative (−). When connected in a circuit, current flows from the positive terminal through the circuit and returns to the negative terminal.</p><p>A battery is a combination of two or more cells, but in everyday language we often call even a single cell a “battery” (like in many phones). Using more cells can provide a stronger push and help devices work better.</p><p>Always connect cells correctly: the arrangement of terminals matters, and wrong connections may stop components from working.</p></div>
+  <div class="topic-illus-wrap"><img class="topic-illus" src="images/img_030.webp" alt="A battery made of two electric cells"><div class="topic-illus-cap">A Battery Made of Two Electric Cells</div></div>
+  <div class="key-points"><span style="background:#DBEAFE;color:#1D4ED8">A cell has positive and negative terminals</span><span style="background:#DBEAFE;color:#1D4ED8">Battery usually means two or more cells, but the word is often used for one cell</span><span style="background:#DBEAFE;color:#1D4ED8">More cells can provide a bigger push for current</span></div>
+  <div class="real-life" style="border-left-color:#3B82F6"><b>💡 Real-life connection:</b> Your TV remote works on small cells, while a toy car may use a battery pack with multiple cells for more power.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What are the two terminals of a cell called?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ Positive terminal and negative terminal.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. What does a cell provide to a circuit?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ Electrical energy (a potential difference) that drives current.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. What is a battery in science terms?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ A combination of two or more cells connected together.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Why might a device use two cells instead of one?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ To get a larger potential difference so it works properly.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. In which direction is current taken to flow in a circuit?</div>
+  <button class="pq-reveal" style="background:#60A5FA" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DBEAFE;color:#1D4ED8">✅ From the positive terminal to the negative terminal (conventional current).</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-2" style="--tbg:#FDF2F8;--tbrd:#EC4899;--thd:#BE185D;--tchip:#FCE7F3;--taccent:#F472B6">
+  <div class="topic-head">
+    <span class="topic-emoji">💡</span>
+    <h3>Electric lamps: incandescent bulb and LED</h3>
+  </div>
+  <p class="topic-hook">Two lamps can light up a room in very different ways—one heats up, the other shines smartly!</p>
+  <div class="topic-theory"><p>An incandescent lamp glows because a thin wire called a filament becomes very hot when current passes through it. The filament is enclosed in a glass bulb. If the filament breaks, the lamp is said to be fused, and current cannot pass through the broken part.</p><p>An LED (Light Emitting Diode) glows without a hot filament. It allows current mainly in one direction, so its connection matters. If an LED does not glow, one common reason is that it is connected with wrong polarity.</p><p>Both lamps change electrical energy into light, but LEDs are generally more efficient and produce less heat.</p></div>
+  <div class="topic-illus-wrap"><img class="topic-illus" src="images/img_050.webp" alt="An incandescent lamp with wires attached"><div class="topic-illus-cap">Incandescent Lamp (Fig. 3.8c)</div></div>
+  <div class="key-points"><span style="background:#FCE7F3;color:#BE185D">Incandescent lamps glow due to a heated filament</span><span style="background:#FCE7F3;color:#BE185D">A fused bulb has a broken filament and becomes an open circuit</span><span style="background:#FCE7F3;color:#BE185D">LEDs need correct direction of connection to glow</span></div>
+  <div class="real-life" style="border-left-color:#EC4899"><b>💡 Real-life connection:</b> Old torches often use incandescent bulbs, while modern torches and decorative lights mostly use LEDs to save battery power.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What part of an incandescent bulb glows?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ The filament.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. Why does a fused bulb not glow?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ Its filament is broken, so the circuit is open.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. What does LED stand for?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ Light Emitting Diode.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Why might an LED not glow even with cells connected?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ It may be connected in the wrong direction (wrong polarity).</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. Which lamp usually wastes less energy as heat: LED or incandescent?</div>
+  <button class="pq-reveal" style="background:#F472B6" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FCE7F3;color:#BE185D">✅ LED.</div>
+</div></div>
+  </div>
+</section>
+<div class="game-panel" id="xw-root">
+  <h3>🧩 Crossword Break!</h3>
+  <p class="game-sub">Fill in the grid using clues from what you've learned so far.</p>
+  <div class="xw-area">
+    <div class="xw-grid-wrap"><div class="xw-grid" id="xw-grid"></div></div>
+    <div class="xw-clues">
+      <div><h5>Across</h5><ol id="xw-across"></ol></div>
+      <div><h5>Down</h5><ol id="xw-down"></ol></div>
+    </div>
+  </div>
+  <button class="xw-btn" onclick="checkCrossword()">✅ Check My Answers</button>
+  <div class="xw-msg" id="xw-msg"></div>
+</div>
+<script>
+(function(){
+  const RAW = [{"term": "electricity", "clue": "Energy linked to the flow of electric charge"}, {"term": "circuit", "clue": "A closed path for current to travel"}, {"term": "current", "clue": "Flow of electric charge in a circuit"}, {"term": "cell", "clue": "Single source with positive and negative terminals"}, {"term": "battery", "clue": "Two or more cells used together"}, {"term": "terminal", "clue": "End point of a cell where connections are made"}, {"term": "filament", "clue": "Thin wire in a bulb that glows when heated"}];
+  const words = RAW.map(w => ({
+    term: (w.term||'').toUpperCase().replace(/[^A-Z]/g,''),
+    clue: w.clue || ''
+  })).filter(w => w.term.length >= 3).slice(0, 8);
+
+  const rootMsg = document.getElementById('xw-msg');
+  if (words.length === 0) {
+    document.getElementById('xw-root').style.display = 'none';
+    return;
+  }
+
+  words.sort((a,b) => b.term.length - a.term.length);
+
+  const grid = {}; // "r,c" -> {letter}
+  const placements = []; // {word, clue, row, col, dir}
+
+  function canPlace(word, row, col, dir) {
+    for (let i = 0; i < word.length; i++) {
+      const r = dir === 'D' ? row + i : row;
+      const c = dir === 'A' ? col + i : col;
+      const key = r + ',' + c;
+      if (grid[key] && grid[key].letter !== word[i]) return false;
+    }
+    return true;
+  }
+  function place(word, clue, row, col, dir) {
+    for (let i = 0; i < word.length; i++) {
+      const r = dir === 'D' ? row + i : row;
+      const c = dir === 'A' ? col + i : col;
+      const key = r + ',' + c;
+      if (!grid[key]) grid[key] = { letter: word[i] };
+    }
+    placements.push({ word, clue, row, col, dir });
+  }
+
+  place(words[0].term, words[0].clue, 0, 0, 'A');
+
+  for (let wi = 1; wi < words.length; wi++) {
+    const w = words[wi];
+    let placed = false;
+    outer:
+    for (let li = 0; li < w.term.length && !placed; li++) {
+      const ch = w.term[li];
+      for (const key in grid) {
+        if (grid[key].letter !== ch) continue;
+        const parts = key.split(',');
+        const gr = Number(parts[0]), gc = Number(parts[1]);
+        const vr = gr - li, vc = gc;
+        if (canPlace(w.term, vr, vc, 'D')) { place(w.term, w.clue, vr, vc, 'D'); placed = true; break outer; }
+        const hr = gr, hc = gc - li;
+        if (canPlace(w.term, hr, hc, 'A')) { place(w.term, w.clue, hr, hc, 'A'); placed = true; break outer; }
+      }
+    }
+    if (!placed) {
+      let maxRow = 0;
+      for (const key in grid) maxRow = Math.max(maxRow, Number(key.split(',')[0]));
+      place(w.term, w.clue, maxRow + 2, 0, 'A');
+    }
+  }
+
+  let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+  for (const key in grid) {
+    const parts = key.split(',');
+    const r = Number(parts[0]), c = Number(parts[1]);
+    minR = Math.min(minR, r); maxR = Math.max(maxR, r);
+    minC = Math.min(minC, c); maxC = Math.max(maxC, c);
+  }
+  const rows = maxR - minR + 1, cols = maxC - minC + 1;
+  const norm = {};
+  for (const key in grid) {
+    const parts = key.split(',');
+    const r = Number(parts[0]), c = Number(parts[1]);
+    norm[(r - minR) + ',' + (c - minC)] = grid[key];
+  }
+  placements.forEach(p => { p.row -= minR; p.col -= minC; });
+
+  const startCells = [];
+  placements.forEach(p => {
+    if (!startCells.some(s => s.row === p.row && s.col === p.col)) {
+      startCells.push({ row: p.row, col: p.col });
+    }
+  });
+  startCells.sort((a, b) => a.row - b.row || a.col - b.col);
+  startCells.forEach((s, i) => { s.num = i + 1; });
+  placements.forEach(p => {
+    p.num = startCells.find(s => s.row === p.row && s.col === p.col).num;
+  });
+
+  const gridEl = document.getElementById('xw-grid');
+  gridEl.style.gridTemplateColumns = 'repeat(' + cols + ', 32px)';
+  gridEl.style.gridTemplateRows = 'repeat(' + rows + ', 32px)';
+  const cellRefs = {};
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const key = r + ',' + c;
+      const div = document.createElement('div');
+      if (norm[key]) {
+        div.className = 'xw-cell fill';
+        const numHere = placements.find(p => p.row === r && p.col === c);
+        if (numHere) {
+          const num = document.createElement('span');
+          num.className = 'xw-num';
+          num.textContent = numHere.num;
+          div.appendChild(num);
+        }
+        const input = document.createElement('input');
+        input.maxLength = 1;
+        input.dataset.answer = norm[key].letter;
+        input.addEventListener('input', function(e) {
+          e.target.value = e.target.value.toUpperCase().replace(/[^A-Z]/, '');
+          if (e.target.value) {
+            const nextCell = e.target.parentElement.nextElementSibling;
+            if (nextCell) { const ni = nextCell.querySelector('input'); if (ni) ni.focus(); }
+          }
+        });
+        div.appendChild(input);
+        cellRefs[key] = input;
+      } else {
+        div.className = 'xw-cell blank';
+      }
+      gridEl.appendChild(div);
+    }
+  }
+
+  const acrossEl = document.getElementById('xw-across');
+  const downEl = document.getElementById('xw-down');
+  placements.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = p.num + '. ' + (p.clue || p.word);
+    (p.dir === 'A' ? acrossEl : downEl).appendChild(li);
+  });
+  if (!acrossEl.children.length) acrossEl.parentElement.style.display = 'none';
+  if (!downEl.children.length) downEl.parentElement.style.display = 'none';
+
+  window.checkCrossword = function() {
+    let correct = 0, total = 0;
+    for (const key in cellRefs) {
+      total++;
+      const input = cellRefs[key];
+      const cellDiv = input.parentElement;
+      cellDiv.classList.remove('correct', 'wrong');
+      if ((input.value || '').toUpperCase() === input.dataset.answer) {
+        cellDiv.classList.add('correct'); correct++;
+      } else if (input.value) {
+        cellDiv.classList.add('wrong');
+      }
+    }
+    if (correct === total) rootMsg.textContent = '🎉 Crossword solved! Great job!';
+    else rootMsg.textContent = correct + ' / ' + total + ' letters correct — keep going!';
+  };
+})();
+</script>
+<section class="topic-block" id="topic-3" style="--tbg:#F0FDF4;--tbrd:#22C55E;--thd:#15803D;--tchip:#DCFCE7;--taccent:#4ADE80">
+  <div class="topic-head">
+    <span class="topic-emoji">🎛️</span>
+    <h3>Switches and making a simple on off control</h3>
+  </div>
+  <p class="topic-hook">A switch is like a gatekeeper—deciding when electricity may pass!</p>
+  <div class="topic-theory"><p>A switch controls a circuit by making or breaking the conducting path. When the switch is ON, it closes the circuit and current can flow. When it is OFF, it opens the circuit and stops current.</p><p>A simple switch can be made using pins and a safety pin or paper clip: when metal touches metal, the path becomes complete; when they separate, the path breaks. This shows that switching is really about connecting and disconnecting conductors.</p><p>Switches are used everywhere—torches, fans, doorbells, and even inside appliances—because controlling current safely is essential.</p></div>
+  <div class="topic-illus-wrap"><img class="topic-illus" src="images/img_072.webp" alt="Electrical circuit with a switch"><div class="topic-illus-cap">Fig. 3.12: Circuit with a Switch</div></div>
+  <div class="key-points"><span style="background:#DCFCE7;color:#15803D">Switch ON means closed circuit</span><span style="background:#DCFCE7;color:#15803D">Switch OFF means open circuit</span><span style="background:#DCFCE7;color:#15803D">Switches control current by making breaking a contact</span></div>
+  <div class="real-life" style="border-left-color:#22C55E"><b>💡 Real-life connection:</b> When you press a doorbell switch, it closes the circuit for a moment and the bell rings.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. What does a switch do in a circuit?</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ It opens or closes the circuit to control current.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. In which condition does current flow: open or closed circuit?</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ Closed circuit.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. What happens to a bulb when the switch is turned OFF?</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ The circuit opens and the bulb goes off.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Name one material feature needed for switch contacts.</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ They should be conductors (usually metal).</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. Why is a switch important for safety?</div>
+  <button class="pq-reveal" style="background:#4ADE80" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#DCFCE7;color:#15803D">✅ It lets us stop current when not needed or during danger.</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-4" style="--tbg:#FAF5FF;--tbrd:#A855F7;--thd:#7E22CE;--tchip:#F3E8FF;--taccent:#C084FC">
+  <div class="topic-head">
+    <span class="topic-emoji">🧩</span>
+    <h3>Circuit diagrams and standard symbols</h3>
+  </div>
+  <p class="topic-hook">Circuit symbols are the secret language that lets engineers and students understand the same circuit!</p>
+  <div class="topic-theory"><p>Instead of drawing real-looking pictures of cells, bulbs, and wires, we use circuit symbols to make neat circuit diagrams. This saves time and avoids confusion, especially in complicated circuits.</p><p>In a cell symbol, the long line shows the positive terminal and the short line shows the negative terminal. In an LED symbol, the triangle shows the direction in which current can flow, and arrows show that light is emitted.</p><p>Standard symbols are made by organizations like IEC, ANSI, and IEEE. Using the same symbols worldwide helps people communicate clearly across countries and industries.</p></div>
+  <div class="topic-illus-wrap"><img class="topic-illus" src="images/img_077.webp" alt="Battery circuit symbol"><div class="topic-illus-cap">Circuit Symbol — Battery (Table 3.2)</div></div>
+  <div class="key-points"><span style="background:#F3E8FF;color:#7E22CE">Circuit diagrams use symbols instead of pictures</span><span style="background:#F3E8FF;color:#7E22CE">Long line in cell symbol is positive; short line is negative</span><span style="background:#F3E8FF;color:#7E22CE">International standards make symbols universal</span></div>
+  <div class="real-life" style="border-left-color:#A855F7"><b>💡 Real-life connection:</b> A technician repairing a device can read the circuit diagram and quickly find which component or connection is faulty.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. Why do we use circuit symbols?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ To draw circuits clearly and quickly without detailed pictures.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. In a cell symbol, which line is positive?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ The longer line.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. What does the triangle in an LED symbol indicate?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ The direction in which current can flow.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Name one organization that standardizes symbols.</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ IEC.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. What is a circuit diagram?</div>
+  <button class="pq-reveal" style="background:#C084FC" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#F3E8FF;color:#7E22CE">✅ A drawing of a circuit using standard symbols and connections.</div>
+</div></div>
+  </div>
+</section>
+<section class="topic-block" id="topic-5" style="--tbg:#FEFCE8;--tbrd:#EAB308;--thd:#A16207;--tchip:#FEF9C3;--taccent:#FACC15">
+  <div class="topic-head">
+    <span class="topic-emoji">🧵</span>
+    <h3>Wires, conductors and insulators</h3>
+  </div>
+  <p class="topic-hook">The right wire material is like the right road—smooth travel for electric current!</p>
+  <div class="topic-theory"><p>Wires in circuits are usually made of metals because metals are good conductors: they allow electric current to pass through easily. If we used many non-metals, the current would be very small or may not flow at all.</p><p>Materials that allow current to pass are called conductors (like copper and aluminium). Materials that do not allow current to pass easily are called insulators (like plastic, rubber, wood, and glass).</p><p>Electric wires are covered with plastic or rubber insulation to prevent electric shocks and to stop unwanted contact between wires, which could cause short circuits.</p></div>
+  <div class="topic-illus-wrap"><img class="topic-illus" src="images/img_089.webp" alt="Conduction tester"><div class="topic-illus-cap">Fig. 3.15: Conduction Tester</div></div>
+  <div class="key-points"><span style="background:#FEF9C3;color:#A16207">Metals are commonly used as wires because they conduct electricity well</span><span style="background:#FEF9C3;color:#A16207">Insulators protect us and prevent short circuits</span><span style="background:#FEF9C3;color:#A16207">Plastic or rubber coverings are safety insulation</span></div>
+  <div class="real-life" style="border-left-color:#EAB308"><b>💡 Real-life connection:</b> A phone charger cable has metal conductors inside but a plastic cover outside so you can hold it safely.</div>
+  <div class="practice-zone">
+    <h4>🧠 Try It Yourself</h4>
+    <div class="pq-grid"><div class="pq-card">
+  <div class="pq-q">1. Why are wires usually made of metal?</div>
+  <button class="pq-reveal" style="background:#FACC15" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FEF9C3;color:#A16207">✅ Because metals are good conductors of electricity.</div>
+</div><div class="pq-card">
+  <div class="pq-q">2. Give two examples of conductors.</div>
+  <button class="pq-reveal" style="background:#FACC15" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FEF9C3;color:#A16207">✅ Copper and aluminium.</div>
+</div><div class="pq-card">
+  <div class="pq-q">3. Give two examples of insulators.</div>
+  <button class="pq-reveal" style="background:#FACC15" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FEF9C3;color:#A16207">✅ Plastic and rubber.</div>
+</div><div class="pq-card">
+  <div class="pq-q">4. Why are wires coated with plastic or rubber?</div>
+  <button class="pq-reveal" style="background:#FACC15" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FEF9C3;color:#A16207">✅ To prevent shocks and avoid short circuits.</div>
+</div><div class="pq-card">
+  <div class="pq-q">5. What will happen if two bare wires touch in a circuit?</div>
+  <button class="pq-reveal" style="background:#FACC15" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+  <div class="pq-answer show" style="background:#FEF9C3;color:#A16207">✅ It may cause a short circuit and the device may not work safely.</div>
+</div></div>
+  </div>
+</section>
+<div class="game-panel" id="ws-root">
+  <h3>🔍 Word Search Challenge!</h3>
+  <p class="game-sub">Drag across letters to find every word from this chapter.</p>
+  <div class="ws-area">
+    <div class="ws-grid-wrap"><div class="ws-grid" id="ws-grid"></div></div>
+    <div class="ws-words">
+      <h5>Find these words</h5>
+      <ul id="ws-words-list"></ul>
+    </div>
+  </div>
+  <div class="ws-progress"><span id="ws-found">0</span> / <span id="ws-total">0</span> found</div>
+  <div class="ws-msg" id="ws-msg"></div>
+</div>
+<script>
+(function(){
+  const RAW = [{"term": "incandescent", "clue": "Type of lamp that glows due to heat"}, {"term": "fused", "clue": "Bulb condition when filament is broken"}, {"term": "LED", "clue": "Diode that emits light when current passes"}, {"term": "switch", "clue": "Device that opens or closes a circuit"}, {"term": "conductor", "clue": "Material that allows current to pass easily"}, {"term": "insulator", "clue": "Material that resists the flow of current"}, {"term": "symbol", "clue": "Standard drawing used for a circuit part"}, {"term": "IEC", "clue": "Group that helps standardize electrical symbols"}];
+  const items = RAW.map(w => ({
+    display: w.term || '',
+    grid: (w.term || '').toUpperCase().replace(/[^A-Z]/g, '')
+  })).filter(w => w.grid.length >= 3).slice(0, 10);
+
+  if (items.length === 0) {
+    document.getElementById('ws-root').style.display = 'none';
+    return;
+  }
+
+  const maxLen = Math.max.apply(null, items.map(w => w.grid.length));
+  const SIZE = Math.max(12, maxLen + 3);
+  const cells = [];
+  for (let r = 0; r < SIZE; r++) cells.push(new Array(SIZE).fill(null));
+
+  const DIRS = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
+  const placedWords = [];
+
+  items.forEach(item => {
+    const w = item.grid;
+    let placed = false;
+    for (let attempt = 0; attempt < 80 && !placed; attempt++) {
+      const dir = DIRS[Math.floor(Math.random() * DIRS.length)];
+      const row = Math.floor(Math.random() * SIZE);
+      const col = Math.floor(Math.random() * SIZE);
+      const endR = row + dir[0] * (w.length - 1);
+      const endC = col + dir[1] * (w.length - 1);
+      if (endR < 0 || endR >= SIZE || endC < 0 || endC >= SIZE) continue;
+      let ok = true;
+      for (let i = 0; i < w.length; i++) {
+        const r = row + dir[0]*i, c = col + dir[1]*i;
+        if (cells[r][c] !== null && cells[r][c] !== w[i]) { ok = false; break; }
+      }
+      if (!ok) continue;
+      for (let i = 0; i < w.length; i++) {
+        const r = row + dir[0]*i, c = col + dir[1]*i;
+        cells[r][c] = w[i];
+      }
+      placedWords.push({ display: item.display, grid: w, row: row, col: col, dir: dir, len: w.length });
+      placed = true;
+    }
+  });
+
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      if (cells[r][c] === null) cells[r][c] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    }
+  }
+
+  const gridEl = document.getElementById('ws-grid');
+  gridEl.style.gridTemplateColumns = 'repeat(' + SIZE + ', 26px)';
+  const cellEls = [];
+  for (let r = 0; r < SIZE; r++) {
+    const rowEls = [];
+    for (let c = 0; c < SIZE; c++) {
+      const div = document.createElement('div');
+      div.className = 'ws-cell';
+      div.textContent = cells[r][c];
+      div.dataset.r = r; div.dataset.c = c;
+      gridEl.appendChild(div);
+      rowEls.push(div);
+    }
+    cellEls.push(rowEls);
+  }
+
+  const wordsListEl = document.getElementById('ws-words-list');
+  placedWords.forEach((w, i) => {
+    const li = document.createElement('li');
+    li.textContent = w.display;
+    li.id = 'ws-word-' + i;
+    wordsListEl.appendChild(li);
+  });
+
+  const totalCount = placedWords.length;
+  let foundCount = 0;
+  const foundWordSet = new Set();
+  document.getElementById('ws-total').textContent = totalCount;
+  document.getElementById('ws-found').textContent = '0';
+
+  let selecting = false, startCell = null, selectedCells = [];
+
+  function clearSelection() {
+    selectedCells.forEach(el => el.classList.remove('selected'));
+    selectedCells = [];
+  }
+  function selectLine(r1, c1, r2, c2) {
+    clearSelection();
+    const dr = Math.sign(r2 - r1), dc = Math.sign(c2 - c1);
+    if (r1 !== r2 && c1 !== c2 && Math.abs(r2 - r1) !== Math.abs(c2 - c1)) return;
+    const steps = Math.max(Math.abs(r2 - r1), Math.abs(c2 - c1));
+    for (let i = 0; i <= steps; i++) {
+      const r = r1 + dr*i, c = c1 + dc*i;
+      const el = cellEls[r][c];
+      el.classList.add('selected');
+      selectedCells.push(el);
+    }
+  }
+  function checkSelection() {
+    if (selectedCells.length < 2) { clearSelection(); return; }
+    const letters = selectedCells.map(el => el.textContent).join('');
+    const reversed = letters.split('').reverse().join('');
+    let matchIdx = -1;
+    placedWords.forEach((w, i) => {
+      if (foundWordSet.has(i)) return;
+      if (w.grid === letters || w.grid === reversed) matchIdx = i;
+    });
+    if (matchIdx >= 0) {
+      foundWordSet.add(matchIdx);
+      selectedCells.forEach(el => { el.classList.add('found'); el.classList.remove('selected'); });
+      document.getElementById('ws-word-' + matchIdx).classList.add('done');
+      foundCount++;
+      document.getElementById('ws-found').textContent = foundCount;
+      selectedCells = [];
+      if (foundCount === totalCount) {
+        document.getElementById('ws-msg').textContent = '🏆 All words found! You are a champion!';
+      }
+    } else {
+      clearSelection();
+    }
+  }
+
+  function cellFromPoint(x, y) {
+    const el = document.elementFromPoint(x, y);
+    return el ? el.closest('.ws-cell') : null;
+  }
+
+  gridEl.addEventListener('mousedown', e => {
+    const cell = e.target.closest('.ws-cell');
+    if (!cell) return;
+    selecting = true; startCell = cell;
+    clearSelection(); cell.classList.add('selected'); selectedCells = [cell];
+  });
+  gridEl.addEventListener('mouseover', e => {
+    if (!selecting) return;
+    const cell = e.target.closest('.ws-cell');
+    if (!cell || !startCell) return;
+    selectLine(Number(startCell.dataset.r), Number(startCell.dataset.c), Number(cell.dataset.r), Number(cell.dataset.c));
+  });
+  document.addEventListener('mouseup', () => {
+    if (!selecting) return;
+    selecting = false;
+    checkSelection();
+  });
+  gridEl.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    const cell = cellFromPoint(t.clientX, t.clientY);
+    if (!cell) return;
+    selecting = true; startCell = cell;
+    clearSelection(); cell.classList.add('selected'); selectedCells = [cell];
+  }, { passive: true });
+  gridEl.addEventListener('touchmove', e => {
+    if (!selecting) return;
+    const t = e.touches[0];
+    const cell = cellFromPoint(t.clientX, t.clientY);
+    if (!cell || !startCell) return;
+    selectLine(Number(startCell.dataset.r), Number(startCell.dataset.c), Number(cell.dataset.r), Number(cell.dataset.c));
+  }, { passive: true });
+  gridEl.addEventListener('touchend', () => {
+    if (!selecting) return;
+    selecting = false;
+    checkSelection();
+  });
+})();
+</script>
+
+  <div class="th-end">
+    <h2>🎉 Chapter Complete!</h2>
+    <p>Great work getting through the whole theory lesson.</p>
+    <a href="index.html">Back to Chapter Hub &rarr;</a>
+  </div>
+</div>
+
+</body>
+</html>
